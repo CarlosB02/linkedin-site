@@ -27,6 +27,30 @@ export default function UploadZone() {
         }
     }, [session]);
 
+    const loadingMessages = [
+        "Analyzing facial features...",
+        "Optimizing lighting...",
+        "Trying on different outfits...",
+        "Adjusting pose...",
+        "Perfecting smile...",
+        "Enhancing resolution...",
+        "Finalizing your professional photo..."
+    ];
+
+    const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+        if (isUploading) {
+            interval = setInterval(() => {
+                setLoadingMsgIndex((prev) => (prev + 1) % loadingMessages.length);
+            }, 2500);
+        } else {
+            setLoadingMsgIndex(0);
+        }
+        return () => clearInterval(interval);
+    }, [isUploading]);
+
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const selectedFile = e.target.files[0];
@@ -52,7 +76,7 @@ export default function UploadZone() {
     const handleSubmit = async () => {
         // If logged in, check credits
         if (session) {
-            if (credits < 3) {
+            if (credits < 30) {
                 document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
                 setError("Insufficient credits. Please top up below.");
                 return;
@@ -102,7 +126,7 @@ export default function UploadZone() {
     };
 
     if (result) {
-        return <ResultView resultUrl={result.image} generationId={result.id} onReset={() => { setResult(null); clearFile(); }} />;
+        return <ResultView resultUrl={result.image} originalImage={previewUrl!} generationId={result.id} onReset={() => { setResult(null); clearFile(); }} />;
     }
 
     const styles = [
@@ -154,7 +178,7 @@ export default function UploadZone() {
                         </div>
 
                         {/* Main Interaction Area */}
-                        <div className="flex flex-col md:flex-row items-center gap-8 min-h-[300px]">
+                        <div className="flex flex-col md:flex-row items-stretch gap-8">
 
                             {/* Left: Upload / Preview */}
                             <div className={`flex-1 w-full transition-all duration-500 ${file ? "md:w-1/2" : "w-full"}`}>
@@ -162,7 +186,7 @@ export default function UploadZone() {
                                     <div
                                         onDragOver={(e) => e.preventDefault()}
                                         onDrop={handleDrop}
-                                        className="relative border-2 border-dashed border-gray-300 rounded-2xl p-12 text-center hover:border-blue-400 hover:bg-blue-50 transition-all cursor-pointer h-full flex flex-col items-center justify-center min-h-[300px]"
+                                        className="relative border-2 border-dashed border-gray-300 rounded-2xl p-6 md:p-12 text-center hover:border-blue-400 hover:bg-blue-50 transition-all cursor-pointer h-full flex flex-col items-center justify-center min-h-[200px] md:min-h-[300px]"
                                     >
                                         <input
                                             type="file"
@@ -179,8 +203,8 @@ export default function UploadZone() {
                                         <p className="text-sm text-gray-500 mt-2">JPG or PNG</p>
                                     </div>
                                 ) : (
-                                    <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200 group">
-                                        <img src={previewUrl!} alt="Preview" className="w-full h-64 object-cover" />
+                                    <div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200 group h-full">
+                                        <img src={previewUrl!} alt="Preview" className="w-full h-48 md:h-64 object-cover" />
                                         <button
                                             onClick={clearFile}
                                             className="absolute top-2 right-2 p-1 bg-white/80 rounded-full hover:bg-white text-gray-700 transition-colors"
@@ -241,7 +265,9 @@ export default function UploadZone() {
                                                         transition={{ duration: 0.5 }}
                                                     />
                                                 </div>
-                                                <p className="text-xs text-center mt-3 text-gray-400">This usually takes about 10-15 seconds</p>
+                                                <p className="text-xs text-center mt-3 text-gray-500 animate-pulse font-medium">
+                                                    {loadingMessages[loadingMsgIndex]}
+                                                </p>
                                             </div>
                                         ) : (
                                             <button

@@ -7,9 +7,9 @@ export default function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
                     {/* Column 1: Logo & Description */}
                     <div>
-                        <div className="text-2xl font-bold text-white mb-4">
+                        <a href="/" className="block text-2xl font-bold text-white mb-4">
                             LinkedIn<span className="text-blue-500">Gen</span>
-                        </div>
+                        </a>
                         <p className="text-sm leading-relaxed max-w-xs">
                             Turn your selfies into professional headshots with AI.
                             Save time and money while boosting your professional presence.
@@ -32,7 +32,7 @@ export default function Footer() {
                         <ul className="space-y-3 text-sm">
                             <li><Link href="/privacy" className="hover:text-blue-400 transition-colors">Privacy Policy</Link></li>
                             <li><Link href="/terms" className="hover:text-blue-400 transition-colors">Terms of Service</Link></li>
-                            <li><Link href="/support" className="hover:text-blue-400 transition-colors">Support</Link></li>
+                            <li><Link href="/contacts" className="hover:text-blue-400 transition-colors">Contacts</Link></li>
                         </ul>
                     </div>
                 </div>

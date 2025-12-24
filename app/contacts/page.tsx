@@ -1,7 +1,7 @@
 import { Mail } from "lucide-react";
 import BackgroundGrid from "@/components/BackgroundGrid";
 
-export default function Support() {
+export default function Contacts() {
     return (
         <div className="min-h-screen bg-[#ecf6ff] py-24 px-6 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full z-0 overflow-hidden pointer-events-none">

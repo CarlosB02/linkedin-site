@@ -13,7 +13,7 @@ export default function Home() {
                 <div className="w-full bg-[#ecf6ff] flex flex-col items-center">
                     <Hero />
 
-                    <div className="w-full px-6 mb-12">
+                    <div className="w-full px-6 mb-6">
                         <UploadZone />
                     </div>
 

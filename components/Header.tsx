@@ -59,9 +59,9 @@ export default function Header() {
         <>
             <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 border-b border-gray-100">
                 <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-                    <Link href="/" className="text-xl font-bold z-50 relative">
+                    <a href="/" className="text-xl font-bold z-50 relative">
                         LinkedIn<span className="text-blue-600">Gen</span>
-                    </Link>
+                    </a>
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center gap-8">
@@ -100,7 +100,7 @@ export default function Header() {
                         <Link href="/about" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
                             About Us
                         </Link>
-                        <Link href="/support" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
+                        <Link href="/contacts" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors">
                             Contacts
                         </Link>
                     </nav>
@@ -178,9 +178,9 @@ export default function Header() {
                     <nav className="flex flex-col w-full h-full relative z-10">
                         {/* Internal Menu Header */}
                         <div className="flex items-center justify-between px-6 h-20">
-                            <span className="text-2xl font-bold">
+                            <a href="/" className="text-2xl font-bold">
                                 LinkedIn<span className="text-blue-600">Gen</span>
-                            </span>
+                            </a>
                             <div className="flex items-center gap-4">
                                 <button
                                     className="flex flex-col items-center justify-center w-11 h-11 rounded-full bg-blue-50 text-blue-600 z-50 transition-transform active:scale-95"
@@ -248,7 +248,7 @@ export default function Header() {
                                 </Link>
 
                                 <Link
-                                    href="/support"
+                                    href="/contacts"
                                     onClick={() => setIsMobileMenuOpen(false)}
                                     className="text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
                                 >

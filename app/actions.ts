@@ -5,6 +5,113 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import sharp from "sharp";
+import { revalidatePath } from "next/cache";
+
+export async function enhanceImage(generationId: string, type: string): Promise<{ predictionId: string }> {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session) throw new Error("Unauthorized");
+
+    const user = await prisma.user.findUnique({
+        where: { id: session.user.id },
+    });
+
+    if (!user || user.credits < 10) {
+        throw new Error("Insufficient credits (10 required)");
+    }
+
+    const generation = await prisma.generation.findUnique({
+        where: { id: generationId },
+    });
+
+    if (!generation || !generation.originalImage) {
+        throw new Error("Generation not found");
+    }
+
+    // Construct prompt based on type
+    let promptModification = "";
+    switch (type) {
+        case "Smile":
+            promptModification = "smiling naturally, happy expression, approachable, professional headshot, preserve user appearance, preserve clothing";
+            break;
+        case "Open Eyes":
+            promptModification = "eyes open naturally, attentive look, professional headshot, preserve user appearance, preserve clothing";
+            break;
+        case "Fix Lighting":
+            promptModification = "perfect studio lighting, soft shadows, professional photography, high quality, preserve user appearance, preserve clothing";
+            break;
+        case "Background":
+            promptModification = "modern professional office background, depth of field, blurred background, preserve user appearance, preserve clothing";
+            break;
+        case "Remove Background":
+            promptModification = "solid white background, clean background, passport style photo, preserve user appearance, preserve clothing";
+            break;
+        default:
+            promptModification = "high quality, professional headshot, preserve user appearance, preserve clothing";
+    }
+
+    const fullPrompt = `${promptModification}, ${generation.prompt || "Professional LinkedIn headshot"}`;
+
+    const prediction = await replicate.predictions.create({
+        version: "google/nano-banana", // Using the same model as requested
+        model: "google/nano-banana",
+        input: {
+            prompt: fullPrompt,
+            image_input: [generation.originalImage], // Pass existing image for img2img
+            strength: 0.65, // Adjust strength to keep identity but apply changes. 1.0 = full replacement, 0.0 = no change.
+            output_format: "jpg",
+        },
+    });
+
+    // Deduct credits immediately or after success? 
+    // Usually improved UX to deduct on initiation but refund on failure. 
+    // For simplicity, we deduct here.
+    await prisma.user.update({
+        where: { id: user.id },
+        data: { credits: { decrement: 10 } },
+    });
+
+    return { predictionId: prediction.id };
+}
+
+export async function finalizeEnhancement(predictionId: string, generationId: string): Promise<{ newImageUrl: string; newGenerationId: string }> {
+    const prediction = await replicate.predictions.get(predictionId);
+
+    if (prediction.status !== "succeeded" || !prediction.output) {
+        throw new Error("Prediction failed or incomplete");
+    }
+
+    const outputUrl = prediction.output[0] || prediction.output; // Handle array or string output
+
+    // Fetch and process new image
+    const response = await fetch(outputUrl);
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const base64 = `data:image/jpeg;base64,${buffer.toString("base64")}`;
+
+    // Create a NEW generation record for the enhancement
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    const newGeneration = await prisma.generation.create({
+        data: {
+            userId: session?.user.id, // Assign to current user
+            prompt: `Enhanced: ${((prediction.input as any).prompt) || "Enhanced Image"}`,
+            style: "enhanced",
+            originalImage: base64,
+            blurredImage: base64, // Unlocked by default as they paid 10 credits
+            status: "COMPLETED",
+            cost: 10,
+            unlocked: true,
+            createdAt: new Date(),
+        },
+    });
+
+    return { newImageUrl: base64, newGenerationId: newGeneration.id };
+}
 
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN,
@@ -30,7 +137,7 @@ export async function generateImage(formData: FormData): Promise<{ predictionId:
             where: { id: userId },
         });
 
-        if (user && user.credits < 3) {
+        if (user && user.credits < 30) {
             throw new Error("Insufficient credits");
         }
     }
@@ -45,13 +152,16 @@ export async function generateImage(formData: FormData): Promise<{ predictionId:
     const base64 = buffer.toString("base64");
     const dataUri = `data:${file.type};base64,${base64}`;
 
-    let prompt = "Professional LinkedIn headshot, high quality, 8k";
+    let prompt = "";
     if (style === "formal") {
-        prompt += ", wearing a formal suit and tie, studio lighting, solid background";
-    } else if (style === "casual-formal") {
-        prompt += ", wearing a quarter-zip sweater with a collared shirt underneath, smart casual, modern office background";
-    } else if (style === "casual") {
-        prompt += ", wearing casual but professional attire, relaxed atmosphere, blurred natural background";
+        prompt = "A professional vertical headshot of the same person from the input image, but a different photo. Formal business attire, clean neutral background, soft professional lighting, confident and composed expression. Maintain realistic skin texture and natural facial details. Change clothing, background, lighting and pose compared to the original image. Avoid recreating the original framing. No particles, no artifacts, no distortions, no over-smooth or plastic skin, no exaggerated colors, no lens flares, no text, no watermarks.";
+    } else if (style === "smart-casual") {
+        prompt = "A vertical smart-casual headshot of the same person from the input image, but not the same photo. Smart-casual clothing, modern clean background, soft natural lighting, friendly and professional expression. Slightly different head angle or pose. Keep facial identity consistent with realistic skin texture. Avoid copying the original photo’s clothing, background, lighting or pose. No particles, no artifacts, no distortion, no plastic skin, no exaggerated saturation, no text, no watermarks.";
+    } else if (style === "creative") {
+        prompt = "A creative vertical portrait of the same person from the input image, but clearly a different photo. Modern creative style with subtle color accents or interesting lighting, artistic but still realistic. Contemporary background, expressive yet natural look. Keep the same facial identity with authentic skin texture. Change pose, lighting, clothing and background from the original image. Avoid particles, visual noise, glitches, plastic skin, surreal elements, text or watermarks.";
+    } else {
+        // Fallback
+        prompt = "A professional vertical headshot of the same person from the input image. Professional business attire, clean neutral background, soft professional lighting, confident expression. Maintain realistic skin texture and natural facial details. No particles, no artifacts, no distortions, no text, no watermarks.";
     }
 
     const prediction = await replicate.predictions.create({
@@ -106,7 +216,7 @@ export async function finalizeGeneration(predictionId: string, outputUrl: string
             originalImage: originalBase64,
             blurredImage: blurredBase64,
             status: "COMPLETED",
-            cost: 3,
+            cost: 30,
             unlocked: false,
         },
     });
@@ -141,7 +251,7 @@ export async function unlockImage(generationId: string): Promise<{ originalImage
         throw new Error(`User not found (ID: ${session.user.id}). Please log out and log in again.`);
     }
 
-    if (user.credits < 3) {
+    if (user.credits < 30) {
         throw new Error("Insufficient credits");
     }
 
@@ -162,7 +272,7 @@ export async function unlockImage(generationId: string): Promise<{ originalImage
     await prisma.$transaction([
         prisma.user.update({
             where: { id: user.id },
-            data: { credits: { decrement: 3 } },
+            data: { credits: { decrement: 30 } },
         }),
         prisma.generation.update({
             where: { id: generationId },

@@ -44,7 +44,7 @@ export default function BeforeAfterSection() {
     return (
         <section className="pt-6 pb-20">
             <div className="container mx-auto px-6 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12">
+                <h2 className="text-[1.875rem] font-bold text-gray-900 mb-12">
                     Até a tua melhor foto pode ficar ainda melhor!
                 </h2>
 
@@ -59,7 +59,7 @@ export default function BeforeAfterSection() {
                         <div
                             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
                             style={{
-                                backgroundImage: 'url("/images/after.jpg")',
+                                backgroundImage: 'url("/images/after-v2.jpg")',
                             }}
                         />
                         <div className="absolute top-4 right-4 bg-blue-600 px-3 py-1 rounded-full text-sm font-bold text-white z-20">
@@ -71,7 +71,7 @@ export default function BeforeAfterSection() {
                             className="absolute inset-0 bg-cover bg-center bg-no-repeat border-r-4 border-white"
                             style={{
                                 clipPath: `inset(0 ${100 - position}% 0 0)`,
-                                backgroundImage: 'url("/images/before.jpg")',
+                                backgroundImage: 'url("/images/before-v2.jpg")',
                             }}
                         >
                             <div className="absolute top-4 left-4 bg-red-500 px-3 py-1 rounded-full text-sm font-bold text-white z-20">

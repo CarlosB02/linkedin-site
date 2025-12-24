@@ -112,7 +112,7 @@ export default function Pricing() {
 
     return (
         <>
-            <section id="pricing" className="w-full py-12 bg-gray-50 relative overflow-hidden scroll-mt-24">
+            <section id="pricing" className="w-full py-12 bg-gray-50 relative overflow-hidden scroll-mt-[5vh]">
                 {/* Background decoration */}
                 <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
                     <div className="absolute top-1/4 left-0 w-64 h-64 bg-blue-100 rounded-full blur-3xl opacity-30"></div>
@@ -292,7 +292,7 @@ export default function Pricing() {
                                     </p>
                                 </div>
                                 <a
-                                    href="/contact"
+                                    href="/contacts"
                                     className="px-8 py-4 bg-white text-gray-900 rounded-xl font-bold hover:bg-gray-100 transition-colors flex items-center gap-2 whitespace-nowrap"
                                 >
                                     Contact Us
