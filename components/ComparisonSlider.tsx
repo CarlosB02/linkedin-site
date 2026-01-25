@@ -52,7 +52,7 @@ export default function ComparisonSlider({ beforeImage, afterImage }: { beforeIm
 
     return (
         <div className="w-full max-w-md mx-auto mt-16 mb-0">
-            <h2 className="text-3xl font-bold text-center mb-8">See the Difference.</h2>
+            <h2 className="text-3xl font-bold text-center mb-8">See the Difference</h2>
             <div
                 ref={containerRef}
                 className="relative w-full rounded-2xl overflow-hidden cursor-ew-resize select-none shadow-2xl group"
