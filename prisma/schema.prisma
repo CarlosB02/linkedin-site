@@ -91,12 +91,14 @@ model Generation {
 }
 
 model Transaction {
-  id        String   @id @default(cuid())
-  userId    String
-  amount    Int
-  currency  String
-  status    String
-  credits   Int
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  id                  String   @id @default(cuid())
+  userId              String
+  amount              Int
+  currency            String
+  status              String
+  credits             Int
+  stripeSessionId     String?  @unique
+  stripePaymentIntentId String?
+  createdAt           DateTime @default(now())
+  user                User     @relation(fields: [userId], references: [id])
 }
