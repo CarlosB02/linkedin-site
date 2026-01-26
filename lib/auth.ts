@@ -6,6 +6,11 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "sqlite",
     }),
+    //allow any localhost port in development, and production URL
+    trustedOrigins: [
+        "http://localhost:*", //allows any port in development
+        ...(process.env.NEXT_PUBLIC_APP_URL ? [process.env.NEXT_PUBLIC_APP_URL] : []),
+    ],
     emailAndPassword: {
         enabled: true,
     },
