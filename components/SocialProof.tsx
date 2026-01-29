@@ -3,27 +3,30 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function SocialProof() {
+	const t = useTranslations("SocialProof");
+
 	const testimonials = [
 		{
 			name: "Sarah J.",
-			role: "Marketing Manager",
-			text: "I got 3 job offers within a week of updating my profile photo. The ROI is insane!",
+			role: t("t1_role"),
+			text: t("t1_text"),
 			image:
 				"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80",
 		},
 		{
 			name: "David M.",
-			role: "Software Engineer",
-			text: "Recruiters started reaching out to me way more often. It looks so professional.",
+			role: t("t2_role"),
+			text: t("t2_text"),
 			image:
 				"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80",
 		},
 		{
 			name: "Jessica T.",
-			role: "Freelancer",
-			text: "My clients take me more seriously now. Best 5€ I ever spent.",
+			role: t("t3_role"),
+			text: t("t3_text"),
 			image:
 				"https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80",
 		},
@@ -49,8 +52,8 @@ export default function SocialProof() {
 	return (
 		<div className="w-full bg-gray-50 py-16" id="testimonials">
 			<div className="max-w-6xl mx-auto px-6">
-				<h2 className="text-3xl font-bold text-center mb-12">
-					Trusted by Professionals Who Got Hired
+				<h2 className="text-2xl font-bold text-center mb-12">
+					{t("title")}
 				</h2>
 
 				{/* Desktop Grid */}
@@ -92,7 +95,7 @@ export default function SocialProof() {
 
 				<div className="mt-12 text-center">
 					<p className="text-xl font-semibold text-blue-800">
-						🚀 87% of users reported getting more profile views within 24 hours.
+						{t("stats")}
 					</p>
 				</div>
 			</div>

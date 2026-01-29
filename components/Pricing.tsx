@@ -1,17 +1,28 @@
 "use client";
 
 import { ArrowRight, Building2, Check, Loader2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { buyCredits } from "@/app/actions";
 import { authClient } from "@/lib/auth-client";
-import LoginModal from "./LoginModal";
+import { useUI } from "@/lib/ui-context";
+import { useTranslations } from "next-intl";
 
 export default function Pricing() {
+	const t = useTranslations("Pricing");
 	const { data: session } = authClient.useSession();
+	const { openLoginModal } = useUI();
 	const [loadingPkg, setLoadingPkg] = useState<string | null>(null);
-	const [isLoginOpen, setIsLoginOpen] = useState(false);
-	const [activeTab, setActiveTab] = useState(0);
+	const [activeTab, setActiveTab] = useState(1);
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		// Scroll to the default active tab (Startup) on mount
+		// Use a small timeout to ensure layout is ready
+		const timer = setTimeout(() => {
+			scrollToPackage(1);
+		}, 100);
+		return () => clearTimeout(timer);
+	}, []);
 
 	const handleScroll = () => {
 		if (scrollContainerRef.current) {
@@ -47,7 +58,7 @@ export default function Pricing() {
 
 	const handleBuy = async (pkgId: string) => {
 		if (!session) {
-			setIsLoginOpen(true);
+			openLoginModal();
 			return;
 		}
 
@@ -72,7 +83,7 @@ export default function Pricing() {
 			} else {
 				alert(
 					errorMessage ||
-						"Failed to create checkout session. Please try again.",
+					"Failed to create checkout session. Please try again.",
 				);
 			}
 		}
@@ -86,10 +97,10 @@ export default function Pricing() {
 			credits: "200 Credits",
 			bonus: null,
 			features: [
-				"~ 5 Photos",
-				"Improvements included",
-				"Access to all styles",
-				"Ideal for 1 user",
+				t("features.5_photos"),
+				t("features.improvements"),
+				t("features.all_styles"),
+				t("features.1_user"),
 			],
 			popular: false,
 			gradient: "from-blue-400 to-blue-600",
@@ -97,16 +108,16 @@ export default function Pricing() {
 			activeBorder: "border-blue-500",
 		},
 		{
-			id: "friends",
-			name: "Friends",
+			id: "startup",
+			name: "Startup",
 			price: "6€",
 			credits: "750 Credits",
 			bonus: "+50 Credits Bonus",
 			features: [
-				"~ 25 Photos",
-				"Improvements included",
-				"Access to all styles",
-				"Perfect for 2-3 users",
+				t("features.25_photos"),
+				t("features.improvements"),
+				t("features.all_styles"),
+				t("features.2_3_users"),
 			],
 			popular: true,
 			gradient: "from-purple-500 to-indigo-600",
@@ -120,10 +131,10 @@ export default function Pricing() {
 			credits: "1600 Credits",
 			bonus: "+100 Credits Bonus",
 			features: [
-				"~ 50 Photos",
-				"Improvements included",
-				"Access to all styles",
-				"Perfect for 3-6 users",
+				t("features.50_photos"),
+				t("features.improvements"),
+				t("features.all_styles"),
+				t("features.3_6_users"),
 			],
 			popular: false,
 			gradient: "from-orange-400 to-pink-600",
@@ -147,13 +158,13 @@ export default function Pricing() {
 				<div className="container mx-auto px-6 relative z-10">
 					<div className="text-center max-w-3xl mx-auto mb-16">
 						<h2 className="text-3xl font-bold text-center mb-4">
-							Low Investment,{" "}
+							{t("titlePrefix")}{" "}
 							<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
-								High Returns
+								{t("titleHighlight")}
 							</span>
 						</h2>
 						<p className="text-center text-gray-500 mb-12">
-							Invest in your career for less than the price of lunch.
+							{t("subtitle")}
 						</p>
 					</div>
 
@@ -164,11 +175,10 @@ export default function Pricing() {
 								key={pkg.id}
 								type="button"
 								onClick={() => scrollToPackage(idx)}
-								className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 ${
-									activeTab === idx
-										? `${pkg.tabColor} shadow-sm transform scale-105`
-										: "text-gray-500 hover:bg-gray-50"
-								}`}
+								className={`flex-1 py-2.5 text-xs font-bold rounded-lg transition-all duration-300 ${activeTab === idx
+									? `${pkg.tabColor} shadow-sm transform scale-105`
+									: "text-gray-500 hover:bg-gray-50"
+									}`}
 							>
 								{pkg.name}
 							</button>
@@ -192,7 +202,7 @@ export default function Pricing() {
 								<div className="relative bg-white rounded-[22px] p-8 h-full flex flex-col">
 									{pkg.popular && (
 										<div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
-											MOST POPULAR
+											{t("mostPopular")}
 										</div>
 									)}
 
@@ -204,7 +214,7 @@ export default function Pricing() {
 									</div>
 									{pkg.id === "entrepreneur" && (
 										<div className="text-sm font-bold text-amber-800 mb-4 bg-amber-100 inline-block px-2 py-1 rounded-lg self-start">
-											Valor de 2 cafés
+											{t("coffeeValue")}
 										</div>
 									)}
 									{pkg.bonus && (
@@ -235,16 +245,15 @@ export default function Pricing() {
 										type="button"
 										onClick={() => handleBuy(pkg.id)}
 										disabled={loadingPkg === pkg.id}
-										className={`w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
-											pkg.popular
-												? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-lg hover:scale-[1.02]"
-												: "bg-gray-900 text-white hover:bg-gray-800 hover:scale-[1.02]"
-										}`}
+										className={`w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${pkg.popular
+											? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-lg hover:scale-[1.02]"
+											: "bg-gray-900 text-white hover:bg-gray-800 hover:scale-[1.02]"
+											}`}
 									>
 										{loadingPkg === pkg.id ? (
 											<Loader2 className="w-5 h-5 animate-spin" />
 										) : (
-											`Choose ${pkg.name}`
+											`${t("choose")} ${pkg.name}`
 										)}
 									</button>
 								</div>
@@ -265,7 +274,7 @@ export default function Pricing() {
 								<div className="relative bg-white rounded-[22px] p-8 h-full flex flex-col">
 									{pkg.popular && (
 										<div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
-											MOST POPULAR
+											{t("mostPopular")}
 										</div>
 									)}
 
@@ -277,7 +286,7 @@ export default function Pricing() {
 									</div>
 									{pkg.id === "entrepreneur" && (
 										<div className="text-sm font-bold text-amber-800 mb-4 bg-amber-100 inline-block px-2 py-1 rounded-lg self-start">
-											Valor de 2 cafés
+											{t("coffeeValue")}
 										</div>
 									)}
 									{pkg.bonus && (
@@ -308,16 +317,15 @@ export default function Pricing() {
 										type="button"
 										onClick={() => handleBuy(pkg.id)}
 										disabled={loadingPkg === pkg.id}
-										className={`w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${
-											pkg.popular
-												? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-lg hover:scale-[1.02]"
-												: "bg-gray-900 text-white hover:bg-gray-800 hover:scale-[1.02]"
-										}`}
+										className={`w-full py-3 rounded-xl font-bold transition-all flex items-center justify-center gap-2 ${pkg.popular
+											? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:shadow-lg hover:scale-[1.02]"
+											: "bg-gray-900 text-white hover:bg-gray-800 hover:scale-[1.02]"
+											}`}
 									>
 										{loadingPkg === pkg.id ? (
 											<Loader2 className="w-5 h-5 animate-spin" />
 										) : (
-											`Choose ${pkg.name}`
+											`${t("choose")} ${pkg.name}`
 										)}
 									</button>
 								</div>
@@ -334,21 +342,20 @@ export default function Pricing() {
 								<div className="flex-1">
 									<div className="flex items-center gap-3 mb-4">
 										<Building2 className="w-8 h-8 text-blue-400" />
-										<h3 className="text-2xl font-bold">Corporate Pack</h3>
+										<h3 className="text-2xl font-bold">{t("corporateTitle")}</h3>
 									</div>
 									<p className="text-gray-300 text-lg mb-2">
-										Quer um pack para a sua empresa?
+										{t("corporateQuestion")}
 									</p>
 									<p className="text-gray-400">
-										Contacte-nos para um pacote com um preço e volume de fotos
-										ajustado às suas necessidades.
+										{t("corporateDesc")}
 									</p>
 								</div>
 								<a
 									href="/contacts"
 									className="px-8 py-4 bg-white text-gray-900 rounded-xl font-bold hover:bg-gray-100 transition-colors flex items-center gap-2 whitespace-nowrap"
 								>
-									Contact Us
+									{t("contactButton")}
 									<ArrowRight className="w-5 h-5" />
 								</a>
 							</div>
@@ -356,7 +363,6 @@ export default function Pricing() {
 					</div>
 				</div>
 			</section>
-			<LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 		</>
 	);
 }

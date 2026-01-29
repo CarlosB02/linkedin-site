@@ -7,17 +7,12 @@
 	--foreground: #171717;
 }
 
-html {
-	overscroll-behavior: none;
-	overscroll-behavior-y: none;
-}
+
 
 body {
 	color: var(--foreground);
 	background: var(--background);
 	font-family: Arial, Helvetica, sans-serif;
-	overscroll-behavior: none;
-	overscroll-behavior-y: none;
 }
 
 /* Custom Scrollbar */
@@ -47,6 +42,7 @@ body {
 	}
 
 	@keyframes gradient-xy {
+
 		0%,
 		100% {
 			background-position: 0% 50%;

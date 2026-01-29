@@ -3,13 +3,17 @@
 import { Loader2, X } from "lucide-react";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { useTranslations } from "next-intl";
 
 interface LoginModalProps {
 	isOpen: boolean;
 	onClose: () => void;
 }
 
+
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
+	const t = useTranslations("LoginModal");
+	const { data: session } = authClient.useSession();
 	const [isLogin, setIsLogin] = useState(true);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -60,7 +64,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 				);
 			}
 		} catch (e) {
-			setError("An error occurred");
+			setError(t("error"));
 		} finally {
 			setIsLoading(false);
 		}
@@ -73,8 +77,8 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 	};
 
 	return (
-		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-			<div className="bg-white rounded-2xl w-full max-w-md p-8 relative shadow-2xl">
+		<div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+			<div className="bg-white rounded-2xl w-full max-w-md p-6 md:p-8 relative shadow-2xl">
 				<button
 					onClick={onClose}
 					className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
@@ -83,7 +87,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 				</button>
 
 				<h2 className="text-2xl font-bold mb-6 text-center">
-					{isLogin ? "Welcome Back" : "Create Account"}
+					{isLogin ? t("welcomeBack") : t("createAccount")}
 				</h2>
 
 				<button
@@ -108,7 +112,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 							d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
 						/>
 					</svg>
-					Continue with Google
+					{t("continueGoogle")}
 				</button>
 
 				<div className="relative mb-6">
@@ -117,7 +121,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 					</div>
 					<div className="relative flex justify-center text-sm">
 						<span className="px-2 bg-white text-gray-500">
-							Or continue with email
+							{t("orContinueEmail")}
 						</span>
 					</div>
 				</div>
@@ -126,7 +130,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 					{!isLogin && (
 						<div>
 							<label className="block text-sm font-medium text-gray-700 mb-1">
-								Name
+								{t("name")}
 							</label>
 							<input
 								type="text"
@@ -140,7 +144,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
 					<div>
 						<label className="block text-sm font-medium text-gray-700 mb-1">
-							Email
+							{t("email")}
 						</label>
 						<input
 							type="email"
@@ -153,7 +157,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
 					<div>
 						<label className="block text-sm font-medium text-gray-700 mb-1">
-							Password
+							{t("password")}
 						</label>
 						<input
 							type="password"
@@ -172,17 +176,17 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 						className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
 					>
 						{isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
-						{isLogin ? "Sign In" : "Create Account"}
+						{isLogin ? t("signIn") : t("createAccount")}
 					</button>
 				</form>
 
 				<div className="mt-6 text-center text-sm text-gray-600">
-					{isLogin ? "Don't have an account? " : "Already have an account? "}
+					{isLogin ? t("noAccount") : t("hasAccount")}
 					<button
 						onClick={() => setIsLogin(!isLogin)}
 						className="text-blue-600 font-semibold hover:underline"
 					>
-						{isLogin ? "Sign up" : "Sign in"}
+						{isLogin ? t("signUp") : t("signIn")}
 					</button>
 				</div>
 			</div>

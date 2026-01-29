@@ -372,7 +372,7 @@ export async function buyCredits(
 	if (packageId === "entrepreneur") {
 		amount = 200; //2€ in cents
 		credits = 200;
-	} else if (packageId === "friends") {
+	} else if (packageId === "startup") {
 		amount = 600; //6€ in cents
 		credits = 800; //750 + 50 bonus
 	} else if (packageId === "networking") {

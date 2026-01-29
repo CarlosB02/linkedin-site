@@ -1,7 +1,12 @@
+"use client";
+
 import { Mail } from "lucide-react";
 import BackgroundGrid from "@/components/BackgroundGrid";
+import { useTranslations } from "next-intl";
 
 export default function Contacts() {
+	const t = useTranslations("Contacts");
+
 	return (
 		<div className="min-h-screen bg-[#ecf6ff] py-24 px-6 relative overflow-hidden">
 			<div className="absolute top-0 left-0 w-full h-full z-0 overflow-hidden pointer-events-none">
@@ -10,10 +15,10 @@ export default function Contacts() {
 			<div className="max-w-4xl mx-auto relative z-10">
 				<div className="text-center mb-16">
 					<h1 className="text-4xl font-bold mb-4 text-gray-900">
-						Contact Support
+						{t("title")}
 					</h1>
 					<p className="text-xl text-gray-600">
-						We're here to help with any questions or issues.
+						{t("subtitle")}
 					</p>
 				</div>
 
@@ -23,10 +28,9 @@ export default function Contacts() {
 						<div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6">
 							<Mail className="w-8 h-8" />
 						</div>
-						<h3 className="font-bold text-2xl mb-4 text-gray-900">Email Us</h3>
+						<h3 className="font-bold text-2xl mb-4 text-gray-900">{t("emailTitle")}</h3>
 						<p className="text-gray-500 mb-8 leading-relaxed">
-							For general inquiries, technical support, or partnership
-							opportunities. We usually respond within 24 hours.
+							{t("emailDesc")}
 						</p>
 						<a
 							href="mailto:support@linkedingen.com"
@@ -39,44 +43,44 @@ export default function Contacts() {
 					{/* Contact Form */}
 					<div className="bg-white rounded-3xl p-10 shadow-xl border border-blue-50">
 						<h2 className="text-2xl font-bold mb-6 text-gray-900">
-							Send us a message
+							{t("formTitle")}
 						</h2>
 						<form className="space-y-4">
 							<div>
 								<label className="block text-sm font-medium text-gray-700 mb-1">
-									Name
+									{t("name")}
 								</label>
 								<input
 									type="text"
 									className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white"
-									placeholder="Your name"
+									placeholder={t("namePlaceholder")}
 								/>
 							</div>
 							<div>
 								<label className="block text-sm font-medium text-gray-700 mb-1">
-									Email
+									{t("email")}
 								</label>
 								<input
 									type="email"
 									className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white"
-									placeholder="your@email.com"
+									placeholder={t("emailPlaceholder")}
 								/>
 							</div>
 							<div>
 								<label className="block text-sm font-medium text-gray-700 mb-1">
-									Message
+									{t("message")}
 								</label>
 								<textarea
 									rows={4}
 									className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all bg-gray-50 focus:bg-white"
-									placeholder="How can we help?"
+									placeholder={t("messagePlaceholder")}
 								></textarea>
 							</div>
 							<button
 								type="submit"
 								className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
 							>
-								Send Message
+								{t("send")}
 							</button>
 						</form>
 					</div>

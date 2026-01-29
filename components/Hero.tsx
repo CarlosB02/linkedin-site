@@ -1,7 +1,10 @@
 import { ArrowDown } from "lucide-react";
 import BackgroundGrid from "./BackgroundGrid";
+import { useTranslations } from "next-intl";
 
 export default function Hero() {
+	const t = useTranslations("Hero");
+
 	return (
 		<div className="relative w-full overflow-hidden">
 			{/* Background Design Elements */}
@@ -10,19 +13,18 @@ export default function Hero() {
 				<BackgroundGrid />
 			</div>
 
-			<div className="relative z-10 max-w-4xl mx-auto px-6 py-20 text-center">
+			<div className="relative z-10 max-w-4xl mx-auto px-6 py-16 text-center">
 				<div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-blue-50 text-blue-700 font-semibold text-sm border border-blue-100">
-					✨ #1 LinkedIn Photo Generator
+					{t("badge")}
 				</div>
-				<h1 className="text-5xl md:text-7xl font-bold tracking-tight text-gray-900 mb-6 leading-tight">
-					Turn your selfie into a <br />
+				<h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 mb-6 leading-tight">
+					{t("titlePrefix")} <br />
 					<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
-						LinkedIn Photo
+						{t("titleHighlight")}
 					</span>
 				</h1>
-				<p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-					Stop losing opportunities because of a bad profile picture. Get a
-					studio-quality headshot in seconds without leaving your house.
+				<p className="text-1xl lg:text-2xl text-gray-600 mb-10 max-w-1xl mx-auto leading-relaxed">
+					{t("subtitle")}
 				</p>
 
 				<div className="flex justify-center animate-bounce text-gray-400">

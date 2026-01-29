@@ -6,8 +6,10 @@ import { createPortal } from "react-dom";
 import { getUserGenerations } from "@/app/actions";
 import { authClient } from "@/lib/auth-client";
 import ResultView from "./ResultView";
+import { useTranslations } from "next-intl";
 
 export default function Gallery() {
+	const t = useTranslations("Gallery");
 	const { data: session } = authClient.useSession();
 	const [generations, setGenerations] = useState<any[]>([]);
 	const [isAllGenerationsOpen, setIsAllGenerationsOpen] = useState(false);
@@ -61,7 +63,7 @@ export default function Gallery() {
 					className="px-5 py-2.5 bg-white text-gray-900 rounded-xl font-bold text-sm hover:scale-105 hover:bg-blue-50 transition-all shadow-lg flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 duration-300"
 				>
 					<Wand2 className="w-4 h-4 text-purple-600" />
-					Edit / Unlock
+					{t("editUnlock")}
 				</button>
 
 				{gen.unlocked && (
@@ -72,7 +74,7 @@ export default function Gallery() {
 						onClick={(e) => e.stopPropagation()}
 					>
 						<Download className="w-4 h-4" />
-						Download
+						{t("download")}
 					</a>
 				)}
 			</div>
@@ -81,7 +83,7 @@ export default function Gallery() {
 
 	return (
 		<div className="w-full max-w-6xl mx-auto px-6 pt-6 pb-6">
-			<h2 className="text-2xl font-bold mb-6">Your Recent Generations</h2>
+			<h2 className="text-2xl font-bold mb-6">{t("title")}</h2>
 			{/* Desktop View (4 items) */}
 			<div className="hidden md:grid grid-cols-4 lg:grid-cols-5 gap-4">
 				{generations.slice(0, 4).map(renderGenerationCard)}
@@ -95,10 +97,10 @@ export default function Gallery() {
 							<FileText className="w-6 h-6 text-blue-600" />
 						</div>
 						<span className="font-medium text-gray-600 group-hover:text-blue-600">
-							View All
+							{t("viewAll")}
 						</span>
 						<span className="text-xs text-gray-400">
-							({generations.length - 4} more)
+							({generations.length - 4} {t("more")})
 						</span>
 					</button>
 				)}
@@ -117,10 +119,10 @@ export default function Gallery() {
 							<FileText className="w-6 h-6 text-blue-600" />
 						</div>
 						<span className="font-medium text-gray-600 group-active:text-blue-600">
-							View All
+							{t("viewAll")}
 						</span>
 						<span className="text-xs text-gray-400">
-							({generations.length - 3} more)
+							({generations.length - 3} {t("more")})
 						</span>
 					</button>
 				)}
@@ -134,7 +136,7 @@ export default function Gallery() {
 						<div className="bg-white rounded-2xl w-full max-w-5xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
 							<div className="p-6 border-b border-gray-100 flex items-center justify-between">
 								<h3 className="text-xl font-bold">
-									All Generations ({generations.length})
+									{t("allGenerations")} ({generations.length})
 								</h3>
 								<button
 									onClick={() => setIsAllGenerationsOpen(false)}

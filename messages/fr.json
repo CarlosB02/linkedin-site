@@ -1,0 +1,223 @@
+{
+    "Header": {
+        "home": "Accueil",
+        "pricing": "Tarifs",
+        "services": "Services",
+        "about": "À Propos",
+        "contacts": "Contacts",
+        "signIn": "Se Connecter",
+        "signOut": "Se Déconnecter",
+        "credits": "Crédits"
+    },
+    "Hero": {
+        "badge": "✨ #1 Générateur de Photos LinkedIn",
+        "titlePrefix": "Transformez votre selfie en une",
+        "titleHighlight": "Photo LinkedIn",
+        "subtitle": "Arrêtez de perdre des opportunités à cause d'une mauvaise photo de profil. Obtenez un portrait professionnel en quelques secondes sans sortir de chez vous."
+    },
+    "Pricing": {
+        "titlePrefix": "Faible Investissement,",
+        "titleHighlight": "Grand Retour",
+        "subtitle": "Investissez dans votre carrière pour moins que le prix d'un déjeuner.",
+        "mostPopular": "LE PLUS POPULAIRE",
+        "coffeeValue": "Valeur de 2 cafés",
+        "choose": "Choisir",
+        "corporateTitle": "Pack Entreprise",
+        "corporateQuestion": "Vous voulez un pack pour votre entreprise ?",
+        "corporateDesc": "Contactez-nous pour un forfait avec un prix et un volume de photos adaptés à vos besoins.",
+        "contactButton": "Contactez-nous",
+        "features": {
+            "5_photos": "~ 5 Photos",
+            "improvements": "Améliorations incluses",
+            "all_styles": "Accès à tous les styles",
+            "1_user": "Idéal pour 1 utilisateur",
+            "25_photos": "~ 25 Photos",
+            "2_3_users": "Parfait pour 2-3 utilisateurs",
+            "50_photos": "~ 50 Photos",
+            "3_6_users": "Parfait pour 3-6 utilisateurs"
+        }
+    },
+    "Footer": {
+        "description": "Transformez vos selfies en portraits professionnels avec l'IA. Gagnez du temps et de l'argent tout en améliorant votre présence professionnelle.",
+        "product": "Produit",
+        "solutions": "Solutions",
+        "testimonials": "Témoignages",
+        "legal": "Légal",
+        "privacy": "Politique de Confidentialité",
+        "terms": "Conditions d'Utilisation",
+        "rights": "Tous droits réservés."
+    },
+    "BeforeAfter": {
+        "title": "Même votre meilleure photo peut être encore mieux !",
+        "before": "AVANT",
+        "after": "APRÈS"
+    },
+    "SocialProof": {
+        "title": "Approuvé par des Professionnels Embauchés",
+        "stats": "🚀 87% des utilisateurs ont signalé plus de vues de profil en 24 heures.",
+        "t1_text": "J'ai reçu 3 offres d'emploi en une semaine après avoir mis à jour ma photo. Le ROI est dingue !",
+        "t1_role": "Responsable Marketing",
+        "t2_text": "Les recruteurs ont commencé à me contacter beaucoup plus souvent. Ça fait très pro.",
+        "t2_role": "Ingénieur Logiciel",
+        "t3_text": "Mes clients me prennent plus au sérieux maintenant. Les meilleurs 5€ que j'ai dépensés.",
+        "t3_role": "Freelance"
+    },
+    "UploadZone": {
+        "titlePrefix": "Créez Votre",
+        "titleHighlight": "Photo Professionnelle",
+        "uploadTitle": "Téléchargez votre selfie",
+        "uploadDesc": "JPG ou PNG",
+        "originalPhoto": "Photo Originale",
+        "readyTitle": "Prêt à transformer ?",
+        "readyDesc": "Nous allons générer un portrait {style} de haute qualité pour vous.",
+        "generating": "Génération en cours...",
+        "button": "Générer Portrait",
+        "generationFailed": "Échec de la génération. Veuillez réessayer.",
+        "insufficientCredits": "Crédits insuffisants. Veuillez recharger ci-dessous.",
+        "loadingMessages": {
+            "0": "Analyse des traits du visage...",
+            "1": "Optimisation de l'éclairage...",
+            "2": "Essai de différentes tenues...",
+            "3": "Ajustement de la pose...",
+            "4": "Perfectionnement du sourire...",
+            "5": "Amélioration de la résolution...",
+            "6": "Finalisation de votre photo professionnelle..."
+        },
+        "styles": {
+            "formal": "Formel",
+            "formalDesc": "Costume et Cravate",
+            "smart_casual": "Décontracté Chic",
+            "smart_casualDesc": "Élégant mais détendu",
+            "creative": "Créatif",
+            "creativeDesc": "Artistique et Audacieux"
+        }
+    },
+    "Gallery": {
+        "title": "Vos Générations Récentes",
+        "viewAll": "Voir Tout",
+        "more": "plus",
+        "allGenerations": "Toutes les Générations",
+        "editUnlock": "Éditer / Débloquer",
+        "download": "Télécharger"
+    },
+    "ResultView": {
+        "preview": "APERÇU",
+        "unlockButton": "Débloquer Haute Qualité",
+        "cost": "Coût : 30 Crédits",
+        "enhancements": "Améliorations",
+        "creditsEach": "10 crédits chaque",
+        "enhancing": "Amélioration...",
+        "removeBackground": "Supprimer l'Arrière-plan",
+        "actions": "Actions",
+        "downloadHD": "Télécharger HD",
+        "downloadLocked": "Télécharger HD (Verrouillé)",
+        "startOver": "Recommencer",
+        "unlockToDownload": "Débloquez pour télécharger ou recommencer",
+        "feedback": "Retour",
+        "optional": "Optionnel",
+        "placeholder": "Comment est le résultat ? Dites-nous...",
+        "sendFeedback": "Envoyer Retour",
+        "smile": "Sourire",
+        "openEyes": "Ouvrir les Yeux",
+        "fixLighting": "Corriger Lumière",
+        "background": "Arrière-plan"
+    },
+    "LoginModal": {
+        "welcomeBack": "Bon retour",
+        "createAccount": "Créer un compte",
+        "continueGoogle": "Continuer avec Google",
+        "orContinueEmail": "Ou continuer avec email",
+        "name": "Nom",
+        "email": "Email",
+        "password": "Mot de passe",
+        "error": "Une erreur est survenue",
+        "signIn": "Se connecter",
+        "signUp": "S'inscrire",
+        "noAccount": "Vous n'avez pas de compte ? ",
+        "hasAccount": "Vous avez déjà un compte ? "
+    },
+    "ComparisonSlider": {
+        "title": "Voyez la Différence",
+        "after": "APRÈS",
+        "before": "AVANT"
+    },
+    "SocialProofNotifications": {
+        "notifications": {
+            "0": {
+                "action": "a généré une nouvelle photo",
+                "time": "À l'instant"
+            },
+            "1": {
+                "action": "a acheté le Plan Entrepreneur",
+                "time": "il y a 2 min"
+            },
+            "2": {
+                "action": "a débloqué des photos HD",
+                "time": "il y a 5 min"
+            },
+            "3": {
+                "action": "a généré 5 styles créatifs",
+                "time": "il y a 1 min"
+            },
+            "4": {
+                "action": "a amélioré son score de profil",
+                "time": "À l'instant"
+            }
+        }
+    },
+    "Contacts": {
+        "title": "Contacter le Support",
+        "subtitle": "Nous sommes là pour vous aider avec toutes vos questions ou problèmes.",
+        "emailTitle": "Envoyez-nous un Email",
+        "emailDesc": "Pour les questions générales, le support technique ou les opportunités de partenariat. Nous répondons généralement dans les 24 heures.",
+        "formTitle": "Envoyez-nous un message",
+        "name": "Nom",
+        "namePlaceholder": "Votre nom",
+        "email": "Email",
+        "emailPlaceholder": "votre@email.com",
+        "message": "Message",
+        "messagePlaceholder": "Comment pouvons-nous vous aider ?",
+        "send": "Envoyer le Message"
+    },
+    "About": {
+        "hero": {
+            "badge": "Partie du groupe .gen",
+            "titlePrefix": "Construire le Futur avec",
+            "titleHighlight": "l'Intelligence Artificielle",
+            "subtitle": "Nous produisons des solutions digitales de pointe intégrées à l'IA."
+        },
+        "mission": {
+            "title": "Guidés par l'Évolution",
+            "p1": "Chez .gen group, notre mission va au-delà de la simple création de sites web. Nous nous consacrons à la création d'écosystèmes numériques intelligents qui s'adaptent et grandissent.",
+            "p2": "Nous voulons offrir le meilleur à nos clients en intégrant les dernières avancées en Intelligence Artificielle dans des produits intuitifs et conviviaux. Nous sommes en constante évolution, tout comme la technologie que nous utilisons.",
+            "cardTitle": ".GEN",
+            "cardSubtitle": "Intelligence Intégrée"
+        },
+        "product": {
+            "title": "Qu'est-ce que LinkedInGen ?",
+            "p1": "LinkedInGen est notre solution spécialisée pour le branding professionnel. Nous avons remarqué que de nombreux professionnels talentueux manquent des opportunités simplement parce qu'ils n'ont pas de photo de profil de haute qualité.",
+            "p2": "Nous avons combiné l'IA générative avancée avec des principes de photographie professionnelle pour créer un outil qui transforme les selfies quotidiens en portraits de studio en quelques minutes.",
+            "visual": "Visuel du Produit"
+        },
+        "values": {
+            "title": "Pourquoi nous choisir ?",
+            "v1Title": "Utilisateur d'abord",
+            "v1Desc": "Conçu pour la simplicité et la facilité d'utilisation.",
+            "v2Title": "Précision",
+            "v2Desc": "Modèles d'IA avancés pour des résultats réalistes.",
+            "v3Title": "Confidentialité",
+            "v3Desc": "Vos données sont sécurisées et supprimées automatiquement."
+        },
+        "otherSolutions": {
+            "title": "Autres Solutions",
+            "subtitle": "Explorez notre écosystème d'outils alimentés par l'IA conçus pour améliorer la productivité et la créativité.",
+            "discover": "Découvrir",
+            "s1Title": "ChromaRestore AI",
+            "s1Desc": "Redonnez vie aux vieux souvenirs en noir et blanc. Colorisez et animez instantanément des photos vintage avec un réalisme époustouflant.",
+            "s2Title": "StudyGenius",
+            "s2Desc": "Le compagnon d'étude ultime avec IA. Générez des résumés complets, des flashcards et des guides d'étude à partir de n'importe quel texte ou document.",
+            "s3Title": "NanoCreativity",
+            "s3Desc": "Libérez votre imagination. Générez des images haute fidélité à partir de descriptions textuelles avec notre moteur Nano Banana Pro."
+        }
+    }
+}

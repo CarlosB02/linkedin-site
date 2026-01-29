@@ -195,11 +195,10 @@ export default function UploadZone() {
 								<button
 									key={s.id}
 									onClick={() => setStyle(s.id)}
-									className={`relative group overflow-hidden rounded-xl border-2 transition-all text-left ${
-										style === s.id
-											? "border-blue-500 ring-2 ring-blue-200"
-											: "border-gray-200 hover:border-blue-300"
-									}`}
+									className={`relative group overflow-hidden rounded-xl border-2 transition-all text-left ${style === s.id
+										? "border-blue-500 ring-2 ring-blue-200"
+										: "border-gray-200 hover:border-blue-300"
+										}`}
 								>
 									<div className="flex items-center gap-4 p-3">
 										<div className="w-16 h-16 rounded-lg bg-gray-100 overflow-hidden flex-shrink-0">

@@ -23,6 +23,7 @@ import {
 import { authClient } from "@/lib/auth-client";
 import ComparisonSlider from "./ComparisonSlider";
 import LoginModal from "./LoginModal";
+import { useTranslations } from "next-intl";
 
 interface ResultViewProps {
 	resultUrl: string;
@@ -41,6 +42,7 @@ export default function ResultView({
 	initialUnlocked = false,
 	showComparison = true,
 }: ResultViewProps) {
+	const t = useTranslations("ResultView");
 	const { data: session } = authClient.useSession();
 	const [isUnlocked, setIsUnlocked] = useState(initialUnlocked);
 
@@ -58,10 +60,10 @@ export default function ResultView({
 	const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
 
 	const loadingMessages = [
-		"Applying enhancement...",
-		"Refining details...",
-		"Polishing the look...",
-		"Almost there...",
+		t("enhancing"),
+		t("enhancing"), // Reusing for now or could add more keys
+		"...",
+		"...",
 	];
 
 	useEffect(() => {
@@ -179,6 +181,13 @@ export default function ResultView({
 		}
 	};
 
+	const enhancementMap: { [key: string]: string } = {
+		Smile: "smile",
+		"Open Eyes": "openEyes",
+		"Fix Lighting": "fixLighting",
+		Background: "background",
+	};
+
 	return (
 		<div className="w-full max-w-4xl mx-auto p-6">
 			<div className="flex flex-col md:flex-row gap-8">
@@ -189,16 +198,15 @@ export default function ResultView({
 					<img
 						src={currentImage}
 						alt="Generated Headshot"
-						className={`w-full h-full object-cover transition-all duration-500 ${
-							isUnlocked ? "" : "blur-md opacity-80"
-						}`}
+						className={`w-full h-full object-cover transition-all duration-500 ${isUnlocked ? "" : "blur-md opacity-80"
+							}`}
 					/>
 
 					{/* Watermark Overlay */}
 					{!isUnlocked && (
 						<div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
 							<div className="text-white/20 text-6xl font-black rotate-[-45deg] select-none">
-								PREVIEW
+								{t("preview")}
 							</div>
 						</div>
 					)}
@@ -215,11 +223,11 @@ export default function ResultView({
 								{isUnlocking ? (
 									<Loader2 className="w-5 h-5 animate-spin" />
 								) : (
-									"Unlock High Quality"
+									t("unlockButton")
 								)}
 							</button>
 							<p className="text-white mt-2 text-sm font-medium">
-								Cost: 30 Credits
+								{t("cost")}
 							</p>
 							{error && (
 								<p className="text-red-400 mt-2 text-sm font-bold">{error}</p>
@@ -233,16 +241,16 @@ export default function ResultView({
 					<div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
 						<h3 className="text-xl font-bold mb-4 flex items-center gap-2">
 							<Wand2 className="w-5 h-5 text-purple-500" />
-							Enhancements{" "}
+							{t("enhancements")}{" "}
 							<span className="text-xs font-normal text-gray-500 ml-auto">
-								10 credits each
+								{t("creditsEach")}
 							</span>
 						</h3>
 
 						{isEnhancing ? (
 							<div className="w-full py-4">
 								<div className="flex justify-between text-sm mb-2 font-medium text-gray-600">
-									<span>Enhancing...</span>
+									<span>{t("enhancing")}</span>
 									<span>{progress}%</span>
 								</div>
 								<div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden relative">
@@ -271,7 +279,7 @@ export default function ResultView({
 												{item === "Background" ? (
 													<ImageIcon className="w-4 h-4" />
 												) : null}
-												{item}
+												{t(enhancementMap[item])}
 											</button>
 										),
 									)}
@@ -284,14 +292,14 @@ export default function ResultView({
 									className="w-full mt-3 p-3 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors border border-red-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
 								>
 									<Eraser className="w-4 h-4" />
-									Remove Background
+									{t("removeBackground")}
 								</button>
 							</>
 						)}
 					</div>
 
 					<div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
-						<h3 className="text-xl font-bold mb-4">Actions</h3>
+						<h3 className="text-xl font-bold mb-4">{t("actions")}</h3>
 						<div className="flex flex-col gap-3">
 							{isUnlocked ? (
 								<a
@@ -300,7 +308,7 @@ export default function ResultView({
 									className="w-full py-3 bg-green-600 text-white rounded-xl font-bold text-center hover:bg-green-700 flex items-center justify-center gap-2"
 								>
 									<Download className="w-5 h-5" />
-									Download HD
+									{t("downloadHD")}
 								</a>
 							) : (
 								<button
@@ -308,25 +316,24 @@ export default function ResultView({
 									className="w-full py-3 bg-gray-200 text-gray-400 rounded-xl font-bold flex items-center justify-center gap-2 cursor-not-allowed"
 								>
 									<Download className="w-5 h-5" />
-									Download HD (Locked)
+									{t("downloadLocked")}
 								</button>
 							)}
 
 							<button
 								onClick={onReset}
-								className={`w-full py-3 font-medium rounded-xl flex items-center justify-center gap-2 transition-colors ${
-									isUnlocked
-										? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-										: "bg-gray-50 text-gray-400 cursor-not-allowed"
-								}`}
+								className={`w-full py-3 font-medium rounded-xl flex items-center justify-center gap-2 transition-colors ${isUnlocked
+									? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+									: "bg-gray-50 text-gray-400 cursor-not-allowed"
+									}`}
 								disabled={!isUnlocked} // Only allow start over if unlocked (per requirement "Unlock... Start Over")
 							>
 								<RefreshCw className="w-5 h-5" />
-								Start Over
+								{t("startOver")}
 							</button>
 							{!isUnlocked && (
 								<p className="text-xs text-center text-gray-400">
-									Unlock to download or start over
+									{t("unlockToDownload")}
 								</p>
 							)}
 						</div>
@@ -335,19 +342,19 @@ export default function ResultView({
 					<div className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex-1 flex flex-col">
 						<h3 className="text-xl font-bold mb-3 flex items-center gap-2">
 							<MessageSquare className="w-5 h-5 text-orange-500" />
-							Feedback{" "}
+							{t("feedback")}{" "}
 							<span className="text-xs font-normal text-gray-500 ml-auto">
-								Optional
+								{t("optional")}
 							</span>
 						</h3>
 						<div className="flex-1 flex flex-col gap-3">
 							<textarea
 								className="w-full h-full min-h-[80px] p-3 text-sm bg-gray-50 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none"
-								placeholder="How is the result? Let us know..."
+								placeholder={t("placeholder")}
 							/>
 							<button className="w-full py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 font-medium flex items-center justify-center gap-2 transition-colors">
 								<Send className="w-4 h-4" />
-								Send Feedback
+								{t("sendFeedback")}
 							</button>
 						</div>
 					</div>

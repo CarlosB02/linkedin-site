@@ -1,0 +1,223 @@
+{
+    "Header": {
+        "home": "Home",
+        "pricing": "Prezzi",
+        "services": "Servizi",
+        "about": "Chi Siamo",
+        "contacts": "Contatti",
+        "signIn": "Accedi",
+        "signOut": "Esci",
+        "credits": "Crediti"
+    },
+    "Hero": {
+        "badge": "✨ #1 Generatore di Foto LinkedIn",
+        "titlePrefix": "Trasforma il tuo selfie in una",
+        "titleHighlight": "Foto LinkedIn",
+        "subtitle": "Smetti di perdere opportunità a causa di una brutta foto profilo. Ottieni un ritratto professionale in pochi secondi senza uscire di casa."
+    },
+    "Pricing": {
+        "titlePrefix": "Basso Investimento,",
+        "titleHighlight": "Alto Ritorno",
+        "subtitle": "Investi nella tua carriera per meno del prezzo di un pranzo.",
+        "mostPopular": "PIÙ POPOLARE",
+        "coffeeValue": "Valore di 2 caffè",
+        "choose": "Scegli",
+        "corporateTitle": "Pacchetto Aziendale",
+        "corporateQuestion": "Vuoi un pacchetto per la tua azienda?",
+        "corporateDesc": "Contattaci per un pacchetto con prezzo e volume di foto adatto alle tue esigenze.",
+        "contactButton": "Contattaci",
+        "features": {
+            "5_photos": "~ 5 Foto",
+            "improvements": "Miglioramenti inclusi",
+            "all_styles": "Accesso a tutti gli stili",
+            "1_user": "Ideale per 1 utente",
+            "25_photos": "~ 25 Foto",
+            "2_3_users": "Perfetto per 2-3 utenti",
+            "50_photos": "~ 50 Foto",
+            "3_6_users": "Perfetto per 3-6 utenti"
+        }
+    },
+    "Footer": {
+        "description": "Trasforma i tuoi selfie in ritratti professionali con l'IA. Risparmia tempo e denaro migliorando la tua presenza professionale.",
+        "product": "Prodotto",
+        "solutions": "Soluzioni",
+        "testimonials": "Testimonianze",
+        "legal": "Legale",
+        "privacy": "Privacy Policy",
+        "terms": "Termini di Servizio",
+        "rights": "Tutti i diritti riservati."
+    },
+    "BeforeAfter": {
+        "title": "Anche la tua foto migliore può sembrare ancora meglio!",
+        "before": "PRIMA",
+        "after": "DOPO"
+    },
+    "SocialProof": {
+        "title": "Approvato da Professionisti Assunti",
+        "stats": "🚀 L'87% degli utenti ha segnalato più visite al profilo in 24 ore.",
+        "t1_text": "Ho ricevuto 3 offerte di lavoro in una settimana dopo aver aggiornato la mia foto. Il ROI è pazzesco!",
+        "t1_role": "Marketing Manager",
+        "t2_text": "I recruiter hanno iniziato a contattarmi molto più spesso. Sembra così professionale.",
+        "t2_role": "Ingegnere Software",
+        "t3_text": "I miei clienti mi prendono più sul serio ora. I migliori 5€ che abbia mai speso.",
+        "t3_role": "Freelancer"
+    },
+    "UploadZone": {
+        "titlePrefix": "Crea la Tua",
+        "titleHighlight": "Foto Professionale",
+        "uploadTitle": "Carica il tuo selfie",
+        "uploadDesc": "JPG o PNG",
+        "originalPhoto": "Foto Originale",
+        "readyTitle": "Pronto a trasformare?",
+        "readyDesc": "Genereremo un ritratto {style} di alta qualità per te.",
+        "generating": "Generazione...",
+        "button": "Genera Ritratto",
+        "generationFailed": "Generazione fallita. Riprova per favore.",
+        "insufficientCredits": "Crediti insufficienti. Ricarica qui sotto.",
+        "loadingMessages": {
+            "0": "Analisi dei tratti del viso...",
+            "1": "Ottimizzazione illuminazione...",
+            "2": "Prova di diversi outfit...",
+            "3": "Regolazione posa...",
+            "4": "Perfezionamento sorriso...",
+            "5": "Miglioramento risoluzione...",
+            "6": "Finalizzazione della tua foto professionale..."
+        },
+        "styles": {
+            "formal": "Formale",
+            "formalDesc": "Giacca e Cravatta",
+            "smart_casual": "Smart Casual",
+            "smart_casualDesc": "Elegante ma rilassato",
+            "creative": "Creativo",
+            "creativeDesc": "Artistico e Audace"
+        }
+    },
+    "Gallery": {
+        "title": "Le Tue Generazioni Recenti",
+        "viewAll": "Vedi Tutto",
+        "more": "altro",
+        "allGenerations": "Tutte le Generazioni",
+        "editUnlock": "Modifica / Sblocca",
+        "download": "Scarica"
+    },
+    "ResultView": {
+        "preview": "ANTEPRIMA",
+        "unlockButton": "Sblocca Alta Qualità",
+        "cost": "Costo: 30 Crediti",
+        "enhancements": "Miglioramenti",
+        "creditsEach": "10 crediti ciascuno",
+        "enhancing": "Miglioramento...",
+        "removeBackground": "Rimuovi Sfondo",
+        "actions": "Azioni",
+        "downloadHD": "Scarica HD",
+        "downloadLocked": "Scarica HD (Bloccato)",
+        "startOver": "Ricomincia",
+        "unlockToDownload": "Sblocca per scaricare o ricominciare",
+        "feedback": "Feedback",
+        "optional": "Opzionale",
+        "placeholder": "Com'è il risultato? Facci sapere...",
+        "sendFeedback": "Invia Feedback",
+        "smile": "Sorriso",
+        "openEyes": "Apri Occhi",
+        "fixLighting": "Correggi Luce",
+        "background": "Sfondo"
+    },
+    "LoginModal": {
+        "welcomeBack": "Bentornato",
+        "createAccount": "Crea Account",
+        "continueGoogle": "Continua con Google",
+        "orContinueEmail": "O continua con email",
+        "name": "Nome",
+        "email": "Email",
+        "password": "Password",
+        "error": "Si è verificato un errore",
+        "signIn": "Accedi",
+        "signUp": "Iscriviti",
+        "noAccount": "Non hai un account? ",
+        "hasAccount": "Hai già un account? "
+    },
+    "ComparisonSlider": {
+        "title": "Vedi la Differenza",
+        "after": "DOPO",
+        "before": "PRIMA"
+    },
+    "SocialProofNotifications": {
+        "notifications": {
+            "0": {
+                "action": "ha generato una nuova foto",
+                "time": "Proprio ora"
+            },
+            "1": {
+                "action": "ha acquistato il Piano Imprenditore",
+                "time": "2 min fa"
+            },
+            "2": {
+                "action": "ha sbloccato foto in alta qualità",
+                "time": "5 min fa"
+            },
+            "3": {
+                "action": "ha generato 5 stili creativi",
+                "time": "1 min fa"
+            },
+            "4": {
+                "action": "ha migliorato il punteggio del profilo",
+                "time": "Proprio ora"
+            }
+        }
+    },
+    "Contacts": {
+        "title": "Contatta il Supporto",
+        "subtitle": "Siamo qui per aiutarti con qualsiasi domanda o problema.",
+        "emailTitle": "Scrivici una Email",
+        "emailDesc": "Per domande generali, supporto tecnico o opportunità di partnership. Di solito rispondiamo entro 24 ore.",
+        "formTitle": "Inviaci un messaggio",
+        "name": "Nome",
+        "namePlaceholder": "Il tuo nome",
+        "email": "Email",
+        "emailPlaceholder": "tua@email.com",
+        "message": "Messaggio",
+        "messagePlaceholder": "Come possiamo aiutarti?",
+        "send": "Invia Messaggio"
+    },
+    "About": {
+        "hero": {
+            "badge": "Parte del gruppo .gen",
+            "titlePrefix": "Costruire il Futuro con",
+            "titleHighlight": "l'Intelligenza Artificiale",
+            "subtitle": "Produciamo soluzioni digitali all'avanguardia integrate con l'IA."
+        },
+        "mission": {
+            "title": "Guidati dall'Evoluzione",
+            "p1": "In .gen group, la nostra missione va oltre la semplice creazione di siti web. Ci dedichiamo alla creazione di ecosistemi digitali intelligenti che si adattano e crescono.",
+            "p2": "Vogliamo dare il meglio ai nostri clienti integrando gli ultimi progressi nell'Intelligenza Artificiale in prodotti intuitivi e facili da usare. Siamo in costante evoluzione, proprio come la tecnologia che utilizziamo.",
+            "cardTitle": ".GEN",
+            "cardSubtitle": "Intelligenza Integrata"
+        },
+        "product": {
+            "title": "Cos'è LinkedInGen?",
+            "p1": "LinkedInGen è la nostra soluzione specializzata per il branding professionale. Abbiamo notato che molti professionisti di talento perdono opportunità semplicemente perché mancano di una foto profilo di alta qualità.",
+            "p2": "Abbiamo combinato l'IA generativa avanzata con i principi della fotografia professionale per creare uno strumento che trasforma i selfie di tutti i giorni in primi piani da studio in pochi minuti.",
+            "visual": "Visual del Prodotto"
+        },
+        "values": {
+            "title": "Perché sceglierci?",
+            "v1Title": "Utente al Primo Posto",
+            "v1Desc": "Progettato per semplicità e facilità d'uso.",
+            "v2Title": "Precisione",
+            "v2Desc": "Modelli IA avanzati per risultati realistici.",
+            "v3Title": "Privacy",
+            "v3Desc": "I tuoi dati sono sicuri e cancellati automaticamente."
+        },
+        "otherSolutions": {
+            "title": "Altre Soluzioni",
+            "subtitle": "Esplora il nostro ecosistema di strumenti basati sull'IA progettati per migliorare produttività e creatività.",
+            "discover": "Scopri",
+            "s1Title": "ChromaRestore AI",
+            "s1Desc": "Riporta in vita i vecchi ricordi in bianco e nero. Colora e anima istantaneamente le foto vintage con un realismo straordinario.",
+            "s2Title": "StudyGenius",
+            "s2Desc": "Il compagno di studio definitivo con IA. Genera riassunti completi, flashcard e guide allo studio da qualsiasi testo o documento.",
+            "s3Title": "NanoCreativity",
+            "s3Desc": "Scatena la tua immaginazione. Genera immagini ad alta fedeltà da prompt testuali con il nostro motore Nano Banana Pro."
+        }
+    }
+}

@@ -8,24 +8,50 @@ import {
 	Sparkles,
 	User as UserIcon,
 	X,
+	Globe,
 } from "lucide-react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import NextImage from "next/image";
+import { Link, usePathname, useRouter } from "@/i18n/routing";
+import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { getCredits } from "@/app/actions";
 import { authClient } from "@/lib/auth-client";
-import LoginModal from "./LoginModal";
+import { useUI } from "@/lib/ui-context";
 
 export default function Header() {
 	const { data: session } = authClient.useSession();
-	const [isLoginOpen, setIsLoginOpen] = useState(false);
+	const { openLoginModal } = useUI();
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isServicesOpen, setIsServicesOpen] = useState(false);
+	const [isMobileLangOpen, setIsMobileLangOpen] = useState(false);
+	const [isLangOpen, setIsLangOpen] = useState(false);
 	const [credits, setCredits] = useState(0);
 	const [mounted, setMounted] = useState(false);
 	const router = useRouter();
 	const pathname = usePathname();
+	const t = useTranslations("Header");
+	const locale = useLocale();
+
+	const getFlagStyle = (code: string) => {
+		if (code === "en") return "object-cover scale-150";
+		return "object-cover";
+	};
+
+	const languages = [
+		{ code: "en", label: "English", flag: "/images/flags/us.png" },
+		{ code: "pt", label: "Português", flag: "/images/flags/pt.png" },
+		{ code: "es", label: "Español", flag: "/images/flags/es.png" },
+		{ code: "fr", label: "Français", flag: "/images/flags/fr.png" },
+		{ code: "de", label: "Deutsch", flag: "/images/flags/de.png" },
+		{ code: "it", label: "Italiano", flag: "/images/flags/it.png" },
+		{ code: "el", label: "Ελληνικά", flag: "/images/flags/gr.png" },
+	];
+
+	const handleLanguageChange = (newLocale: string) => {
+		router.replace(pathname, { locale: newLocale });
+		setIsLangOpen(false);
+	};
 
 	useEffect(() => {
 		setMounted(true);
@@ -77,19 +103,19 @@ export default function Header() {
 							href="/"
 							className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
 						>
-							Home
+							{t("home")}
 						</Link>
 						<button
 							onClick={handlePricingClick}
 							className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
 						>
-							Pricing
+							{t("pricing")}
 						</button>
 
 						{/* Services Dropdown */}
 						<div className="relative group">
 							<button className="flex items-center gap-1 text-sm font-medium text-gray-600 group-hover:text-blue-600 transition-colors py-2">
-								Services
+								{t("services")}
 								<ChevronDown className="w-4 h-4" />
 							</button>
 							<div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
@@ -112,24 +138,66 @@ export default function Header() {
 							href="/about"
 							className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
 						>
-							About Us
+							{t("about")}
 						</Link>
 						<Link
 							href="/contacts"
 							className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
 						>
-							Contacts
+							{t("contacts")}
 						</Link>
 					</nav>
 
 					<div className="flex items-center gap-4">
+						{/* Language Switcher Desktop */}
+						<div className="hidden md:block relative group">
+							<button
+								onClick={() => setIsLangOpen(!isLangOpen)}
+								className="flex items-center gap-1.5 px-3 py-1.5 text-gray-600 hover:bg-gray-50 rounded-lg transition-colors text-sm font-medium border border-gray-200/50"
+							>
+								<div className="relative w-5 h-5 overflow-hidden rounded-full shrink-0">
+									<NextImage
+										src={languages.find((l) => l.code === locale)?.flag || languages[0].flag}
+										alt={locale}
+										fill
+										className={getFlagStyle(locale)}
+									/>
+								</div>
+								<span className="uppercase">{locale}</span>
+								<ChevronDown className="w-3 h-3 opacity-50" />
+							</button>
+							<div className="absolute top-full right-0 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
+								<div className="bg-white rounded-xl shadow-xl border border-gray-100 p-1 w-48 flex flex-col gap-0.5 overflow-hidden">
+									{languages.map((lang) => (
+										<button
+											key={lang.code}
+											onClick={() => handleLanguageChange(lang.code)}
+											className={`flex items-center gap-3 px-3 py-2 text-sm rounded-lg transition-colors ${locale === lang.code
+												? "bg-blue-50 text-blue-700 font-medium"
+												: "text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+												}`}
+										>
+											<div className="relative w-5 h-5 overflow-hidden rounded-full shrink-0 shadow-sm border border-gray-100">
+												<NextImage
+													src={lang.flag}
+													alt={lang.label}
+													fill
+													className={getFlagStyle(lang.code)}
+												/>
+											</div>
+											{lang.label}
+										</button>
+									))}
+								</div>
+							</div>
+						</div>
 						{/* Auth / Credits Section */}
 						<div className="hidden md:block">
 							{session ? (
 								<div className="flex items-center gap-4">
 									<div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold">
 										<Coins className="w-4 h-4" />
-										{credits} Credits
+										{credits} {t("credits")}
 									</div>
 
 									<div className="flex items-center gap-3 pl-4 border-l border-gray-200">
@@ -155,10 +223,10 @@ export default function Header() {
 								</div>
 							) : (
 								<button
-									onClick={() => setIsLoginOpen(true)}
+									onClick={openLoginModal}
 									className="px-6 py-2 bg-gray-900 text-white rounded-full font-semibold hover:bg-gray-800 transition-colors text-sm"
 								>
-									Sign In
+									{t("signIn")}
 								</button>
 							)}
 						</div>
@@ -237,7 +305,7 @@ export default function Header() {
 										onClick={() => setIsMobileMenuOpen(false)}
 										className="text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
 									>
-										Home
+										{t("home")}
 									</Link>
 
 									<button
@@ -247,7 +315,7 @@ export default function Header() {
 										}}
 										className="text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
 									>
-										Pricing
+										{t("pricing")}
 									</button>
 
 									{/* Mobile Services Accordion */}
@@ -256,7 +324,7 @@ export default function Header() {
 											onClick={() => setIsServicesOpen(!isServicesOpen)}
 											className="flex items-center gap-2 text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
 										>
-											Services
+											{t("services")}
 											<ChevronDown
 												className={`w-5 h-5 transition-transform duration-300 ${isServicesOpen ? "rotate-180" : ""}`}
 											/>
@@ -291,7 +359,7 @@ export default function Header() {
 										onClick={() => setIsMobileMenuOpen(false)}
 										className="text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
 									>
-										About Us
+										{t("about")}
 									</Link>
 
 									<Link
@@ -299,8 +367,57 @@ export default function Header() {
 										onClick={() => setIsMobileMenuOpen(false)}
 										className="text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
 									>
-										Contacts
+										{t("contacts")}
 									</Link>
+
+									{/* Mobile Language Accordion */}
+									<div className="flex flex-col items-center w-full">
+										<button
+											onClick={() => setIsMobileLangOpen(!isMobileLangOpen)}
+											className="flex items-center gap-2 text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
+										>
+											<div className="relative w-6 h-6 overflow-hidden rounded-full shrink-0">
+												<NextImage
+													src={languages.find((l) => l.code === locale)?.flag || languages[0].flag}
+													alt={locale}
+													fill
+													className={getFlagStyle(locale)}
+												/>
+											</div>
+											<span className="uppercase">{locale}</span>
+											<ChevronDown
+												className={`w-5 h-5 transition-transform duration-300 ${isMobileLangOpen ? "rotate-180" : ""}`}
+											/>
+										</button>
+
+										<div
+											className={`flex flex-col gap-4 items-center overflow-hidden transition-all duration-300 ${isMobileLangOpen ? "max-h-96 opacity-100 mt-6" : "max-h-0 opacity-0 mt-0"}`}
+										>
+											{languages.map((lang) => (
+												<button
+													key={lang.code}
+													onClick={() => {
+														handleLanguageChange(lang.code);
+														setIsMobileMenuOpen(false);
+													}}
+													className={`flex items-center gap-3 text-lg font-medium transition-colors ${locale === lang.code
+														? "text-blue-700"
+														: "text-gray-500 hover:text-blue-600"
+														}`}
+												>
+													<div className="relative w-6 h-6 overflow-hidden rounded-full shrink-0 shadow-sm border border-gray-100">
+														<NextImage
+															src={lang.flag}
+															alt={lang.label}
+															fill
+															className={getFlagStyle(lang.code)}
+														/>
+													</div>
+													{lang.label}
+												</button>
+											))}
+										</div>
+									</div>
 								</div>
 
 								{/* Divider */}
@@ -312,7 +429,7 @@ export default function Header() {
 										<>
 											<div className="flex items-center gap-2 text-blue-700 font-bold bg-blue-50 px-8 py-4 rounded-2xl w-full justify-center text-lg">
 												<Coins className="w-6 h-6" />
-												{credits} Credits
+												{credits} {t("credits")}
 											</div>
 											<button
 												onClick={() => {
@@ -321,18 +438,18 @@ export default function Header() {
 												}}
 												className="text-red-500 font-medium flex items-center justify-center gap-2 w-full py-3 hover:bg-red-50 rounded-2xl transition-colors text-lg"
 											>
-												<LogOut className="w-5 h-5" /> Sign Out
+												<LogOut className="w-5 h-5" /> {t("signOut")}
 											</button>
 										</>
 									) : (
 										<button
 											onClick={() => {
-												setIsLoginOpen(true);
+												openLoginModal();
 												setIsMobileMenuOpen(false);
 											}}
 											className="w-full py-4 bg-gray-900 text-white rounded-2xl font-bold text-lg shadow-lg hover:bg-gray-800 hover:scale-[1.02] transition-all"
 										>
-											Sign In
+											{t("signIn")}
 										</button>
 									)}
 								</div>
@@ -341,8 +458,6 @@ export default function Header() {
 					</div>,
 					document.body,
 				)}
-
-			<LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
 		</>
 	);
 }

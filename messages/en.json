@@ -1,0 +1,223 @@
+{
+    "Header": {
+        "home": "Home",
+        "pricing": "Pricing",
+        "services": "Services",
+        "about": "About Us",
+        "contacts": "Contacts",
+        "signIn": "Sign In",
+        "signOut": "Sign Out",
+        "credits": "Credits"
+    },
+    "Hero": {
+        "badge": "✨ #1 LinkedIn Photo Generator",
+        "titlePrefix": "Turn your selfie into a",
+        "titleHighlight": "LinkedIn Photo",
+        "subtitle": "Stop losing opportunities because of a bad profile picture. Get a studio-quality headshot in seconds without leaving your house."
+    },
+    "Pricing": {
+        "titlePrefix": "Low Investment,",
+        "titleHighlight": "High Returns",
+        "subtitle": "Invest in your career for less than the price of lunch.",
+        "mostPopular": "MOST POPULAR",
+        "coffeeValue": "Valor de 2 cafés",
+        "choose": "Choose",
+        "corporateTitle": "Corporate Pack",
+        "corporateQuestion": "Quer um pack para a sua empresa?",
+        "corporateDesc": "Contacte-nos para um pacote com um preço e volume de fotos ajustado às suas necessidades.",
+        "contactButton": "Contact Us",
+        "features": {
+            "5_photos": "~ 5 Photos",
+            "improvements": "Improvements included",
+            "all_styles": "Access to all styles",
+            "1_user": "Ideal for 1 user",
+            "25_photos": "~ 25 Photos",
+            "2_3_users": "Perfect for 2-3 users",
+            "50_photos": "~ 50 Photos",
+            "3_6_users": "Perfect for 3-6 users"
+        }
+    },
+    "Footer": {
+        "description": "Turn your selfies into professional headshots with AI. Save time and money while boosting your professional presence.",
+        "product": "Product",
+        "solutions": "Solutions",
+        "testimonials": "Testimonials",
+        "legal": "Legal",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service",
+        "rights": "All rights reserved."
+    },
+    "BeforeAfter": {
+        "title": "Even your best photo can look even better!",
+        "before": "BEFORE",
+        "after": "AFTER"
+    },
+    "SocialProof": {
+        "title": "Trusted by Professionals Who Got Hired",
+        "stats": "🚀 87% of users reported getting more profile views within 24 hours.",
+        "t1_text": "I got 3 job offers within a week of updating my profile photo. The ROI is insane!",
+        "t1_role": "Marketing Manager",
+        "t2_text": "Recruiters started reaching out to me way more often. It looks so professional.",
+        "t2_role": "Software Engineer",
+        "t3_text": "My clients take me more seriously now. Best 5€ I ever spent.",
+        "t3_role": "Freelancer"
+    },
+    "UploadZone": {
+        "titlePrefix": "Create Your",
+        "titleHighlight": "Professional Photo",
+        "uploadTitle": "Upload your selfie",
+        "uploadDesc": "JPG or PNG",
+        "originalPhoto": "Original Photo",
+        "readyTitle": "Ready to transform?",
+        "readyDesc": "We'll generate a high-quality {style} headshot for you.",
+        "generating": "Generating...",
+        "button": "Generate Headshot",
+        "generationFailed": "Generation failed. Please try again.",
+        "insufficientCredits": "Insufficient credits. Please top up below.",
+        "loadingMessages": {
+            "0": "Analyzing facial features...",
+            "1": "Optimizing lighting...",
+            "2": "Trying on different outfits...",
+            "3": "Adjusting pose...",
+            "4": "Perfecting smile...",
+            "5": "Enhancing resolution...",
+            "6": "Finalizing your professional photo..."
+        },
+        "styles": {
+            "formal": "Formal",
+            "formalDesc": "Suit & Tie",
+            "smart_casual": "Smart Casual",
+            "smart_casualDesc": "Polished but relaxed",
+            "creative": "Creative",
+            "creativeDesc": "Artistic & Bold"
+        }
+    },
+    "Gallery": {
+        "title": "Your Recent Generations",
+        "viewAll": "View All",
+        "more": "more",
+        "allGenerations": "All Generations",
+        "editUnlock": "Edit / Unlock",
+        "download": "Download"
+    },
+    "ResultView": {
+        "preview": "PREVIEW",
+        "unlockButton": "Unlock High Quality",
+        "cost": "Cost: 30 Credits",
+        "enhancements": "Enhancements",
+        "creditsEach": "10 credits each",
+        "enhancing": "Enhancing...",
+        "removeBackground": "Remove Background",
+        "actions": "Actions",
+        "downloadHD": "Download HD",
+        "downloadLocked": "Download HD (Locked)",
+        "startOver": "Start Over",
+        "unlockToDownload": "Unlock to download or start over",
+        "feedback": "Feedback",
+        "optional": "Optional",
+        "placeholder": "How is the result? Let us know...",
+        "sendFeedback": "Send Feedback",
+        "smile": "Smile",
+        "openEyes": "Open Eyes",
+        "fixLighting": "Fix Lighting",
+        "background": "Background"
+    },
+    "LoginModal": {
+        "welcomeBack": "Welcome Back",
+        "createAccount": "Create Account",
+        "continueGoogle": "Continue with Google",
+        "orContinueEmail": "Or continue with email",
+        "name": "Name",
+        "email": "Email",
+        "password": "Password",
+        "error": "An error occurred",
+        "signIn": "Sign In",
+        "signUp": "Sign up",
+        "noAccount": "Don't have an account? ",
+        "hasAccount": "Already have an account? "
+    },
+    "ComparisonSlider": {
+        "title": "See the Difference",
+        "after": "AFTER",
+        "before": "BEFORE"
+    },
+    "SocialProofNotifications": {
+        "notifications": {
+            "0": {
+                "action": "generated a new headshot",
+                "time": "Just now"
+            },
+            "1": {
+                "action": "purchased the Entrepreneur Plan",
+                "time": "2 mins ago"
+            },
+            "2": {
+                "action": "unlocked high quality photos",
+                "time": "5 mins ago"
+            },
+            "3": {
+                "action": "generated 5 creative styles",
+                "time": "1 min ago"
+            },
+            "4": {
+                "action": "improved her profile score",
+                "time": "Just now"
+            }
+        }
+    },
+    "Contacts": {
+        "title": "Contact Support",
+        "subtitle": "We're here to help with any questions or issues.",
+        "emailTitle": "Email Us",
+        "emailDesc": "For general inquiries, technical support, or partnership opportunities. We usually respond within 24 hours.",
+        "formTitle": "Send us a message",
+        "name": "Name",
+        "namePlaceholder": "Your name",
+        "email": "Email",
+        "emailPlaceholder": "your@email.com",
+        "message": "Message",
+        "messagePlaceholder": "How can we help?",
+        "send": "Send Message"
+    },
+    "About": {
+        "hero": {
+            "badge": "Part of .gen group",
+            "titlePrefix": "Building the Future with",
+            "titleHighlight": "Artificial Intelligence",
+            "subtitle": "We produce cutting-edge digital solutions integrated with AI."
+        },
+        "mission": {
+            "title": "Driven by Evolution",
+            "p1": "At .gen group, our mission goes beyond just building websites. We are dedicated to creating intelligent digital ecosystems that adapt and grow.",
+            "p2": "We want to give the best to our clients by integrating the latest advancements in Artificial Intelligence into intuitive, user-friendly products. We are in constant evolution, just like the technology we use.",
+            "cardTitle": ".GEN",
+            "cardSubtitle": "Intelligence Integrated"
+        },
+        "product": {
+            "title": "What is LinkedInGen?",
+            "p1": "LinkedInGen is our specialized solution for professional branding. We noticed that many talented professionals miss opportunities simply because they lack a high-quality profile photo.",
+            "p2": "We combined advanced generative AI with professional photography principles to create a tool that turns everyday selfies into studio-grade headshots in minutes.",
+            "visual": "Product Visual"
+        },
+        "values": {
+            "title": "Why choose us?",
+            "v1Title": "User First",
+            "v1Desc": "Designed for simplicity and ease of use.",
+            "v2Title": "Precision",
+            "v2Desc": "Advanced AI models for realistic results.",
+            "v3Title": "Privacy",
+            "v3Desc": "Your data is secure and automatically deleted."
+        },
+        "otherSolutions": {
+            "title": "Our Other Solutions",
+            "subtitle": "Explore our ecosystem of AI-powered tools designed to enhance productivity and creativity.",
+            "discover": "Discover",
+            "s1Title": "ChromaRestore AI",
+            "s1Desc": "Bring old black & white memories back to life. Instantly colorize and animate vintage photos with stunning realism.",
+            "s2Title": "StudyGenius",
+            "s2Desc": "The ultimate AI study companion. Generate comprehensive summaries, flashcards, and study guides from any text or document.",
+            "s3Title": "NanoCreativity",
+            "s3Desc": "Unleash your imagination. Generate high-fidelity images from text prompts with our Nano Banana Pro engine."
+        }
+    }
+}

@@ -2,8 +2,10 @@
 
 import { MoveHorizontal } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function BeforeAfterSection() {
+	const t = useTranslations("BeforeAfter");
 	const [isResizing, setIsResizing] = useState(false);
 	const [position, setPosition] = useState(50);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -44,8 +46,8 @@ export default function BeforeAfterSection() {
 	return (
 		<section className="pt-6 pb-20">
 			<div className="container mx-auto px-6 text-center">
-				<h2 className="text-[1.875rem] font-bold text-gray-900 mb-12">
-					Até a tua melhor foto pode ficar ainda melhor!
+				<h2 className="text-2xl font-bold text-gray-900 mb-12">
+					{t("title")}
 				</h2>
 
 				<div className="w-full max-w-4xl mx-auto">
@@ -63,7 +65,7 @@ export default function BeforeAfterSection() {
 							}}
 						/>
 						<div className="absolute top-4 right-4 bg-blue-600 px-3 py-1 rounded-full text-sm font-bold text-white z-20">
-							AFTER
+							{t("after")}
 						</div>
 
 						{/* Before Image (Clipped) - Casual/Messy Woman */}
@@ -75,7 +77,7 @@ export default function BeforeAfterSection() {
 							}}
 						>
 							<div className="absolute top-4 left-4 bg-red-500 px-3 py-1 rounded-full text-sm font-bold text-white z-20">
-								BEFORE
+								{t("before")}
 							</div>
 						</div>
 

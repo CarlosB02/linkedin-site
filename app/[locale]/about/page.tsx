@@ -12,8 +12,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import BackgroundGrid from "@/components/BackgroundGrid";
+import { useTranslations } from "next-intl";
 
 export default function AboutPage() {
+	const t = useTranslations("About");
 	const fadeIn = {
 		hidden: { opacity: 0, y: 20 },
 		visible: { opacity: 1, y: 0 },
@@ -35,14 +37,14 @@ export default function AboutPage() {
 						transition={{ duration: 0.6 }}
 					>
 						<div className="inline-block px-4 py-1.5 mb-6 rounded-full bg-blue-100 text-blue-700 font-bold text-sm tracking-wide uppercase">
-							Part of .gen group
+							{t("hero.badge")}
 						</div>
 						<h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-							Building the Future with{" "}
-							<span className="text-blue-600">Artificial Intelligence</span>
+							{t("hero.titlePrefix")}{" "}
+							<span className="text-blue-600">{t("hero.titleHighlight")}</span>
 						</h1>
 						<p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-							We produce cutting-edge digital solutions integrated with AI.
+							{t("hero.subtitle")}
 						</p>
 					</motion.div>
 				</div>
@@ -60,18 +62,13 @@ export default function AboutPage() {
 							transition={{ duration: 0.8 }}
 						>
 							<h2 className="text-3xl font-bold mb-6 text-gray-900">
-								Driven by Evolution
+								{t("mission.title")}
 							</h2>
 							<p className="text-gray-600 text-lg mb-6 leading-relaxed">
-								At <strong>.gen group</strong>, our mission goes beyond just
-								building websites. We are dedicated to creating intelligent
-								digital ecosystems that adapt and grow.
+								{t("mission.p1")}
 							</p>
 							<p className="text-gray-600 text-lg mb-6 leading-relaxed">
-								We want to give the best to our clients by integrating the
-								latest advancements in Artificial Intelligence into intuitive,
-								user-friendly products. We are in constant evolution, just like
-								the technology we use.
+								{t("mission.p2")}
 							</p>
 						</motion.div>
 
@@ -94,11 +91,11 @@ export default function AboutPage() {
 								></div>
 								<div className="relative z-10 w-full h-full border border-white/10 rounded-2xl flex flex-col items-center justify-center gap-6 p-6 backdrop-blur-sm bg-white/5">
 									<div className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-										.GEN
+										{t("mission.cardTitle")}
 									</div>
 									<div className="w-full h-1 bg-gradient-to-r from-blue-500/0 via-blue-500 to-blue-500/0"></div>
 									<div className="text-gray-400 text-sm tracking-widest uppercase font-bold">
-										Intelligence Integrated
+										{t("mission.cardSubtitle")}
 									</div>
 								</div>
 							</div>
@@ -114,25 +111,20 @@ export default function AboutPage() {
 							transition={{ duration: 0.8 }}
 						>
 							<h2 className="text-3xl font-bold mb-6 text-gray-900">
-								What is LinkedInGen?
+								{t("product.title")}
 							</h2>
 							<p className="text-gray-600 text-lg mb-4 leading-relaxed">
-								LinkedInGen is our specialized solution for professional
-								branding. We noticed that many talented professionals miss
-								opportunities simply because they lack a high-quality profile
-								photo.
+								{t("product.p1")}
 							</p>
 							<p className="text-gray-600 text-lg leading-relaxed">
-								We combined advanced generative AI with professional photography
-								principles to create a tool that turns everyday selfies into
-								studio-grade headshots in minutes.
+								{t("product.p2")}
 							</p>
 						</motion.div>
 						<div className="order-first md:order-last">
 							{/* Placeholder for LinkedInGen UI visual or similar */}
 							<div className="bg-white rounded-3xl shadow-xl p-6 rotate-2 hover:rotate-0 transition-transform duration-500 border border-blue-100">
 								<div className="bg-gray-100 rounded-2xl h-64 w-full flex items-center justify-center text-gray-400 font-bold">
-									Product Visual
+									{t("product.visual")}
 								</div>
 							</div>
 						</div>
@@ -144,25 +136,25 @@ export default function AboutPage() {
 			<section className="py-20 px-6">
 				<div className="max-w-6xl mx-auto">
 					<div className="text-center mb-16">
-						<h2 className="text-3xl font-bold text-gray-900">Why choose us?</h2>
+						<h2 className="text-3xl font-bold text-gray-900">{t("values.title")}</h2>
 					</div>
 
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 						{[
 							{
 								icon: Users,
-								title: "User First",
-								desc: "Designed for simplicity and ease of use.",
+								title: t("values.v1Title"),
+								desc: t("values.v1Desc"),
 							},
 							{
 								icon: Target,
-								title: "Precision",
-								desc: "Advanced AI models for realistic results.",
+								title: t("values.v2Title"),
+								desc: t("values.v2Desc"),
 							},
 							{
 								icon: ShieldCheck,
-								title: "Privacy",
-								desc: "Your data is secure and automatically deleted.",
+								title: t("values.v3Title"),
+								desc: t("values.v3Desc"),
 							},
 						].map((item, idx) => (
 							<motion.div
@@ -212,11 +204,10 @@ export default function AboutPage() {
 				<div className="max-w-6xl mx-auto relative z-10">
 					<div className="text-center mb-16">
 						<h2 className="text-3xl md:text-5xl font-bold mb-6">
-							Our Other Solutions
+							{t("otherSolutions.title")}
 						</h2>
 						<p className="text-blue-200 text-xl max-w-2xl mx-auto">
-							Explore our ecosystem of AI-powered tools designed to enhance
-							productivity and creativity.
+							{t("otherSolutions.subtitle")}
 						</p>
 					</div>
 
@@ -226,13 +217,12 @@ export default function AboutPage() {
 							<div className="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-500 group-hover:text-white transition-colors">
 								<ImageIcon className="w-7 h-7" />
 							</div>
-							<h3 className="text-xl font-bold mb-3">ChromaRestore AI</h3>
+							<h3 className="text-xl font-bold mb-3">{t("otherSolutions.s1Title")}</h3>
 							<p className="text-gray-400 mb-6 leading-relaxed">
-								Bring old black & white memories back to life. Instantly
-								colorize and animate vintage photos with stunning realism.
+								{t("otherSolutions.s1Desc")}
 							</p>
 							<div className="flex items-center text-blue-400 font-bold text-sm group-hover:gap-2 transition-all">
-								Discover <ArrowRight className="w-4 h-4 ml-1" />
+								{t("otherSolutions.discover")} <ArrowRight className="w-4 h-4 ml-1" />
 							</div>
 						</div>
 
@@ -241,14 +231,12 @@ export default function AboutPage() {
 							<div className="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-500 group-hover:text-white transition-colors">
 								<BookOpen className="w-7 h-7" />
 							</div>
-							<h3 className="text-xl font-bold mb-3">StudyGenius</h3>
+							<h3 className="text-xl font-bold mb-3">{t("otherSolutions.s2Title")}</h3>
 							<p className="text-gray-400 mb-6 leading-relaxed">
-								The ultimate AI study companion. Generate comprehensive
-								summaries, flashcards, and study guides from any text or
-								document.
+								{t("otherSolutions.s2Desc")}
 							</p>
 							<div className="flex items-center text-purple-400 font-bold text-sm group-hover:gap-2 transition-all">
-								Discover <ArrowRight className="w-4 h-4 ml-1" />
+								{t("otherSolutions.discover")} <ArrowRight className="w-4 h-4 ml-1" />
 							</div>
 						</div>
 
@@ -257,13 +245,12 @@ export default function AboutPage() {
 							<div className="w-14 h-14 bg-yellow-500/20 text-yellow-400 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-yellow-500 group-hover:text-white transition-colors">
 								<Zap className="w-7 h-7" />
 							</div>
-							<h3 className="text-xl font-bold mb-3">NanoCreativity</h3>
+							<h3 className="text-xl font-bold mb-3">{t("otherSolutions.s3Title")}</h3>
 							<p className="text-gray-400 mb-6 leading-relaxed">
-								Unleash your imagination. Generate high-fidelity images from
-								text prompts with our Nano Banana Pro engine.
+								{t("otherSolutions.s3Desc")}
 							</p>
 							<div className="flex items-center text-yellow-400 font-bold text-sm group-hover:gap-2 transition-all">
-								Discover <ArrowRight className="w-4 h-4 ml-1" />
+								{t("otherSolutions.discover")} <ArrowRight className="w-4 h-4 ml-1" />
 							</div>
 						</div>
 					</div>
