@@ -3,6 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
 
 export const auth = betterAuth({
+	secret: process.env.BETTER_AUTH_SECRET || "fallback_secret_for_build",
 	database: prismaAdapter(prisma, {
 		provider: "sqlite",
 	}),
