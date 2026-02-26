@@ -10,11 +10,15 @@ import {
 	getCredits,
 } from "@/app/actions";
 import { authClient } from "@/lib/auth-client";
+import { useTranslations } from "next-intl";
 import LoginModal from "./LoginModal";
 import ResultView from "./ResultView";
+import { useGenerations } from "@/lib/generationContext";
 
 export default function UploadZone() {
 	const { data: session } = authClient.useSession();
+	const { addGeneration } = useGenerations();
+	const t = useTranslations("UploadZone");
 	const [file, setFile] = useState<File | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [style, setStyle] = useState("formal");
@@ -35,13 +39,13 @@ export default function UploadZone() {
 	}, [session]);
 
 	const loadingMessages = [
-		"Analyzing facial features...",
-		"Optimizing lighting...",
-		"Trying on different outfits...",
-		"Adjusting pose...",
-		"Perfecting smile...",
-		"Enhancing resolution...",
-		"Finalizing your professional photo...",
+		t("loadingMessages.0"),
+		t("loadingMessages.1"),
+		t("loadingMessages.2"),
+		t("loadingMessages.3"),
+		t("loadingMessages.4"),
+		t("loadingMessages.5"),
+		t("loadingMessages.6"),
 	];
 
 	const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
@@ -87,7 +91,7 @@ export default function UploadZone() {
 				document
 					.getElementById("pricing")
 					?.scrollIntoView({ behavior: "smooth" });
-				setError("Insufficient credits. Please top up below.");
+				setError(t("insufficientCredits"));
 				return;
 			}
 		}
@@ -118,12 +122,18 @@ export default function UploadZone() {
 						status.output as string,
 					);
 					setResult({ id: final.generationId, image: final.blurredImage });
+					// PERSISTENT STORAGE: immediately commit to gallery context
+					addGeneration({
+						id: final.generationId,
+						image: final.blurredImage,
+						unlocked: false,
+					});
 
 					setIsUploading(false);
 					setProgress(100);
 				} else if (status.status === "failed") {
 					clearInterval(interval);
-					setError("Generation failed. Please try again.");
+					setError(t("generationFailed"));
 					setIsUploading(false);
 				} else {
 					setProgress((prev) => Math.min(prev + 10, 80));
@@ -131,7 +141,7 @@ export default function UploadZone() {
 			}, 2000);
 		} catch (e: any) {
 			console.error(e);
-			setError(e.message || "Something went wrong.");
+			setError(e.message || t("generationFailed"));
 			setIsUploading(false);
 		}
 	};
@@ -153,20 +163,20 @@ export default function UploadZone() {
 	const styles = [
 		{
 			id: "formal",
-			label: "Formal",
-			desc: "Suit & Tie",
+			label: t("styles.formal"),
+			desc: t("styles.formalDesc"),
 			img: "/images/styles/formal.png",
 		},
 		{
 			id: "smart-casual",
-			label: "Smart Casual",
-			desc: "Polished but relaxed",
+			label: t("styles.smart_casual"),
+			desc: t("styles.smart_casualDesc"),
 			img: "/images/styles/smart-casual.jpg",
 		},
 		{
 			id: "creative",
-			label: "Creative",
-			desc: "Artistic & Bold",
+			label: t("styles.creative"),
+			desc: t("styles.creativeDesc"),
 			img: "/images/styles/creative.png",
 		},
 	];
@@ -183,9 +193,9 @@ export default function UploadZone() {
 
 					<div className="relative bg-white rounded-3xl p-8 shadow-2xl">
 						<h2 className="text-2xl font-bold text-center mb-8 text-gray-800">
-							Create Your{" "}
+							{t("titlePrefix")}{" "}
 							<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">
-								Professional Photo
+								{t("titleHighlight")}
 							</span>
 						</h2>
 
@@ -241,13 +251,35 @@ export default function UploadZone() {
 											className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
 											accept="image/*"
 										/>
-										<div className="bg-blue-100 p-4 rounded-full mb-4">
-											<Upload className="w-8 h-8 text-blue-600" />
+										<style>
+											{`
+												@keyframes pulseShadow {
+													0%, 100% { box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
+													50% { box-shadow: 0 0 25px rgba(59, 130, 246, 0.8); }
+												}
+												@keyframes pulseScale {
+													0%, 100% { transform: scale(1); }
+													50% { transform: scale(1.15); }
+												}
+												@keyframes customGlow {
+													0%, 100% { opacity: 0.3; transform: scale(1); }
+													50% { opacity: 0.7; transform: scale(1.1); }
+												}
+											`}
+										</style>
+										<div className="relative mb-6 flex items-center justify-center">
+											{/* Outer glowing blinking background */}
+											<div className="absolute inset-[-15px] bg-blue-400 rounded-full blur-xl" style={{ animation: "customGlow 2.5s ease-in-out infinite" }}></div>
+
+											{/* Icon container with shadow pulse and scale pulse */}
+											<div className="relative bg-blue-100 p-4 rounded-full border border-blue-200 flex items-center justify-center" style={{ animation: "pulseShadow 2.5s ease-in-out infinite, pulseScale 2.5s ease-in-out infinite" }}>
+												<Upload className="w-8 h-8 text-blue-600 drop-shadow-md" style={{ animation: "pulseScale 2.5s ease-in-out infinite" }} />
+											</div>
 										</div>
 										<p className="text-lg font-bold text-gray-700">
-											Upload your selfie
+											{t("uploadTitle")}
 										</p>
-										<p className="text-sm text-gray-500 mt-2">JPG or PNG</p>
+										<p className="text-sm text-gray-500 mt-2">{t("uploadDesc")}</p>
 									</div>
 								) : (
 									<div className="relative rounded-2xl overflow-hidden shadow-lg border border-gray-200 group h-full">
@@ -263,7 +295,7 @@ export default function UploadZone() {
 											<X className="w-5 h-5" />
 										</button>
 										<div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-2 text-center text-sm backdrop-blur-sm">
-											Original Photo
+											{t("originalPhoto")}
 										</div>
 									</div>
 								)}
@@ -297,19 +329,17 @@ export default function UploadZone() {
 									>
 										<div className="text-center mb-6">
 											<h3 className="text-xl font-bold text-gray-800 mb-2">
-												Ready to transform?
+												{t("readyTitle")}
 											</h3>
 											<p className="text-gray-500 text-sm">
-												We'll generate a high-quality{" "}
-												{styles.find((s) => s.id === style)?.label} headshot for
-												you.
+												{t("readyDesc", { style: styles.find((s) => s.id === style)?.label ?? "" })}
 											</p>
 										</div>
 
 										{isUploading ? (
 											<div className="w-full">
 												<div className="flex justify-between text-sm mb-2 font-medium text-gray-600">
-													<span>Generating...</span>
+													<span>{t("generating")}</span>
 													<span>{progress}%</span>
 												</div>
 												<div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden relative">
@@ -332,7 +362,7 @@ export default function UploadZone() {
 												<div className="absolute inset-0 bg-white/20 group-hover:translate-x-full transition-transform duration-700 skew-x-12 -translate-x-full"></div>
 												<div className="flex items-center justify-center gap-2 relative z-10">
 													<Sparkles className="w-5 h-5 animate-pulse" />
-													Generate Headshot
+													{t("button")}
 												</div>
 											</button>
 										)}

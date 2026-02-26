@@ -7,11 +7,13 @@ import { getUserGenerations } from "@/app/actions";
 import { authClient } from "@/lib/auth-client";
 import ResultView from "./ResultView";
 import { useTranslations } from "next-intl";
+import { useGenerations } from "@/lib/generationContext";
 
 export default function Gallery() {
 	const t = useTranslations("Gallery");
 	const { data: session } = authClient.useSession();
-	const [generations, setGenerations] = useState<any[]>([]);
+	const { recentGenerations } = useGenerations();
+	const [dbGenerations, setDbGenerations] = useState<any[]>([]);
 	const [isAllGenerationsOpen, setIsAllGenerationsOpen] = useState(false);
 	const [editingGeneration, setEditingGeneration] = useState<any | null>(null);
 	const [mounted, setMounted] = useState(false);
@@ -19,9 +21,17 @@ export default function Gallery() {
 	useEffect(() => {
 		setMounted(true);
 		if (session) {
-			getUserGenerations().then(setGenerations);
+			getUserGenerations().then(setDbGenerations);
 		}
 	}, [session]);
+
+	// STATE MANAGEMENT: merge in-session context entries (always newest first)
+	// with DB-fetched entries, deduplicating by ID.
+	const seenIds = new Set(recentGenerations.map((g) => g.id));
+	const generations = [
+		...recentGenerations,
+		...dbGenerations.filter((g) => !seenIds.has(g.id)),
+	];
 
 	// Scroll lock effect
 	useEffect(() => {

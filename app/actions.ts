@@ -10,6 +10,7 @@ import { stripe } from "@/lib/stripe";
 export async function enhanceImage(
 	generationId: string,
 	type: string,
+	currentImageBase64?: string,
 ): Promise<{ predictionId: string }> {
 	const session = await auth.api.getSession({
 		headers: await headers(),
@@ -63,13 +64,18 @@ export async function enhanceImage(
 
 	const fullPrompt = `${promptModification}, ${generation.prompt || "Professional LinkedIn headshot"}`;
 
+	// Use higher strength for dramatic changes like background removal
+	const strength = ["Background", "Remove Background"].includes(type) ? 0.85 : 0.65;
+
+	console.log(`[enhanceImage] type: ${type}, generationId: ${generationId}, usingCurrentImage: ${!!currentImageBase64}, strength: ${strength}`);
+
 	const prediction = await replicate.predictions.create({
-		version: "google/nano-banana", // Using the same model as requested
+		version: "google/nano-banana",
 		model: "google/nano-banana",
 		input: {
 			prompt: fullPrompt,
-			image_input: [generation.originalImage], // Pass existing image for img2img
-			strength: 0.65, // Adjust strength to keep identity but apply changes. 1.0 = full replacement, 0.0 = no change.
+			image_input: [currentImageBase64 ?? generation.originalImage!],
+			strength: strength,
 			output_format: "jpg",
 		},
 	});
@@ -92,13 +98,29 @@ export async function finalizeEnhancement(
 	const prediction = await replicate.predictions.get(predictionId);
 
 	if (prediction.status !== "succeeded" || !prediction.output) {
+		console.error(`[finalizeEnhancement] Prediction failed. status=${prediction.status}, output=`, prediction.output);
 		throw new Error("Prediction failed or incomplete");
 	}
 
-	const outputUrl = prediction.output[0] || prediction.output; // Handle array or string output
+	// Handle different output formats: could be a string URL, an array of URLs, or an object
+	let outputUrl: string;
+	if (typeof prediction.output === "string") {
+		outputUrl = prediction.output;
+	} else if (Array.isArray(prediction.output) && prediction.output.length > 0) {
+		outputUrl = prediction.output[0];
+	} else {
+		console.error(`[finalizeEnhancement] Unexpected output format:`, prediction.output);
+		throw new Error("Unexpected output format from model");
+	}
+
+	console.log(`[finalizeEnhancement] outputUrl: ${outputUrl.substring(0, 80)}...`);
 
 	// Fetch and process new image
 	const response = await fetch(outputUrl);
+	if (!response.ok) {
+		console.error(`[finalizeEnhancement] fetch failed: ${response.status} ${response.statusText}`);
+		throw new Error(`Failed to fetch enhanced image: ${response.status}`);
+	}
 	const arrayBuffer = await response.arrayBuffer();
 	const buffer = Buffer.from(arrayBuffer);
 	const base64 = `data:image/jpeg;base64,${buffer.toString("base64")}`;

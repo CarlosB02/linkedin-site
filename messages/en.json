@@ -20,11 +20,13 @@
         "titleHighlight": "High Returns",
         "subtitle": "Invest in your career for less than the price of lunch.",
         "mostPopular": "MOST POPULAR",
-        "coffeeValue": "Valor de 2 cafés",
+        "coffeeValue": "Price of 2 coffees",
+        "credits": "Credits",
+        "bonusCredits": "Bonus Credits",
         "choose": "Choose",
         "corporateTitle": "Corporate Pack",
-        "corporateQuestion": "Quer um pack para a sua empresa?",
-        "corporateDesc": "Contacte-nos para um pacote com um preço e volume de fotos ajustado às suas necessidades.",
+        "corporateQuestion": "Want a pack for your company?",
+        "corporateDesc": "Contact us for a package with a price and volume of photos adjusted to your needs.",
         "contactButton": "Contact Us",
         "features": {
             "5_photos": "~ 5 Photos",
@@ -35,17 +37,32 @@
             "2_3_users": "Perfect for 2-3 users",
             "50_photos": "~ 50 Photos",
             "3_6_users": "Perfect for 3-6 users"
+        },
+        "packages": {
+            "entrepreneur": {
+                "credits": "200 Credits",
+                "bonus": null
+            },
+            "startup": {
+                "credits": "750 Credits",
+                "bonus": "+50 Bonus Credits"
+            },
+            "networking": {
+                "credits": "1600 Credits",
+                "bonus": "+100 Bonus Credits"
+            }
         }
     },
     "Footer": {
         "description": "Turn your selfies into professional headshots with AI. Save time and money while boosting your professional presence.",
         "product": "Product",
-        "solutions": "Solutions",
-        "testimonials": "Testimonials",
+        "uploadPhoto": "Upload Photo",
+        "otherProducts": "Other Products",
         "legal": "Legal",
         "privacy": "Privacy Policy",
         "terms": "Terms of Service",
-        "rights": "All rights reserved."
+        "contacts": "Contacts",
+        "rights": "All rights reserved. | Designed by"
     },
     "BeforeAfter": {
         "title": "Even your best photo can look even better!",
@@ -59,7 +76,7 @@
         "t1_role": "Marketing Manager",
         "t2_text": "Recruiters started reaching out to me way more often. It looks so professional.",
         "t2_role": "Software Engineer",
-        "t3_text": "My clients take me more seriously now. Best 5€ I ever spent.",
+        "t3_text": "My clients take me more seriously now. Best 6€ I ever spent.",
         "t3_role": "Freelancer"
     },
     "UploadZone": {
@@ -97,7 +114,7 @@
         "viewAll": "View All",
         "more": "more",
         "allGenerations": "All Generations",
-        "editUnlock": "Edit / Unlock",
+        "editUnlock": "Edit",
         "download": "Download"
     },
     "ResultView": {
@@ -144,24 +161,44 @@
     "SocialProofNotifications": {
         "notifications": {
             "0": {
-                "action": "generated a new headshot",
+                "action": "just generated 1 formal style photo",
                 "time": "Just now"
             },
             "1": {
                 "action": "purchased the Entrepreneur Plan",
-                "time": "2 mins ago"
-            },
-            "2": {
-                "action": "unlocked high quality photos",
-                "time": "5 mins ago"
-            },
-            "3": {
-                "action": "generated 5 creative styles",
                 "time": "1 min ago"
             },
+            "2": {
+                "action": "downloaded 1 HD photo",
+                "time": "3 min ago"
+            },
+            "3": {
+                "action": "purchased the Startup Plan",
+                "time": "7 min ago"
+            },
             "4": {
-                "action": "improved her profile score",
+                "action": "generated 5 new elegant formal style photos",
+                "time": "4 min ago"
+            },
+            "5": {
+                "action": "purchased the Networking Plan",
+                "time": "2 min ago"
+            },
+            "6": {
+                "action": "generated 5 new creative style photos",
+                "time": "10 min ago"
+            },
+            "7": {
+                "action": "edited their profile picture",
                 "time": "Just now"
+            },
+            "8": {
+                "action": "purchased the Entrepreneur Plan",
+                "time": "15 min ago"
+            },
+            "9": {
+                "action": "created their first photo",
+                "time": "6 min ago"
             }
         }
     },
@@ -177,25 +214,28 @@
         "emailPlaceholder": "your@email.com",
         "message": "Message",
         "messagePlaceholder": "How can we help?",
-        "send": "Send Message"
+        "send": "Send Message",
+        "sending": "Sending...",
+        "successMsg": "Message sent successfully!",
+        "errorMsg": "An error occurred. Please try again."
     },
     "About": {
         "hero": {
-            "badge": "Part of .gen group",
+            "badge": "THE POLLY EXPERIENCE",
             "titlePrefix": "Building the Future with",
             "titleHighlight": "Artificial Intelligence",
             "subtitle": "We produce cutting-edge digital solutions integrated with AI."
         },
         "mission": {
             "title": "Driven by Evolution",
-            "p1": "At .gen group, our mission goes beyond just building websites. We are dedicated to creating intelligent digital ecosystems that adapt and grow.",
-            "p2": "We want to give the best to our clients by integrating the latest advancements in Artificial Intelligence into intuitive, user-friendly products. We are in constant evolution, just like the technology we use.",
+            "p1": "Elevate your image with a professional photography service that combines premium quality with a simple and intuitive booking process. Whether you are looking for a photo shoot for your personal portfolio, social media, or corporate profile, we connect you with the best professional photographer to capture your essence with the ideal dress code — from formal to smart casual.",
+            "p2": "Our commitment is total transparency: we offer results of excellence through a flexible bonus credit system and a highly affordable investment, comparable to the price of 2 coffees. Ensure your personal brand stands out with clarity, style, and maximum professionalism, regardless of the language or country you are in.",
             "cardTitle": ".GEN",
             "cardSubtitle": "Intelligence Integrated"
         },
         "product": {
-            "title": "What is LinkedInGen?",
-            "p1": "LinkedInGen is our specialized solution for professional branding. We noticed that many talented professionals miss opportunities simply because they lack a high-quality profile photo.",
+            "title": "What is Polly?",
+            "p1": "Polly is our specialized solution for professional branding. We noticed that many talented professionals miss opportunities simply because they lack a high-quality profile photo.",
             "p2": "We combined advanced generative AI with professional photography principles to create a tool that turns everyday selfies into studio-grade headshots in minutes.",
             "visual": "Product Visual"
         },
@@ -212,6 +252,7 @@
             "title": "Our Other Solutions",
             "subtitle": "Explore our ecosystem of AI-powered tools designed to enhance productivity and creativity.",
             "discover": "Discover",
+            "comingSoon": "Coming Soon...",
             "s1Title": "ChromaRestore AI",
             "s1Desc": "Bring old black & white memories back to life. Instantly colorize and animate vintage photos with stunning realism.",
             "s2Title": "StudyGenius",
@@ -219,5 +260,33 @@
             "s3Title": "NanoCreativity",
             "s3Desc": "Unleash your imagination. Generate high-fidelity images from text prompts with our Nano Banana Pro engine."
         }
+    },
+    "Privacy": {
+        "title": "Privacy Policy",
+        "lastUpdated": "Last updated",
+        "s1Title": "1. Introduction",
+        "s1Text": "Welcome to Polly. We respect your privacy and are committed to protecting your personal data.",
+        "s2Title": "2. Data We Collect",
+        "s2Text": "We collect images you upload for the purpose of generating professional headshots. We also collect authentication data if you sign in.",
+        "s3Title": "3. How We Use Your Data",
+        "s3Text": "Your uploaded images are used solely for the generation process and are deleted shortly after processing. We do not use your photos for training public AI models without your consent.",
+        "s4Title": "4. Data Security",
+        "s4Text": "We implement appropriate security measures to protect your personal information.",
+        "s5Title": "5. Contact Us",
+        "s5Text": "If you have any questions about this Privacy Policy, please contact us at support@polly.com."
+    },
+    "Terms": {
+        "title": "Terms of Service",
+        "lastUpdated": "Last updated",
+        "s1Title": "1. Acceptance of Terms",
+        "s1Text": "By accessing and using Polly, you accept and agree to be bound by the terms and provision of this agreement.",
+        "s2Title": "2. Description of Service",
+        "s2Text": "Polly provides AI-generated professional headshots based on user-uploaded photos.",
+        "s3Title": "3. User Conduct",
+        "s3Text": "You agree to upload only photos that you have the right to use. You agree not to use the service for any illegal or unauthorized purpose.",
+        "s4Title": "4. Refunds",
+        "s4Text": "Due to the nature of digital goods and the costs associated with AI generation, refunds are generally not provided unless there is a technical failure.",
+        "s5Title": "5. Changes to Terms",
+        "s5Text": "We reserve the right to update these terms at any time."
     }
 }

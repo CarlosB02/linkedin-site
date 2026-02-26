@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import {
 	ArrowRight,
 	BookOpen,
+	Clock,
 	Image as ImageIcon,
 	ShieldCheck,
 	Target,
@@ -13,6 +14,7 @@ import {
 import Link from "next/link";
 import BackgroundGrid from "@/components/BackgroundGrid";
 import { useTranslations } from "next-intl";
+import NextImage from "next/image";
 
 export default function AboutPage() {
 	const t = useTranslations("About");
@@ -50,7 +52,7 @@ export default function AboutPage() {
 				</div>
 			</section>
 
-			{/* Mission & What is LinkedInGen Section */}
+			{/* Mission & What is Polly Section */}
 			<section className="py-12 px-6">
 				<div className="max-w-5xl mx-auto space-y-24">
 					{/* Mission */}
@@ -77,7 +79,7 @@ export default function AboutPage() {
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.8 }}
-							className="relative"
+							className="hidden md:block relative"
 						>
 							{/* Abstract Tech Visualization */}
 							<div className="aspect-square rounded-3xl overflow-hidden bg-gradient-to-tr from-gray-900 to-gray-800 p-8 flex items-center justify-center relative shadow-2xl">
@@ -102,7 +104,7 @@ export default function AboutPage() {
 						</motion.div>
 					</div>
 
-					{/* What is LinkedInGen */}
+					{/* What is Polly */}
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center md:flex-row-reverse">
 						<motion.div
 							initial={{ opacity: 0, x: 50 }}
@@ -120,13 +122,22 @@ export default function AboutPage() {
 								{t("product.p2")}
 							</p>
 						</motion.div>
-						<div className="order-first md:order-last">
-							{/* Placeholder for LinkedInGen UI visual or similar */}
-							<div className="bg-white rounded-3xl shadow-xl p-6 rotate-2 hover:rotate-0 transition-transform duration-500 border border-blue-100">
-								<div className="bg-gray-100 rounded-2xl h-64 w-full flex items-center justify-center text-gray-400 font-bold">
-									{t("product.visual")}
-								</div>
-							</div>
+						<div className="order-first md:order-last flex items-center justify-center">
+							<motion.div
+								initial={{ opacity: 0, scale: 0.9 }}
+								whileInView={{ opacity: 1, scale: 1 }}
+								viewport={{ once: true }}
+								transition={{ duration: 0.8 }}
+								className="relative w-full max-w-sm"
+							>
+								<NextImage
+									src="/polly-logo.png"
+									alt="Polly"
+									width={400}
+									height={133}
+									className="w-full h-auto drop-shadow-2xl"
+								/>
+							</motion.div>
 						</div>
 					</div>
 				</div>
@@ -135,9 +146,15 @@ export default function AboutPage() {
 			{/* Values Section (Restored) */}
 			<section className="py-20 px-6">
 				<div className="max-w-6xl mx-auto">
-					<div className="text-center mb-16">
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+						className="text-center mb-16"
+					>
 						<h2 className="text-3xl font-bold text-gray-900">{t("values.title")}</h2>
-					</div>
+					</motion.div>
 
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 						{[
@@ -177,7 +194,7 @@ export default function AboutPage() {
 			</section>
 
 			{/* Our Other Solutions */}
-			<section className="py-24 px-6 bg-[#0f172a] relative overflow-hidden text-white">
+			<section id="outros-servicos" className="py-24 px-6 bg-[#0f172a] relative overflow-hidden text-white">
 				{/* Background Lines */}
 				<div className="absolute inset-0 opacity-10 pointer-events-none">
 					<svg
@@ -202,57 +219,84 @@ export default function AboutPage() {
 				</div>
 
 				<div className="max-w-6xl mx-auto relative z-10">
-					<div className="text-center mb-16">
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+						className="text-center mb-16"
+					>
 						<h2 className="text-3xl md:text-5xl font-bold mb-6">
 							{t("otherSolutions.title")}
 						</h2>
 						<p className="text-blue-200 text-xl max-w-2xl mx-auto">
 							{t("otherSolutions.subtitle")}
 						</p>
-					</div>
+					</motion.div>
 
 					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 						{/* Solution 1: Image Restoration */}
-						<div className="group bg-gray-800/50 border border-gray-700/50 rounded-3xl p-8 hover:bg-gray-800/80 transition-all hover:-translate-y-2 hover:shadow-2xl hover:border-blue-500/30 cursor-pointer">
-							<div className="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-500 group-hover:text-white transition-colors">
+						<motion.div
+							initial={{ opacity: 0, y: 30 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.5, delay: 0.1 }}
+							className="group bg-gray-800/50 border border-gray-700/50 rounded-3xl p-8 transition-all"
+						>
+							<div className="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center mb-6">
 								<ImageIcon className="w-7 h-7" />
 							</div>
 							<h3 className="text-xl font-bold mb-3">{t("otherSolutions.s1Title")}</h3>
 							<p className="text-gray-400 mb-6 leading-relaxed">
 								{t("otherSolutions.s1Desc")}
 							</p>
-							<div className="flex items-center text-blue-400 font-bold text-sm group-hover:gap-2 transition-all">
-								{t("otherSolutions.discover")} <ArrowRight className="w-4 h-4 ml-1" />
-							</div>
-						</div>
+							<span className="flex items-center gap-1.5 whitespace-nowrap text-gray-400 font-semibold text-xs bg-gray-700/60 px-3 py-1.5 rounded-full w-fit">
+								<Clock className="w-3.5 h-3.5 flex-shrink-0" />
+								{t("otherSolutions.comingSoon")}
+							</span>
+						</motion.div>
 
 						{/* Solution 2: Study Assistant */}
-						<div className="group bg-gray-800/50 border border-gray-700/50 rounded-3xl p-8 hover:bg-gray-800/80 transition-all hover:-translate-y-2 hover:shadow-2xl hover:border-purple-500/30 cursor-pointer">
-							<div className="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-purple-500 group-hover:text-white transition-colors">
+						<motion.div
+							initial={{ opacity: 0, y: 30 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.5, delay: 0.2 }}
+							className="group bg-gray-800/50 border border-gray-700/50 rounded-3xl p-8 transition-all"
+						>
+							<div className="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center mb-6">
 								<BookOpen className="w-7 h-7" />
 							</div>
 							<h3 className="text-xl font-bold mb-3">{t("otherSolutions.s2Title")}</h3>
 							<p className="text-gray-400 mb-6 leading-relaxed">
 								{t("otherSolutions.s2Desc")}
 							</p>
-							<div className="flex items-center text-purple-400 font-bold text-sm group-hover:gap-2 transition-all">
-								{t("otherSolutions.discover")} <ArrowRight className="w-4 h-4 ml-1" />
-							</div>
-						</div>
+							<span className="flex items-center gap-1.5 whitespace-nowrap text-gray-400 font-semibold text-xs bg-gray-700/60 px-3 py-1.5 rounded-full w-fit">
+								<Clock className="w-3.5 h-3.5 flex-shrink-0" />
+								{t("otherSolutions.comingSoon")}
+							</span>
+						</motion.div>
 
 						{/* Solution 3: Image Creation */}
-						<div className="group bg-gray-800/50 border border-gray-700/50 rounded-3xl p-8 hover:bg-gray-800/80 transition-all hover:-translate-y-2 hover:shadow-2xl hover:border-yellow-500/30 cursor-pointer">
-							<div className="w-14 h-14 bg-yellow-500/20 text-yellow-400 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-yellow-500 group-hover:text-white transition-colors">
+						<motion.div
+							initial={{ opacity: 0, y: 30 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.5, delay: 0.3 }}
+							className="group bg-gray-800/50 border border-gray-700/50 rounded-3xl p-8 transition-all"
+						>
+							<div className="w-14 h-14 bg-yellow-500/20 text-yellow-400 rounded-2xl flex items-center justify-center mb-6">
 								<Zap className="w-7 h-7" />
 							</div>
 							<h3 className="text-xl font-bold mb-3">{t("otherSolutions.s3Title")}</h3>
 							<p className="text-gray-400 mb-6 leading-relaxed">
 								{t("otherSolutions.s3Desc")}
 							</p>
-							<div className="flex items-center text-yellow-400 font-bold text-sm group-hover:gap-2 transition-all">
-								{t("otherSolutions.discover")} <ArrowRight className="w-4 h-4 ml-1" />
-							</div>
-						</div>
+							<span className="flex items-center gap-1.5 whitespace-nowrap text-gray-400 font-semibold text-xs bg-gray-700/60 px-3 py-1.5 rounded-full w-fit">
+								<Clock className="w-3.5 h-3.5 flex-shrink-0" />
+								{t("otherSolutions.comingSoon")}
+							</span>
+						</motion.div>
 					</div>
 				</div>
 			</section>

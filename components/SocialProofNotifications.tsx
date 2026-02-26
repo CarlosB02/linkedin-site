@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { useUI } from "@/lib/ui-context";
 
@@ -11,38 +11,38 @@ export default function SocialProofNotifications() {
 	const [index, setIndex] = useState(0);
 	const { isLoginModalOpen } = useUI();
 
-	const notifications = [
-		{
-			name: "Maria S.",
-			action: t("notifications.0.action"),
-			time: t("notifications.0.time"),
-			img: "https://i.pravatar.cc/150?u=1",
-		},
-		{
-			name: "João P.",
-			action: t("notifications.1.action"),
-			time: t("notifications.1.time"),
-			img: "https://i.pravatar.cc/150?u=2",
-		},
-		{
-			name: "Sarah L.",
-			action: t("notifications.2.action"),
-			time: t("notifications.2.time"),
-			img: "https://i.pravatar.cc/150?u=3",
-		},
-		{
-			name: "Carlos M.",
-			action: t("notifications.3.action"),
-			time: t("notifications.3.time"),
-			img: "https://i.pravatar.cc/150?u=4",
-		},
-		{
-			name: "Ana R.",
-			action: t("notifications.4.action"),
-			time: t("notifications.4.time"),
-			img: "https://i.pravatar.cc/150?u=5",
-		},
-	];
+	const notifications = useMemo(() => {
+		const userList = [
+			{ name: "Maria S.", g: "female" }, { name: "João P.", g: "male" },
+			{ name: "Sarah L.", g: "female" }, { name: "Carlos M.", g: "male" },
+			{ name: "Ana R.", g: "female" }, { name: "Lucas B.", g: "male" },
+			{ name: "Elena G.", g: "female" }, { name: "Marc D.", g: "male" },
+			{ name: "Giulia T.", g: "female" }, { name: "Hans W.", g: "male" },
+			{ name: "Sofia K.", g: "female" }, { name: "Dimitris P.", g: "male" },
+			{ name: "Isabella F.", g: "female" }, { name: "Mateo R.", g: "male" },
+			{ name: "Chloe M.", g: "female" }, { name: "Lars N.", g: "male" },
+			{ name: "Antonio C.", g: "male" }, { name: "Beatrice V.", g: "female" },
+			{ name: "Nikolas A.", g: "male" }, { name: "Carmen L.", g: "female" },
+			{ name: "Thomas B.", g: "male" }, { name: "Inês F.", g: "female" },
+			{ name: "Diego S.", g: "male" }, { name: "Clara H.", g: "female" },
+			{ name: "Miguel V.", g: "male" }
+		];
+
+		const shuffledUsers = [...userList].sort(() => Math.random() - 0.5);
+
+		return shuffledUsers.map((user, i) => {
+			// Usar um ID aleatório entre 0 e 70 para garantir maior variedade de avatares
+			const randomAvatarId = Math.floor(Math.random() * 70);
+			return {
+				name: user.name,
+				action: t(
+					`notifications.${Math.floor(Math.random() * 5)}.action` as any
+				),
+				time: `${Math.floor(Math.random() * 10) + 1}m`,
+				img: `https://xsgames.co/randomusers/assets/avatars/${user.g}/${randomAvatarId}.jpg`,
+			};
+		});
+	}, [t]);
 
 	useEffect(() => {
 		let timeoutId: NodeJS.Timeout;

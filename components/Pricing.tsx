@@ -6,6 +6,7 @@ import { buyCredits } from "@/app/actions";
 import { authClient } from "@/lib/auth-client";
 import { useUI } from "@/lib/ui-context";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 export default function Pricing() {
 	const t = useTranslations("Pricing");
@@ -94,8 +95,8 @@ export default function Pricing() {
 			id: "entrepreneur",
 			name: "Entrepreneur",
 			price: "2€",
-			credits: "200 Credits",
-			bonus: null,
+			credits: t("packages.entrepreneur.credits"),
+			bonus: null as string | null,
 			features: [
 				t("features.5_photos"),
 				t("features.improvements"),
@@ -111,8 +112,8 @@ export default function Pricing() {
 			id: "startup",
 			name: "Startup",
 			price: "6€",
-			credits: "750 Credits",
-			bonus: "+50 Credits Bonus",
+			credits: t("packages.startup.credits"),
+			bonus: t("packages.startup.bonus"),
 			features: [
 				t("features.25_photos"),
 				t("features.improvements"),
@@ -128,8 +129,8 @@ export default function Pricing() {
 			id: "networking",
 			name: "Networking",
 			price: "15€",
-			credits: "1600 Credits",
-			bonus: "+100 Credits Bonus",
+			credits: t("packages.networking.credits"),
+			bonus: t("packages.networking.bonus"),
 			features: [
 				t("features.50_photos"),
 				t("features.improvements"),
@@ -351,13 +352,13 @@ export default function Pricing() {
 										{t("corporateDesc")}
 									</p>
 								</div>
-								<a
+								<Link
 									href="/contacts"
 									className="px-8 py-4 bg-white text-gray-900 rounded-xl font-bold hover:bg-gray-100 transition-colors flex items-center gap-2 whitespace-nowrap"
 								>
 									{t("contactButton")}
 									<ArrowRight className="w-5 h-5" />
-								</a>
+								</Link>
 							</div>
 						</div>
 					</div>

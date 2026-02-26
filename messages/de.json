@@ -21,6 +21,8 @@
         "subtitle": "Investieren Sie in Ihre Karriere für weniger als den Preis eines Mittagessens.",
         "mostPopular": "BELIEBTESTE",
         "coffeeValue": "Wert von 2 Kaffees",
+        "credits": "Credits",
+        "bonusCredits": "Bonus-Credits",
         "choose": "Wählen",
         "corporateTitle": "Unternehmenspaket",
         "corporateQuestion": "Möchten Sie ein Paket für Ihr Unternehmen?",
@@ -35,17 +37,32 @@
             "2_3_users": "Perfekt für 2-3 Nutzer",
             "50_photos": "~ 50 Fotos",
             "3_6_users": "Perfekt für 3-6 Nutzer"
+        },
+        "packages": {
+            "entrepreneur": {
+                "credits": "200 Credits",
+                "bonus": null
+            },
+            "startup": {
+                "credits": "750 Credits",
+                "bonus": "+50 Bonus-Credits"
+            },
+            "networking": {
+                "credits": "1600 Credits",
+                "bonus": "+100 Bonus-Credits"
+            }
         }
     },
     "Footer": {
         "description": "Verwandeln Sie Ihre Selfies in professionelle Porträts mit KI. Sparen Sie Zeit und Geld und verbessern Sie Ihre professionelle Präsenz.",
         "product": "Produkt",
-        "solutions": "Lösungen",
-        "testimonials": "Erfahrungsberichte",
+        "uploadPhoto": "Foto Hochladen",
+        "otherProducts": "Andere Produkte",
         "legal": "Rechtliches",
         "privacy": "Datenschutzrichtlinie",
         "terms": "Nutzungsbedingungen",
-        "rights": "Alle Rechte vorbehalten."
+        "contacts": "Kontakt",
+        "rights": "Alle Rechte vorbehalten. | Entworfen von"
     },
     "BeforeAfter": {
         "title": "Selbst Ihr bestes Foto kann noch besser aussehen!",
@@ -59,7 +76,7 @@
         "t1_role": "Marketing Manager",
         "t2_text": "Recruiter haben mich viel öfter kontaktiert. Es sieht so professionell aus.",
         "t2_role": "Software-Ingenieur",
-        "t3_text": "Meine Kunden nehmen mich jetzt ernster. Die besten 5€, die ich je ausgegeben habe.",
+        "t3_text": "Meine Kunden nehmen mich jetzt ernster. Die besten 6€, die ich je ausgegeben habe.",
         "t3_role": "Freelancer"
     },
     "UploadZone": {
@@ -86,7 +103,7 @@
         "styles": {
             "formal": "Formell",
             "formalDesc": "Anzug & Krawatte",
-            "smart_casual": "Smart Casual",
+            "smart_casual": "Sportlich-Elegant",
             "smart_casualDesc": "Elegant aber entspannt",
             "creative": "Kreativ",
             "creativeDesc": "Künstlerisch & Mutig"
@@ -97,7 +114,7 @@
         "viewAll": "Alle Anzeigen",
         "more": "mehr",
         "allGenerations": "Alle Generierungen",
-        "editUnlock": "Bearbeiten / Freischalten",
+        "editUnlock": "Bearbeiten",
         "download": "Herunterladen"
     },
     "ResultView": {
@@ -144,24 +161,44 @@
     "SocialProofNotifications": {
         "notifications": {
             "0": {
-                "action": "hat ein neues Profilbild erstellt",
+                "action": "hat gerade 1 Foto im formellen Stil erstellt",
                 "time": "Gerade eben"
             },
             "1": {
-                "action": "hat den Unternehmer-Plan gekauft",
-                "time": "vor 2 Min"
+                "action": "hat den Entrepreneur-Plan erworben",
+                "time": "vor 1 Min."
             },
             "2": {
-                "action": "hat HD-Fotos freigeschaltet",
-                "time": "vor 5 Min"
+                "action": "hat 1 Foto in HD heruntergeladen",
+                "time": "vor 3 Min."
             },
             "3": {
-                "action": "hat 5 kreative Stile erstellt",
-                "time": "vor 1 Min"
+                "action": "hat den Startup-Plan erworben",
+                "time": "vor 7 Min."
             },
             "4": {
-                "action": "hat den Profil-Score verbessert",
+                "action": "hat 5 neue Fotos im eleganten formellen Stil erstellt",
+                "time": "vor 4 Min."
+            },
+            "5": {
+                "action": "hat den Networking-Plan erworben",
+                "time": "vor 2 Min."
+            },
+            "6": {
+                "action": "hat 5 neue Fotos im kreativen Stil erstellt",
+                "time": "vor 10 Min."
+            },
+            "7": {
+                "action": "hat sein Profilbild bearbeitet",
                 "time": "Gerade eben"
+            },
+            "8": {
+                "action": "hat den Entrepreneur-Plan erworben",
+                "time": "vor 15 Min."
+            },
+            "9": {
+                "action": "hat sein erstes Foto erstellt",
+                "time": "vor 6 Min."
             }
         }
     },
@@ -177,25 +214,28 @@
         "emailPlaceholder": "ihre@email.com",
         "message": "Nachricht",
         "messagePlaceholder": "Wie können wir helfen?",
-        "send": "Nachricht Senden"
+        "send": "Nachricht Senden",
+        "sending": "Wird gesendet...",
+        "successMsg": "Nachricht erfolgreich gesendet!",
+        "errorMsg": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
     },
     "About": {
         "hero": {
-            "badge": "Teil der .gen Gruppe",
+            "badge": "DIE POLLY ERFAHRUNG",
             "titlePrefix": "Die Zukunft bauen mit",
             "titleHighlight": "Künstlicher Intelligenz",
             "subtitle": "Wir produzieren modernste digitale Lösungen, die in KI integriert sind."
         },
         "mission": {
             "title": "Angetrieben von Evolution",
-            "p1": "Bei der .gen Gruppe geht unsere Mission über das reine Erstellen von Websites hinaus. Wir widmen uns der Schaffung intelligenter digitaler Ökosysteme, die sich anpassen und wachsen.",
-            "p2": "Wir wollen unseren Kunden das Beste bieten, indem wir die neuesten Fortschritte in der Künstlichen Intelligenz in intuitive, benutzerfreundliche Produkte integrieren. Wir befinden uns in ständiger Entwicklung, genau wie die Technologie, die wir verwenden.",
+            "p1": "Werten Sie Ihr Image mit einer professionellen Fotografie-Dienstleistung auf, die Premium-Qualität mit einem einfachen und intuitiven Buchungsprozess verbindet. Egal, ob Sie ein Fotoshooting für Ihr persönliches Portfolio, soziale Medien oder ein Unternehmensprofil suchen – wir verbinden Sie mit dem besten professionellen Fotografen, um Ihr Wesen im idealen Dresscode einzufangen, von formell bis sportlich-elegant.",
+            "p2": "Unser Engagement ist volle Transparenz: Wir bieten Ergebnisse der Excellence durch ein flexibles Bonus-Kredit-System und eine hochaffable Investition, vergleichbar mit dem Preis von 2 Kaffees. Stellen Sie sicher, dass Ihre persönliche Marke mit Klärheit, Stil und Maximum Professionalität hervorgeht, unabhängig von der Sprache oder dem Land, in dem Sie sich aufhalten.",
             "cardTitle": ".GEN",
             "cardSubtitle": "Integrierte Intelligenz"
         },
         "product": {
-            "title": "Was ist LinkedInGen?",
-            "p1": "LinkedInGen ist unsere spezialisierte Lösung für professionelles Branding. Wir haben bemerkt, dass viele talentierte Fachleute Chancen verpassen, nur weil ihnen ein hochwertiges Profilfoto fehlt.",
+            "title": "Was ist Polly?",
+            "p1": "Polly ist unsere spezialisierte Lösung für professionelles Branding. Wir haben bemerkt, dass viele talentierte Fachleute Chancen verpassen, nur weil ihnen ein hochwertiges Profilfoto fehlt.",
             "p2": "Wir haben fortschrittliche generative KI mit Prinzipien der professionellen Fotografie kombiniert, um ein Werkzeug zu schaffen, das alltägliche Selfies in wenigen Minuten in Studio-Porträts verwandelt.",
             "visual": "Produktvisualisierung"
         },
@@ -212,6 +252,7 @@
             "title": "Andere Lösungen",
             "subtitle": "Entdecken Sie unser Ökosystem von KI-gestützten Tools, die entwickelt wurden, um Produktivität und Kreativität zu steigern.",
             "discover": "Entdecken",
+            "comingSoon": "Demnächst...",
             "s1Title": "ChromaRestore AI",
             "s1Desc": "Erwecken Sie alte Schwarz-Weiß-Erinnerungen wieder zum Leben. Färben und animieren Sie Vintage-Fotos sofort mit atemberaubendem Realismus.",
             "s2Title": "StudyGenius",
@@ -219,5 +260,33 @@
             "s3Title": "NanoCreativity",
             "s3Desc": "Entfesseln Sie Ihre Fantasie. Erstellen Sie High-Fidelity-Bilder aus Textaufforderungen mit unserer Nano Banana Pro-Engine."
         }
+    },
+    "Privacy": {
+        "title": "Datenschutzrichtlinie",
+        "lastUpdated": "Letzte Aktualisierung",
+        "s1Title": "1. Einführung",
+        "s1Text": "Willkommen bei Polly. Wir respektieren Ihre Privatsphäre und sind bestrebt, Ihre persönlichen Daten zu schützen.",
+        "s2Title": "2. Daten, die wir erheben",
+        "s2Text": "Wir erheben die Bilder, die Sie hochladen, um professionelle Porträts zu erstellen. Wir erheben auch Authentifizierungsdaten, wenn Sie sich anmelden.",
+        "s3Title": "3. Wie wir Ihre Daten verwenden",
+        "s3Text": "Ihre hochgeladenen Bilder werden ausschließlich für den Generierungsprozess verwendet und kurz nach der Verarbeitung gelöscht. Wir verwenden Ihre Fotos nicht zum Training öffentlicher KI-Modelle ohne Ihre Zustimmung.",
+        "s4Title": "4. Datensicherheit",
+        "s4Text": "Wir setzen angemessene Sicherheitsmaßnahmen ein, um Ihre persönlichen Informationen zu schützen.",
+        "s5Title": "5. Kontaktieren Sie uns",
+        "s5Text": "Wenn Sie Fragen zu dieser Datenschutzrichtlinie haben, kontaktieren Sie uns unter support@polly.com."
+    },
+    "Terms": {
+        "title": "Nutzungsbedingungen",
+        "lastUpdated": "Letzte Aktualisierung",
+        "s1Title": "1. Annahme der Bedingungen",
+        "s1Text": "Durch den Zugriff auf und die Nutzung von Polly akzeptieren Sie die Bedingungen und Bestimmungen dieser Vereinbarung.",
+        "s2Title": "2. Beschreibung des Dienstes",
+        "s2Text": "Polly bietet KI-generierte professionelle Porträts basierend auf vom Benutzer hochgeladenen Fotos.",
+        "s3Title": "3. Nutzerverhalten",
+        "s3Text": "Sie stimmen zu, nur Fotos hochzuladen, für die Sie das Nutzungsrecht besitzen. Sie stimmen zu, den Dienst nicht für illegale oder unbefugte Zwecke zu nutzen.",
+        "s4Title": "4. Rückerstattungen",
+        "s4Text": "Aufgrund der Natur digitaler Güter und der mit der KI-Generierung verbundenen Kosten werden Rückerstattungen im Allgemeinen nicht gewährt, es sei denn, es liegt ein technischer Fehler vor.",
+        "s5Title": "5. Änderungen der Bedingungen",
+        "s5Text": "Wir behalten uns das Recht vor, diese Bedingungen jederzeit zu aktualisieren."
     }
 }

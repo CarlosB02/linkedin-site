@@ -1,4 +1,6 @@
-import Link from "next/link";
+"use client";
+
+import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 export default function Footer() {
@@ -10,9 +12,9 @@ export default function Footer() {
 				<div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
 					{/* Column 1: Logo & Description */}
 					<div>
-						<a href="/" className="block text-2xl font-bold text-white mb-4">
-							LinkedIn<span className="text-blue-500">Gen</span>
-						</a>
+						<Link href="/" className="block mb-4">
+							<img src="/polly-logo.png" alt="Polly" className="h-10 w-auto" />
+						</Link>
 						<p className="text-sm leading-relaxed max-w-xs">
 							{t("description")}
 						</p>
@@ -26,10 +28,18 @@ export default function Footer() {
 						<ul className="space-y-3 text-sm">
 							<li>
 								<Link
-									href="/#solutions"
+									href="/#upload-zone"
 									className="hover:text-blue-400 transition-colors"
 								>
-									{t("solutions")}
+									{t("uploadPhoto")}
+								</Link>
+							</li>
+							<li>
+								<Link
+									href="/about#otherSolutions"
+									className="hover:text-blue-400 transition-colors"
+								>
+									{t("otherProducts")}
 								</Link>
 							</li>
 							<li>
@@ -38,14 +48,6 @@ export default function Footer() {
 									className="hover:text-blue-400 transition-colors"
 								>
 									Pricing
-								</Link>
-							</li>
-							<li>
-								<Link
-									href="/#testimonials"
-									className="hover:text-blue-400 transition-colors"
-								>
-									{t("testimonials")}
 								</Link>
 							</li>
 						</ul>
@@ -78,7 +80,7 @@ export default function Footer() {
 									href="/contacts"
 									className="hover:text-blue-400 transition-colors"
 								>
-									Contacts
+									{t("contacts")}
 								</Link>
 							</li>
 						</ul>
@@ -87,7 +89,15 @@ export default function Footer() {
 
 				<div className="pt-8 border-t border-gray-800 text-sm text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4">
 					<div>
-						© {new Date().getFullYear()} LinkedInGen. {t("rights")}
+						© {new Date().getFullYear()} Polly. {t("rights")}{" "}
+						<a
+							href="https://enimble.pt"
+							target="_blank"
+							rel="noopener noreferrer"
+							style={{ color: '#60a5fa', fontWeight: 'bold', textDecoration: 'none' }}
+						>
+							E-Nimble
+						</a>
 					</div>
 					<div className="flex gap-4">{/* Social icons could go here */}</div>
 				</div>

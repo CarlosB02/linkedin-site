@@ -13,7 +13,7 @@ import {
 	Sparkles,
 	Wand2,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
 	checkGenerationStatus,
 	enhanceImage,
@@ -24,6 +24,7 @@ import { authClient } from "@/lib/auth-client";
 import ComparisonSlider from "./ComparisonSlider";
 import LoginModal from "./LoginModal";
 import { useTranslations } from "next-intl";
+import { useGenerations } from "@/lib/generationContext";
 
 interface ResultViewProps {
 	resultUrl: string;
@@ -43,7 +44,9 @@ export default function ResultView({
 	showComparison = true,
 }: ResultViewProps) {
 	const t = useTranslations("ResultView");
+	const tContacts = useTranslations("Contacts");
 	const { data: session } = authClient.useSession();
+	const { addGeneration, updateGeneration } = useGenerations();
 	const [isUnlocked, setIsUnlocked] = useState(initialUnlocked);
 
 	useEffect(() => {
@@ -54,10 +57,17 @@ export default function ResultView({
 	const [isUnlocking, setIsUnlocking] = useState(false);
 	const [currentImage, setCurrentImage] = useState(resultUrl);
 	const [currentGenerationId, setCurrentGenerationId] = useState(generationId);
+
+	// Recursive pipeline: always points to the most-recently generated image.
+	// Updated after every successful enhancement so the next edit builds on it.
+	const lastGeneratedImageRef = useRef<string>(resultUrl);
 	const [error, setError] = useState<string | null>(null);
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
 	const [progress, setProgress] = useState(0);
 	const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
+
+	const [feedbackText, setFeedbackText] = useState("");
+	const [feedbackStatus, setFeedbackStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
 	const loadingMessages = [
 		t("enhancing"),
@@ -99,7 +109,13 @@ export default function ResultView({
 			const { originalImage } = await unlockImage(currentGenerationId);
 			if (originalImage) {
 				setCurrentImage(originalImage);
+				lastGeneratedImageRef.current = originalImage;
 				setIsUnlocked(true);
+				// Update gallery to show the unlocked (full-res) image
+				updateGeneration(currentGenerationId, {
+					image: originalImage,
+					unlocked: true,
+				});
 			}
 		} catch (e: any) {
 			if (e.message && e.message.includes("User not found")) {
@@ -122,8 +138,7 @@ export default function ResultView({
 
 		const credits = (session.user as any).credits || 0;
 		if (credits < 10) {
-			alert("Insufficient credits for enhancement (10 credits required)."); // Keeping this alert or could show a nice toast/modal. User hated the 'success' alert.
-			// Better to scroll to pricing if low credits
+			alert("Insufficient credits for enhancement (10 credits required).");
 			document
 				.getElementById("pricing")
 				?.scrollIntoView({ behavior: "smooth" });
@@ -134,7 +149,16 @@ export default function ResultView({
 		setProgress(10);
 
 		try {
-			const { predictionId } = await enhanceImage(currentGenerationId, type);
+			// RECURSIVE PIPELINE: pass the last generated output image instead of the
+			// original upload — each enhancement layers on top of the previous result.
+			const currentBase64 = lastGeneratedImageRef.current;
+			console.log(`[handleEnhance] type=${type}, genId=${currentGenerationId}, imageLen=${currentBase64?.length ?? 0}`);
+			const { predictionId } = await enhanceImage(
+				currentGenerationId,
+				type,
+				currentBase64,
+			);
+			console.log(`[handleEnhance] predictionId=${predictionId}`);
 
 			// Poll for completion
 			const pollInterval = setInterval(async () => {
@@ -147,11 +171,20 @@ export default function ResultView({
 						try {
 							const { newImageUrl, newGenerationId } =
 								await finalizeEnhancement(predictionId, currentGenerationId);
+							console.log(`[handleEnhance] finalized! newGenId=${newGenerationId}, imageLen=${newImageUrl?.length ?? 0}`);
 							setCurrentImage(newImageUrl);
-							setCurrentGenerationId(newGenerationId); // Update ID for next enhancement
+							// INCREMENTAL REFINEMENT: update the ref so the NEXT
+							// enhancement uses this output, not the original upload.
+							lastGeneratedImageRef.current = newImageUrl;
+							setCurrentGenerationId(newGenerationId);
 							setIsEnhancing(false);
 							setProgress(100);
-							// window.location.reload(); // Removed to prevent state reset
+							// Immediately add the enhanced image to the gallery
+							addGeneration({
+								id: newGenerationId,
+								image: newImageUrl,
+								unlocked: true,
+							});
 						} catch (finalizeError: any) {
 							setIsEnhancing(false);
 							setError(
@@ -186,6 +219,38 @@ export default function ResultView({
 		"Open Eyes": "openEyes",
 		"Fix Lighting": "fixLighting",
 		Background: "background",
+	};
+
+	const handleSendFeedback = async () => {
+		if (!feedbackText.trim()) return;
+		setFeedbackStatus("submitting");
+
+		try {
+			const res = await fetch("https://formsubmit.co/ajax/geral@polly.photo", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+				},
+				body: JSON.stringify({
+					Mensagem: feedbackText,
+					_subject: "Feedback",
+					_template: "table"
+				}),
+			});
+
+			if (res.ok) {
+				setFeedbackStatus("success");
+				setFeedbackText("");
+				setTimeout(() => setFeedbackStatus("idle"), 5000);
+			} else {
+				setFeedbackStatus("error");
+				setTimeout(() => setFeedbackStatus("idle"), 5000);
+			}
+		} catch (error) {
+			setFeedbackStatus("error");
+			setTimeout(() => setFeedbackStatus("idle"), 5000);
+		}
 	};
 
 	return (
@@ -349,12 +414,30 @@ export default function ResultView({
 						</h3>
 						<div className="flex-1 flex flex-col gap-3">
 							<textarea
+								value={feedbackText}
+								onChange={(e) => setFeedbackText(e.target.value)}
 								className="w-full h-full min-h-[80px] p-3 text-sm bg-gray-50 rounded-xl border border-gray-200 focus:ring-2 focus:ring-orange-500 focus:outline-none resize-none"
 								placeholder={t("placeholder")}
 							/>
-							<button className="w-full py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 font-medium flex items-center justify-center gap-2 transition-colors">
-								<Send className="w-4 h-4" />
-								{t("sendFeedback")}
+							<button
+								onClick={handleSendFeedback}
+								disabled={feedbackStatus === "submitting" || feedbackStatus === "success"}
+								className={`w-full py-2 text-white text-sm rounded-lg font-medium flex items-center justify-center gap-2 transition-colors ${feedbackStatus === "success" ? "bg-green-600 hover:bg-green-700 disabled:opacity-100 disabled:cursor-default" :
+										feedbackStatus === "error" ? "bg-red-600 hover:bg-red-700 disabled:opacity-100 disabled:cursor-default" :
+											"bg-gray-900 hover:bg-gray-800 disabled:opacity-70 disabled:cursor-not-allowed"
+									}`}
+							>
+								{feedbackStatus === "submitting" ? (
+									<Loader2 className="w-4 h-4 animate-spin" />
+								) : feedbackStatus === "success" ? (
+									<span className="font-bold">✓</span>
+								) : (
+									<Send className="w-4 h-4" />
+								)}
+								{feedbackStatus === "submitting" ? tContacts("sending") :
+									feedbackStatus === "success" ? tContacts("successMsg") :
+										feedbackStatus === "error" ? tContacts("errorMsg") :
+											t("sendFeedback")}
 							</button>
 						</div>
 					</div>

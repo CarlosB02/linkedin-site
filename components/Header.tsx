@@ -23,7 +23,6 @@ export default function Header() {
 	const { data: session } = authClient.useSession();
 	const { openLoginModal } = useUI();
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-	const [isServicesOpen, setIsServicesOpen] = useState(false);
 	const [isMobileLangOpen, setIsMobileLangOpen] = useState(false);
 	const [isLangOpen, setIsLangOpen] = useState(false);
 	const [credits, setCredits] = useState(0);
@@ -93,8 +92,8 @@ export default function Header() {
 		<>
 			<header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 border-b border-gray-100">
 				<div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-					<a href="/" className="text-xl font-bold z-50 relative">
-						LinkedIn<span className="text-blue-600">Gen</span>
+					<a href="/" className="flex items-center z-50 relative">
+						<NextImage src="/polly-logo.png" alt="Polly" width={120} height={40} className="h-8 w-auto" priority />
 					</a>
 
 					{/* Desktop Navigation */}
@@ -112,27 +111,13 @@ export default function Header() {
 							{t("pricing")}
 						</button>
 
-						{/* Services Dropdown */}
-						<div className="relative group">
-							<button className="flex items-center gap-1 text-sm font-medium text-gray-600 group-hover:text-blue-600 transition-colors py-2">
-								{t("services")}
-								<ChevronDown className="w-4 h-4" />
-							</button>
-							<div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2">
-								<div className="bg-white rounded-xl shadow-xl border border-gray-100 p-2 w-48 min-w-max flex flex-col gap-1 overflow-hidden">
-									{/* Placeholder links as requested */}
-									<div className="px-4 py-2 hover:bg-gray-50 rounded-lg cursor-pointer text-sm text-gray-700 hover:text-blue-600 transition-colors">
-										Exemplo 1
-									</div>
-									<div className="px-4 py-2 hover:bg-gray-50 rounded-lg cursor-pointer text-sm text-gray-700 hover:text-blue-600 transition-colors">
-										Exemplo 2
-									</div>
-									<div className="px-4 py-2 hover:bg-gray-50 rounded-lg cursor-pointer text-sm text-gray-700 hover:text-blue-600 transition-colors">
-										Exemplo 3
-									</div>
-								</div>
-							</div>
-						</div>
+						{/* Services Link */}
+						<Link
+							href="/about#outros-servicos"
+							className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
+						>
+							{t("services")}
+						</Link>
 
 						<Link
 							href="/about"
@@ -272,8 +257,8 @@ export default function Header() {
 						<nav className="flex flex-col w-full h-full relative z-10">
 							{/* Internal Menu Header */}
 							<div className="flex items-center justify-between px-6 h-20">
-								<a href="/" className="text-2xl font-bold">
-									LinkedIn<span className="text-blue-600">Gen</span>
+								<a href="/" className="flex items-center">
+									<NextImage src="/polly-logo.png" alt="Polly" width={120} height={40} className="h-8 w-auto" priority />
 								</a>
 								<div className="flex items-center gap-4">
 									<button
@@ -318,41 +303,14 @@ export default function Header() {
 										{t("pricing")}
 									</button>
 
-									{/* Mobile Services Accordion */}
-									<div className="flex flex-col items-center w-full">
-										<button
-											onClick={() => setIsServicesOpen(!isServicesOpen)}
-											className="flex items-center gap-2 text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
-										>
-											{t("services")}
-											<ChevronDown
-												className={`w-5 h-5 transition-transform duration-300 ${isServicesOpen ? "rotate-180" : ""}`}
-											/>
-										</button>
-
-										<div
-											className={`flex flex-col gap-4 items-center overflow-hidden transition-all duration-300 ${isServicesOpen ? "max-h-64 opacity-100 mt-6" : "max-h-0 opacity-0 mt-0"}`}
-										>
-											<div
-												onClick={() => setIsMobileMenuOpen(false)}
-												className="text-lg font-medium text-gray-500 cursor-pointer hover:text-blue-600"
-											>
-												Exemplo 1
-											</div>
-											<div
-												onClick={() => setIsMobileMenuOpen(false)}
-												className="text-lg font-medium text-gray-500 cursor-pointer hover:text-blue-600"
-											>
-												Exemplo 2
-											</div>
-											<div
-												onClick={() => setIsMobileMenuOpen(false)}
-												className="text-lg font-medium text-gray-500 cursor-pointer hover:text-blue-600"
-											>
-												Exemplo 3
-											</div>
-										</div>
-									</div>
+									{/* Mobile Services Link */}
+									<Link
+										href="/about#outros-servicos"
+										onClick={() => setIsMobileMenuOpen(false)}
+										className="text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
+									>
+										{t("services")}
+									</Link>
 
 									<Link
 										href="/about"

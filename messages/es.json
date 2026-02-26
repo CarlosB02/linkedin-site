@@ -20,7 +20,9 @@
         "titleHighlight": "Alto Retorno",
         "subtitle": "Invierte en tu carrera por menos del precio de un almuerzo.",
         "mostPopular": "MÁS POPULAR",
-        "coffeeValue": "Valor de 2 cafés",
+        "coffeeValue": "Precio de 2 cafés",
+        "credits": "Créditos",
+        "bonusCredits": "Créditos de regalo",
         "choose": "Elegir",
         "corporateTitle": "Paquete Corporativo",
         "corporateQuestion": "¿Quieres un paquete para tu empresa?",
@@ -35,17 +37,32 @@
             "2_3_users": "Perfecto para 2-3 usuarios",
             "50_photos": "~ 50 Fotos",
             "3_6_users": "Perfecto para 3-6 usuarios"
+        },
+        "packages": {
+            "entrepreneur": {
+                "credits": "200 Créditos",
+                "bonus": null
+            },
+            "startup": {
+                "credits": "750 Créditos",
+                "bonus": "+50 Créditos de regalo"
+            },
+            "networking": {
+                "credits": "1600 Créditos",
+                "bonus": "+100 Créditos de regalo"
+            }
         }
     },
     "Footer": {
         "description": "Convierte tus selfies en retratos profesionales con IA. Ahorra tiempo y dinero mientras mejoras tu presencia profesional.",
         "product": "Producto",
-        "solutions": "Soluciones",
-        "testimonials": "Testimonios",
+        "uploadPhoto": "Subir Foto",
+        "otherProducts": "Otros Productos",
         "legal": "Legal",
         "privacy": "Política de Privacidad",
         "terms": "Términos de Servicio",
-        "rights": "Todos los derechos reservados."
+        "contacts": "Contactos",
+        "rights": "Todos los derechos reservados. | Diseñado por"
     },
     "BeforeAfter": {
         "title": "¡Incluso tu mejor foto puede verse mejor!",
@@ -59,7 +76,7 @@
         "t1_role": "Gerente de Marketing",
         "t2_text": "Los reclutadores empezaron a contactarme mucho más. Se ve muy profesional.",
         "t2_role": "Ingeniero de Software",
-        "t3_text": "Mis clientes me toman más en serio ahora. Los mejores 5€ que he gastado.",
+        "t3_text": "Mis clientes me toman más en serio ahora. Los mejores 6€ que he gastado.",
         "t3_role": "Freelancer"
     },
     "UploadZone": {
@@ -86,7 +103,7 @@
         "styles": {
             "formal": "Formal",
             "formalDesc": "Traje y Corbata",
-            "smart_casual": "Smart Casual",
+            "smart_casual": "Casual Elegante",
             "smart_casualDesc": "Elegante pero relajado",
             "creative": "Creativo",
             "creativeDesc": "Artístico y Audaz"
@@ -97,7 +114,7 @@
         "viewAll": "Ver Todo",
         "more": "más",
         "allGenerations": "Todas las Generaciones",
-        "editUnlock": "Editar / Desbloquear",
+        "editUnlock": "Editar",
         "download": "Descargar"
     },
     "ResultView": {
@@ -144,24 +161,44 @@
     "SocialProofNotifications": {
         "notifications": {
             "0": {
-                "action": "generó una nueva foto",
-                "time": "Justo ahora"
+                "action": "acaba de generar 1 foto de estilo formal",
+                "time": "Ahora mismo"
             },
             "1": {
-                "action": "compró el Plan Emprendedor",
-                "time": "hace 2 min"
-            },
-            "2": {
-                "action": "desbloqueó fotos de alta calidad",
-                "time": "hace 5 min"
-            },
-            "3": {
-                "action": "generó 5 estilos creativos",
+                "action": "compró el Plan Entrepreneur",
                 "time": "hace 1 min"
             },
+            "2": {
+                "action": "descargó 1 foto en HD",
+                "time": "hace 3 min"
+            },
+            "3": {
+                "action": "compró el Plan Startup",
+                "time": "hace 7 min"
+            },
             "4": {
-                "action": "mejoró la puntuación de perfil",
-                "time": "Justo ahora"
+                "action": "generó 5 nuevas fotos de estilo formal elegante",
+                "time": "hace 4 min"
+            },
+            "5": {
+                "action": "compró el Plan Networking",
+                "time": "hace 2 min"
+            },
+            "6": {
+                "action": "generó 5 nuevas fotos de estilo creativo",
+                "time": "hace 10 min"
+            },
+            "7": {
+                "action": "editó su foto de perfil",
+                "time": "Ahora mismo"
+            },
+            "8": {
+                "action": "compró el Plan Entrepreneur",
+                "time": "hace 15 min"
+            },
+            "9": {
+                "action": "creó su primera foto",
+                "time": "hace 6 min"
             }
         }
     },
@@ -177,25 +214,28 @@
         "emailPlaceholder": "su@correo.com",
         "message": "Mensaje",
         "messagePlaceholder": "¿Cómo podemos ayudar?",
-        "send": "Enviar Mensaje"
+        "send": "Enviar Mensaje",
+        "sending": "Enviando...",
+        "successMsg": "¡Mensaje enviado con éxito!",
+        "errorMsg": "Ocurrió un error. Inténtalo de nuevo."
     },
     "About": {
         "hero": {
-            "badge": "Parte del grupo .gen",
+            "badge": "LA EXPERIENCIA POLLY",
             "titlePrefix": "Construyendo el Futuro con",
             "titleHighlight": "Inteligencia Artificial",
             "subtitle": "Producimos soluciones digitales de vanguardia integradas con IA."
         },
         "mission": {
             "title": "Impulsados por la Evolución",
-            "p1": "En .gen group, nuestra misión va más allá de solo crear sitios web. Nos dedicamos a crear ecosistemas digitales inteligentes que se adaptan y crecen.",
-            "p2": "Queremos dar lo mejor a nuestros clientes integrando los últimos avances en Inteligencia Artificial en productos intuitivos y fáciles de usar. Estamos en constante evolución, al igual que la tecnología que usamos.",
+            "p1": "Eleve su imagen con un servicio de fotografía profesional que combina calidad premium con un proceso de reserva sencillo e intuitivo. Ya sea que busque una sesión fotográfica para su portafolio personal, redes sociales o perfil corporativo, le conectamos con el mejor fotógrafo profesional para capturar su esencia con el dress code ideal, desde el formal al casual elegante.",
+            "p2": "Nuestro compromiso es la transparencia total: ofrecemos resultados de excelencia a través de un sistema de créditos de regalo flexible y una inversión altamente accesible, comparable al precio de 2 cafés. Asegúrese de que su marca personal destaque con nitidez, estilo y el máximo profesionalismo, independientemente del idioma o del país donde se encuentre.",
             "cardTitle": ".GEN",
             "cardSubtitle": "Inteligencia Integrada"
         },
         "product": {
-            "title": "¿Qué es LinkedInGen?",
-            "p1": "LinkedInGen es nuestra solución especializada para branding profesional. Notamos que muchos profesionales talentosos pierden oportunidades simplemente porque carecen de una foto de perfil de alta calidad.",
+            "title": "¿Qué es Polly?",
+            "p1": "Polly es nuestra solución especializada para branding profesional. Notamos que muchos profesionales talentosos pierden oportunidades simplemente porque carecen de una foto de perfil de alta calidad.",
             "p2": "Combinamos IA generativa avanzada con principios de fotografía profesional para crear una herramienta que convierte selfies cotidianas en fotos de estudio en minutos.",
             "visual": "Visual del Producto"
         },
@@ -212,6 +252,7 @@
             "title": "Otras Soluciones",
             "subtitle": "Explore nuestro ecosistema de herramientas impulsadas por IA diseñadas para mejorar la productividad y la creatividad.",
             "discover": "Descubrir",
+            "comingSoon": "Próximamente...",
             "s1Title": "ChromaRestore AI",
             "s1Desc": "Da vida a viejos recuerdos en blanco y negro. Colorea y anima instantáneamente fotos antiguas con un realismo asombroso.",
             "s2Title": "StudyGenius",
@@ -219,5 +260,33 @@
             "s3Title": "NanoCreativity",
             "s3Desc": "Desata tu imaginación. Genera imágenes de alta fidelidad a partir de indicaciones de texto con nuestro motor Nano Banana Pro."
         }
+    },
+    "Privacy": {
+        "title": "Política de Privacidad",
+        "lastUpdated": "Última actualización",
+        "s1Title": "1. Introducción",
+        "s1Text": "Bienvenido a Polly. Respetamos tu privacidad y estamos comprometidos a proteger tus datos personales.",
+        "s2Title": "2. Datos que Recopilamos",
+        "s2Text": "Recopilamos las imágenes que subes para generar retratos profesionales. También recopilamos datos de autenticación si inicias sesión.",
+        "s3Title": "3. Cómo Usamos tus Datos",
+        "s3Text": "Las imágenes subidas se utilizan exclusivamente para el proceso de generación y se eliminan poco después del procesamiento. No utilizamos tus fotos para entrenar modelos de IA públicos sin tu consentimiento.",
+        "s4Title": "4. Seguridad de los Datos",
+        "s4Text": "Implementamos medidas de seguridad adecuadas para proteger tu información personal.",
+        "s5Title": "5. Contáctanos",
+        "s5Text": "Si tienes alguna pregunta sobre esta Política de Privacidad, contáctanos en support@polly.com."
+    },
+    "Terms": {
+        "title": "Términos de Servicio",
+        "lastUpdated": "Última actualización",
+        "s1Title": "1. Aceptación de los Términos",
+        "s1Text": "Al acceder y utilizar Polly, aceptas y te comprometes a cumplir con los términos y disposiciones de este acuerdo.",
+        "s2Title": "2. Descripción del Servicio",
+        "s2Text": "Polly proporciona retratos profesionales generados por IA basados en fotos subidas por el usuario.",
+        "s3Title": "3. Conducta del Usuario",
+        "s3Text": "Aceptas subir solo fotos sobre las que tienes derecho de uso. Aceptas no usar el servicio para ningún propósito ilegal o no autorizado.",
+        "s4Title": "4. Reembolsos",
+        "s4Text": "Debido a la naturaleza de los bienes digitales y los costes asociados a la generación por IA, los reembolsos generalmente no se proporcionan, salvo en caso de fallo técnico.",
+        "s5Title": "5. Cambios en los Términos",
+        "s5Text": "Nos reservamos el derecho de actualizar estos términos en cualquier momento."
     }
 }
