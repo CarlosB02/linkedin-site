@@ -17,7 +17,10 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-	title: "LinkedIn Photo Generator",
+	title: {
+		template: "Polly - %s",
+		default: "Polly",
+	},
 	description:
 		"Transform your selfies into professional LinkedIn photos with AI.",
 };
@@ -36,6 +39,7 @@ export default async function RootLayout({
 		<html lang={locale}>
 			<body
 				className={`${poppins.variable} antialiased font-sans flex flex-col min-h-screen relative`}
+				suppressHydrationWarning
 			>
 				<NextIntlClientProvider messages={messages}>
 					<UIProvider>
