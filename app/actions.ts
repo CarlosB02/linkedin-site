@@ -148,7 +148,7 @@ export async function finalizeEnhancement(
 }
 
 const replicate = new Replicate({
-	auth: process.env.REPLICATE_API_TOKEN || "fallback_token_for_build",
+	auth: process.env.REPLICATE_API_TOKEN,
 });
 
 interface Generation {
