@@ -161,7 +161,7 @@
     "SocialProofNotifications": {
         "notifications": {
             "0": {
-                "action": "acabou de gerar 1 foto formal",
+                "action": "acabou de gerar 1 foto estilo formal",
                 "time": "Agora mesmo"
             },
             "1": {
@@ -177,7 +177,7 @@
                 "time": "há 7 min"
             },
             "4": {
-                "action": "atualizou a foto de perfil do LinkedIn",
+                "action": "gerou 5 novas fotos estilo formal elegante",
                 "time": "há 4 min"
             },
             "5": {
