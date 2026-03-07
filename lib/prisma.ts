@@ -1,20 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import path from "path";
 
 const prismaClientSingleton = () => {
-	// Force absolute path to avoid CWD issues with SQLite
-	const dbPath = path.join(process.cwd(), "prisma", "dev.db");
-	const dbUrl = `file:${dbPath}`;
-
-	console.log("Prisma Client initializing with URL:", dbUrl);
-
-	return new PrismaClient({
-		datasources: {
-			db: {
-				url: dbUrl,
-			},
-		},
-	});
+	return new PrismaClient();
 };
 
 declare global {

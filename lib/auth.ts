@@ -5,7 +5,7 @@ import { prisma } from "./prisma";
 export const auth = betterAuth({
 	secret: process.env.BETTER_AUTH_SECRET || "fallback_secret_for_build",
 	database: prismaAdapter(prisma, {
-		provider: "sqlite",
+		provider: "postgresql",
 	}),
 	//allow any localhost port in development, and production URL
 	trustedOrigins: [
