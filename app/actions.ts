@@ -301,14 +301,15 @@ export async function finalizeGeneration(
 export async function unlockImage(
 	generationId: string,
 ): Promise<{ originalImage: string | null }> {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
+	const supabase = await createClient();
+	const {
+		data: { user: authUser },
+	} = await supabase.auth.getUser();
 
-	if (!session) throw new Error("Unauthorized");
+	if (!authUser) throw new Error("Unauthorized");
 
 	const user = await prisma.user.findUnique({
-		where: { id: session.user.id },
+		where: { id: authUser.id },
 	});
 
 	if (!user) {
