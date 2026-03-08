@@ -1,16 +1,17 @@
 "use client";
+import { createClient } from "@/lib/supabase/client";
 
 import { ArrowRight, Building2, Check, Loader2 } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { buyCredits } from "@/app/actions";
-import { authClient } from "@/lib/auth-client";
+import { useAuth } from "@/components/AuthProvider";
 import { useUI } from "@/lib/ui-context";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
 export default function Pricing() {
 	const t = useTranslations("Pricing");
-	const { data: session } = authClient.useSession();
+	const { user } = useAuth();
 	const { openLoginModal } = useUI();
 	const [loadingPkg, setLoadingPkg] = useState<string | null>(null);
 	const [activeTab, setActiveTab] = useState(1);
@@ -58,7 +59,7 @@ export default function Pricing() {
 	};
 
 	const handleBuy = async (pkgId: string) => {
-		if (!session) {
+		if (!user) {
 			openLoginModal();
 			return;
 		}
@@ -79,7 +80,7 @@ export default function Pricing() {
 					: "Failed to create checkout session. Please try again.";
 			if (errorMessage?.includes("User not found")) {
 				alert("Session invalid. Logging out to refresh...");
-				await authClient.signOut();
+				await createClient().auth.signOut();
 				window.location.reload();
 			} else {
 				alert(

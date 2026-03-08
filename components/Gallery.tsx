@@ -4,14 +4,14 @@ import { Download, FileText, Lock, Wand2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { getUserGenerations } from "@/app/actions";
-import { authClient } from "@/lib/auth-client";
+import { useAuth } from "@/components/AuthProvider";
 import ResultView from "./ResultView";
 import { useTranslations } from "next-intl";
 import { useGenerations } from "@/lib/generationContext";
 
 export default function Gallery() {
 	const t = useTranslations("Gallery");
-	const { data: session } = authClient.useSession();
+	const { user } = useAuth();
 	const { recentGenerations } = useGenerations();
 	const [dbGenerations, setDbGenerations] = useState<any[]>([]);
 	const [isAllGenerationsOpen, setIsAllGenerationsOpen] = useState(false);
@@ -20,10 +20,10 @@ export default function Gallery() {
 
 	useEffect(() => {
 		setMounted(true);
-		if (session) {
+		if (user) {
 			getUserGenerations().then(setDbGenerations);
 		}
-	}, [session]);
+	}, [user]);
 
 	// STATE MANAGEMENT: merge in-session context entries (always newest first)
 	// with DB-fetched entries, deduplicating by ID.
@@ -45,7 +45,7 @@ export default function Gallery() {
 		};
 	}, [editingGeneration, isAllGenerationsOpen]);
 
-	if (!session || generations.length === 0) return null;
+	if (!user || generations.length === 0) return null;
 
 	const renderGenerationCard = (gen: any) => (
 		<div

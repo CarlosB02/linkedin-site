@@ -16,16 +16,17 @@ import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { getCredits } from "@/app/actions";
-import { authClient } from "@/lib/auth-client";
+import { useAuth } from "@/components/AuthProvider";
+import { createClient } from "@/lib/supabase/client";
 import { useUI } from "@/lib/ui-context";
 
 export default function Header() {
-	const { data: session } = authClient.useSession();
+	const { user, credits, setCredits } = useAuth();
+	const supabase = createClient();
 	const { openLoginModal } = useUI();
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 	const [isMobileLangOpen, setIsMobileLangOpen] = useState(false);
 	const [isLangOpen, setIsLangOpen] = useState(false);
-	const [credits, setCredits] = useState(0);
 	const [mounted, setMounted] = useState(false);
 	const router = useRouter();
 	const pathname = usePathname();
@@ -57,14 +58,11 @@ export default function Header() {
 	}, []);
 
 	useEffect(() => {
-		if (session) {
-			// Initialize with session data if available
-			setCredits((session.user as any).credits || 0);
-
+		if (user) {
 			// Fetch latest from server
 			getCredits().then(setCredits);
 		}
-	}, [session]);
+	}, [user]);
 
 	useEffect(() => {
 		if (isMobileMenuOpen) {
@@ -176,9 +174,8 @@ export default function Header() {
 								</div>
 							</div>
 						</div>
-						{/* Auth / Credits Section */}
 						<div className="hidden md:block">
-							{session ? (
+							{user ? (
 								<div className="flex items-center gap-4">
 									<div className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold">
 										<Coins className="w-4 h-4" />
@@ -187,19 +184,13 @@ export default function Header() {
 
 									<div className="flex items-center gap-3 pl-4 border-l border-gray-200">
 										<div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-											{session.user.image ? (
-												// eslint-disable-next-line @next/next/no-img-element
-												<img
-													src={session.user.image}
-													alt={session.user.name || ""}
-													className="w-full h-full object-cover"
-												/>
-											) : (
-												<UserIcon className="w-4 h-4 text-gray-500" />
-											)}
+											<UserIcon className="w-4 h-4 text-gray-500" />
 										</div>
 										<button
-											onClick={() => authClient.signOut()}
+											onClick={async () => {
+												await supabase.auth.signOut();
+												window.location.reload();
+											}}
 											className="text-gray-500 hover:text-red-500 transition-colors"
 										>
 											<LogOut className="w-5 h-5" />
@@ -383,16 +374,17 @@ export default function Header() {
 
 								{/* Auth Actions */}
 								<div className="flex flex-col items-center gap-4 w-full max-w-xs">
-									{session ? (
+									{user ? (
 										<>
 											<div className="flex items-center gap-2 text-blue-700 font-bold bg-blue-50 px-8 py-4 rounded-2xl w-full justify-center text-lg">
 												<Coins className="w-6 h-6" />
 												{credits} {t("credits")}
 											</div>
 											<button
-												onClick={() => {
-													authClient.signOut();
+												onClick={async () => {
+													await supabase.auth.signOut();
 													setIsMobileMenuOpen(false);
+													window.location.reload();
 												}}
 												className="text-red-500 font-medium flex items-center justify-center gap-2 w-full py-3 hover:bg-red-50 rounded-2xl transition-colors text-lg"
 											>

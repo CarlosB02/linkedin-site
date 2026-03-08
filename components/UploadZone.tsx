@@ -9,14 +9,14 @@ import {
 	generateImage,
 	getCredits,
 } from "@/app/actions";
-import { authClient } from "@/lib/auth-client";
+import { useAuth } from "@/components/AuthProvider";
 import { useTranslations } from "next-intl";
 import LoginModal from "./LoginModal";
 import ResultView from "./ResultView";
 import { useGenerations } from "@/lib/generationContext";
 
 export default function UploadZone() {
-	const { data: session } = authClient.useSession();
+	const { user, credits, setCredits } = useAuth();
 	const { addGeneration } = useGenerations();
 	const t = useTranslations("UploadZone");
 	const [file, setFile] = useState<File | null>(null);
@@ -29,14 +29,12 @@ export default function UploadZone() {
 	);
 	const [error, setError] = useState<string | null>(null);
 	const [isLoginOpen, setIsLoginOpen] = useState(false);
-	const [credits, setCredits] = useState(0);
 
 	useEffect(() => {
-		if (session) {
-			setCredits((session.user as any).credits || 0);
+		if (user) {
 			getCredits().then(setCredits);
 		}
-	}, [session]);
+	}, [user, setCredits]);
 
 	const loadingMessages = [
 		t("loadingMessages.0"),
@@ -86,7 +84,7 @@ export default function UploadZone() {
 
 	const handleSubmit = async () => {
 		// If logged in, check credits
-		if (session) {
+		if (user) {
 			if (credits < 30) {
 				document
 					.getElementById("pricing")

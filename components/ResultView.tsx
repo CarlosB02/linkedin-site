@@ -20,7 +20,8 @@ import {
 	finalizeEnhancement,
 	unlockImage,
 } from "@/app/actions";
-import { authClient } from "@/lib/auth-client";
+import { useAuth } from "@/components/AuthProvider";
+import { createClient } from "@/lib/supabase/client";
 import ComparisonSlider from "./ComparisonSlider";
 import LoginModal from "./LoginModal";
 import { useTranslations } from "next-intl";
@@ -45,7 +46,8 @@ export default function ResultView({
 }: ResultViewProps) {
 	const t = useTranslations("ResultView");
 	const tContacts = useTranslations("Contacts");
-	const { data: session } = authClient.useSession();
+	const { user, credits } = useAuth();
+	const supabase = createClient();
 	const { addGeneration, updateGeneration } = useGenerations();
 	const [isUnlocked, setIsUnlocked] = useState(initialUnlocked);
 
@@ -89,12 +91,11 @@ export default function ResultView({
 	}, [isEnhancing]);
 
 	const handleUnlock = async () => {
-		if (!session) {
+		if (!user) {
 			setIsLoginOpen(true);
 			return;
 		}
 
-		const credits = (session.user as any).credits || 0;
 		if (credits < 30) {
 			document
 				.getElementById("pricing")
@@ -120,7 +121,7 @@ export default function ResultView({
 		} catch (e: any) {
 			if (e.message && e.message.includes("User not found")) {
 				alert("Session invalid. Logging out to refresh...");
-				await authClient.signOut();
+				await supabase.auth.signOut();
 				window.location.reload();
 			} else {
 				setError(e.message || "Failed to unlock");
@@ -131,12 +132,11 @@ export default function ResultView({
 	};
 
 	const handleEnhance = async (type: string) => {
-		if (!session) {
+		if (!user) {
 			setIsLoginOpen(true);
 			return;
 		}
 
-		const credits = (session.user as any).credits || 0;
 		if (credits < 10) {
 			alert("Insufficient credits for enhancement (10 credits required).");
 			document
@@ -423,8 +423,8 @@ export default function ResultView({
 								onClick={handleSendFeedback}
 								disabled={feedbackStatus === "submitting" || feedbackStatus === "success"}
 								className={`w-full py-2 text-white text-sm rounded-lg font-medium flex items-center justify-center gap-2 transition-colors ${feedbackStatus === "success" ? "bg-green-600 hover:bg-green-700 disabled:opacity-100 disabled:cursor-default" :
-										feedbackStatus === "error" ? "bg-red-600 hover:bg-red-700 disabled:opacity-100 disabled:cursor-default" :
-											"bg-gray-900 hover:bg-gray-800 disabled:opacity-70 disabled:cursor-not-allowed"
+									feedbackStatus === "error" ? "bg-red-600 hover:bg-red-700 disabled:opacity-100 disabled:cursor-default" :
+										"bg-gray-900 hover:bg-gray-800 disabled:opacity-70 disabled:cursor-not-allowed"
 									}`}
 							>
 								{feedbackStatus === "submitting" ? (

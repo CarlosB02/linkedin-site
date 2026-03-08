@@ -2,8 +2,8 @@
 
 import { Loader2, X } from "lucide-react";
 import { useState } from "react";
-import { authClient } from "@/lib/auth-client";
 import { useTranslations } from "next-intl";
+import { createClient } from "@/lib/supabase/client";
 
 interface LoginModalProps {
 	isOpen: boolean;
@@ -13,7 +13,7 @@ interface LoginModalProps {
 
 export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 	const t = useTranslations("LoginModal");
-	const { data: session } = authClient.useSession();
+	const supabase = createClient();
 	const [isLogin, setIsLogin] = useState(true);
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
@@ -30,49 +30,42 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
 		try {
 			if (isLogin) {
-				await authClient.signIn.email(
-					{
-						email,
-						password,
-					},
-					{
-						onSuccess: () => {
-							onClose();
-							window.location.reload();
-						},
-						onError: (ctx) => {
-							setError(ctx.error.message);
-						},
-					},
-				);
+				const { error } = await supabase.auth.signInWithPassword({
+					email,
+					password,
+				});
+				if (error) throw error;
+
+				onClose();
+				window.location.reload();
 			} else {
-				await authClient.signUp.email(
-					{
-						email,
-						password,
-						name,
-					},
-					{
-						onSuccess: () => {
-							onClose();
-							window.location.reload();
-						},
-						onError: (ctx) => {
-							setError(ctx.error.message);
-						},
-					},
-				);
+				const { error } = await supabase.auth.signUp({
+					email,
+					password,
+					options: {
+						data: {
+							full_name: name,
+						}
+					}
+				});
+				if (error) throw error;
+
+				onClose();
+				window.location.reload();
 			}
-		} catch (e) {
-			setError(t("error"));
+		} catch (e: any) {
+			setError(e.message || t("error"));
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
 	const handleGoogleLogin = async () => {
-		await authClient.signIn.social({
+		await supabase.auth.signInWithOAuth({
 			provider: "google",
+			options: {
+				redirectTo: `${window.location.origin}/`,
+			}
 		});
 	};
 

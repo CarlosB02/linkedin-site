@@ -3,7 +3,7 @@
 import { headers } from "next/headers";
 import Replicate from "replicate";
 import sharp from "sharp";
-import { auth } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { stripe } from "@/lib/stripe";
 
@@ -12,17 +12,29 @@ export async function enhanceImage(
 	type: string,
 	currentImageBase64?: string,
 ): Promise<{ predictionId: string }> {
-	const session = await auth.api.getSession({
-		headers: await headers(),
+	const supabase = await createClient();
+	const {
+		data: { user: authUser },
+	} = await supabase.auth.getUser();
+
+	if (!authUser) throw new Error("Unauthorized");
+
+	let user = await prisma.user.findUnique({
+		where: { id: authUser.id },
 	});
 
-	if (!session) throw new Error("Unauthorized");
+	if (!user) {
+		user = await prisma.user.create({
+			data: {
+				id: authUser.id,
+				email: authUser.email!,
+				name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
+				credits: 0,
+			},
+		});
+	}
 
-	const user = await prisma.user.findUnique({
-		where: { id: session.user.id },
-	});
-
-	if (!user || user.credits < 10) {
+	if (user.credits < 10) {
 		throw new Error("Insufficient credits (10 required)");
 	}
 
@@ -126,13 +138,14 @@ export async function finalizeEnhancement(
 	const base64 = `data:image/jpeg;base64,${buffer.toString("base64")}`;
 
 	// Create a NEW generation record for the enhancement
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
+	const supabase = await createClient();
+	const {
+		data: { user: authUser },
+	} = await supabase.auth.getUser();
 
 	const newGeneration = await prisma.generation.create({
 		data: {
-			userId: session?.user.id, // Assign to current user
+			userId: authUser?.id, // Assign to current user
 			prompt: `Enhanced: ${(prediction.input as any).prompt || "Enhanced Image"}`,
 			style: "enhanced",
 			originalImage: base64,
@@ -161,19 +174,31 @@ interface Generation {
 export async function generateImage(
 	formData: FormData,
 ): Promise<{ predictionId: string }> {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
+	const supabase = await createClient();
+	const {
+		data: { user: authUser },
+	} = await supabase.auth.getUser();
 
 	let userId: string | null = null;
 
-	if (session) {
-		userId = session.user.id;
-		const user = await prisma.user.findUnique({
+	if (authUser) {
+		userId = authUser.id;
+		let user = await prisma.user.findUnique({
 			where: { id: userId },
 		});
 
-		if (user && user.credits < 30) {
+		if (!user) {
+			user = await prisma.user.create({
+				data: {
+					id: authUser.id,
+					email: authUser.email!,
+					name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
+					credits: 0,
+				},
+			});
+		}
+
+		if (user.credits < 30) {
 			throw new Error("Insufficient credits");
 		}
 	}
@@ -235,11 +260,12 @@ export async function finalizeGeneration(
 	predictionId: string,
 	outputUrl: string,
 ): Promise<{ generationId: string; blurredImage: string }> {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
+	const supabase = await createClient();
+	const {
+		data: { user: authUser },
+	} = await supabase.auth.getUser();
 
-	const userId = session ? session.user.id : null;
+	const userId = authUser ? authUser.id : null;
 
 	const response = await fetch(outputUrl);
 	const arrayBuffer = await response.arrayBuffer();
@@ -286,19 +312,8 @@ export async function unlockImage(
 	});
 
 	if (!user) {
-		// User not found in DB, but session exists. Clean up.
-		try {
-			await prisma.session.deleteMany({
-				where: { userId: session.user.id },
-			});
-			console.log(
-				`Cleaned up sessions for missing user ${session.user.id} in unlockImage`,
-			);
-		} catch (cleanupError) {
-			console.error("Failed to clean up sessions:", cleanupError);
-		}
 		throw new Error(
-			`User not found (ID: ${session.user.id}). Please log out and log in again.`,
+			`User profile not found in database.`,
 		);
 	}
 
@@ -382,11 +397,12 @@ export async function addCreditsFromPayment(data: {
 export async function buyCredits(
 	packageId: string,
 ): Promise<{ checkoutUrl: string }> {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
+	const supabase = await createClient();
+	const {
+		data: { user: authUser },
+	} = await supabase.auth.getUser();
 
-	if (!session) throw new Error("Unauthorized");
+	if (!authUser) throw new Error("Unauthorized");
 
 	//map package IDs to prices (in cents) and credits
 	let amount = 0;
@@ -415,7 +431,7 @@ export async function buyCredits(
 	//create transaction record immediately with PENDING status
 	const transaction = await prisma.transaction.create({
 		data: {
-			userId: session.user.id,
+			userId: authUser.id,
 			amount: amount,
 			currency: "eur",
 			status: "PENDING",
@@ -440,7 +456,7 @@ export async function buyCredits(
 				},
 			],
 			metadata: {
-				userId: session.user.id,
+				userId: authUser.id,
 				packageId: packageId,
 				credits: credits.toString(),
 			},
@@ -470,14 +486,15 @@ export async function buyCredits(
 export async function getUserGenerations(): Promise<
 	{ id: string; image: string | null; unlocked: boolean }[]
 > {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
+	const supabase = await createClient();
+	const {
+		data: { user: authUser },
+	} = await supabase.auth.getUser();
 
-	if (!session) return [];
+	if (!authUser) return [];
 
 	const generations = await prisma.generation.findMany({
-		where: { userId: session.user.id, status: "COMPLETED" },
+		where: { userId: authUser.id, status: "COMPLETED" },
 		orderBy: { createdAt: "desc" },
 		take: 10,
 	});
@@ -490,16 +507,30 @@ export async function getUserGenerations(): Promise<
 }
 
 export async function getCredits(): Promise<number> {
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
+	const supabase = await createClient();
+	const {
+		data: { user: authUser },
+	} = await supabase.auth.getUser();
 
-	if (!session) return 0;
+	if (!authUser) return 0;
 
-	const user = await prisma.user.findUnique({
-		where: { id: session.user.id },
+	let user = await prisma.user.findUnique({
+		where: { id: authUser.id },
 		select: { credits: true },
 	});
+
+	// Auto-sync Supabase user to Prisma if they don't exist
+	if (!user) {
+		const createdUser = await prisma.user.create({
+			data: {
+				id: authUser.id,
+				email: authUser.email!,
+				name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
+				credits: 0,
+			},
+		});
+		return createdUser.credits;
+	}
 
 	return user?.credits || 0;
 }
