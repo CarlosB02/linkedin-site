@@ -9,6 +9,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { UIProvider } from "@/lib/ui-context";
 import { GenerationProvider } from "@/lib/generationContext";
+import Script from "next/script";
 
 const poppins = Poppins({
 	variable: "--font-poppins",
@@ -41,6 +42,16 @@ export default async function RootLayout({
 				className={`${poppins.variable} antialiased font-sans flex flex-col min-h-screen relative`}
 				suppressHydrationWarning
 			>
+				<Script src="https://www.googletagmanager.com/gtag/js?id=G-8WDS98YH45" strategy="afterInteractive" />
+				<Script id="google-analytics" strategy="afterInteractive">
+					{`
+						window.dataLayer = window.dataLayer || [];
+						function gtag(){dataLayer.push(arguments);}
+						gtag('js', new Date());
+
+						gtag('config', 'G-8WDS98YH45');
+					`}
+				</Script>
 				<NextIntlClientProvider messages={messages}>
 					<UIProvider>
 						<GenerationProvider>
