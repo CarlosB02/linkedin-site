@@ -247,7 +247,7 @@ export default function Header() {
 
 						<nav className="flex flex-col w-full h-full relative z-10">
 							{/* Internal Menu Header */}
-							<div className="flex items-center justify-between px-6 h-20">
+							<div className="flex items-center justify-between px-6 h-20 shrink-0">
 								<Link href="/" className="flex items-center">
 									<NextImage src="/polly-logo.png" alt="Polly" width={120} height={40} className="h-8 w-auto" priority />
 								</Link>
@@ -273,7 +273,7 @@ export default function Header() {
 								</div>
 							</div>
 
-							<div className="flex flex-col flex-1 justify-center items-center gap-8 px-6 pb-20">
+							<div className="flex flex-col flex-1 justify-start items-center gap-8 px-6 py-8 overflow-y-auto w-full">
 								{/* Navigation Links */}
 								<div className="flex flex-col items-center gap-6 w-full">
 									<Link

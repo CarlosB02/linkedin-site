@@ -408,15 +408,20 @@ export async function buyCredits(
 	//map package IDs to prices (in cents) and credits
 	let amount = 0;
 	let credits = 0;
+	let stripeId = "";
+
 	if (packageId === "entrepreneur") {
 		amount = 200; //2€ in cents
 		credits = 200;
+		stripeId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_ENTREPRENEUR || "";
 	} else if (packageId === "startup") {
 		amount = 600; //6€ in cents
 		credits = 800; //750 + 50 bonus
+		stripeId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_STARTUP || "";
 	} else if (packageId === "networking") {
 		amount = 1500; //15€ in cents
 		credits = 1700; //1600 + 100 bonus
+		stripeId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_NETWORKING || "";
 	} else {
 		throw new Error("Invalid package ID");
 	}
@@ -441,21 +446,43 @@ export async function buyCredits(
 	});
 
 	try {
+		// Construct line item dynamically based on whether it's a Price ID, Product ID, or neither
+		let lineItem: any;
+
+		if (stripeId.startsWith("price_")) {
+			// If it's a Price ID, we just pass the price ID directly
+			lineItem = {
+				price: stripeId,
+				quantity: 1,
+			};
+		} else if (stripeId.startsWith("prod_")) {
+			// If it's a Product ID, we use price_data linked to that product
+			lineItem = {
+				price_data: {
+					currency: "eur",
+					product: stripeId,
+					unit_amount: amount,
+				},
+				quantity: 1,
+			};
+		} else {
+			// Fallback to ad-hoc product creation if keys are missing
+			lineItem = {
+				price_data: {
+					currency: "eur",
+					product_data: {
+						name: `Credit Package: ${packageId}`,
+					},
+					unit_amount: amount,
+				},
+				quantity: 1,
+			};
+		}
+
 		//create stripe checkout session
 		const checkoutSession = await stripe.checkout.sessions.create({
 			mode: "payment",
-			line_items: [
-				{
-					price_data: {
-						currency: "eur",
-						product_data: {
-							name: `Credit Package: ${packageId}`,
-						},
-						unit_amount: amount,
-					},
-					quantity: 1,
-				},
-			],
+			line_items: [lineItem],
 			metadata: {
 				userId: authUser.id,
 				packageId: packageId,
