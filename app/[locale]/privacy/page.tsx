@@ -28,12 +28,22 @@ export default function PrivacyPolicy() {
 						const titleKey = `s${num}Title` as any;
 						const textKey = `s${num}Text` as any;
 
-						if (!t.has(titleKey)) return null;
+						// Using exception catching or strict fallback since `has()` can sometimes crash Next-intl in RSC
+						let title = "";
+						let text = "";
+						try {
+							title = t(titleKey);
+							text = t(textKey);
+						} catch (e) {
+							return null;
+						}
+
+						if (!title || !text) return null;
 
 						return (
 							<div key={num} className="mb-8">
-								<h2 className="text-2xl font-semibold mb-4 text-zinc-900 dark:text-zinc-100">{t(titleKey)}</h2>
-								{t(textKey).split('\n').map((line, i) => (
+								<h2 className="text-2xl font-semibold mb-4 text-zinc-900 dark:text-zinc-100">{title}</h2>
+								{text.split('\n').map((line, i) => (
 									<p key={i} className="mb-2">{line}</p>
 								))}
 							</div>
