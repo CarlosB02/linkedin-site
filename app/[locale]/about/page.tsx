@@ -11,7 +11,7 @@ import {
 	Users,
 	Zap,
 } from "lucide-react";
-import Link from "next/link";
+
 import BackgroundGrid from "@/components/BackgroundGrid";
 import { useTranslations } from "next-intl";
 import NextImage from "next/image";

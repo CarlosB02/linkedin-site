@@ -13,23 +13,32 @@ export default function PrivacyPolicy() {
 			</div>
 			<div className="max-w-4xl mx-auto pt-24 pb-12 px-6 relative z-10">
 				<h1 className="text-4xl font-bold mb-8">{t("title")}</h1>
-				<div className="prose prose-blue max-w-none">
-					<p>{t("lastUpdated")}: {new Date().toLocaleDateString()}</p>
+				<div className="prose prose-blue max-w-none text-zinc-800 dark:text-zinc-200">
+					<p className="font-semibold">{t("lastUpdated")}</p>
 
-					<h2>{t("s1Title")}</h2>
-					<p>{t("s1Text")}</p>
+					{t.has("intro") && (
+						<div className="mb-8">
+							{t("intro").split('\n').map((line, i) => (
+								<p key={"intro" + i} className="mb-2">{line}</p>
+							))}
+						</div>
+					)}
 
-					<h2>{t("s2Title")}</h2>
-					<p>{t("s2Text")}</p>
+					{[1, 2, 3, 4, 5, 6, 7, 8, 9].map((num) => {
+						const titleKey = `s${num}Title` as any;
+						const textKey = `s${num}Text` as any;
 
-					<h2>{t("s3Title")}</h2>
-					<p>{t("s3Text")}</p>
+						if (!t.has(titleKey)) return null;
 
-					<h2>{t("s4Title")}</h2>
-					<p>{t("s4Text")}</p>
-
-					<h2>{t("s5Title")}</h2>
-					<p>{t("s5Text")}</p>
+						return (
+							<div key={num} className="mb-8">
+								<h2 className="text-2xl font-semibold mb-4 text-zinc-900 dark:text-zinc-100">{t(titleKey)}</h2>
+								{t(textKey).split('\n').map((line, i) => (
+									<p key={i} className="mb-2">{line}</p>
+								))}
+							</div>
+						);
+					})}
 				</div>
 			</div>
 		</div>

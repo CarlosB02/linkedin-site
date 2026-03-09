@@ -28,7 +28,7 @@ export default function Footer() {
 						<ul className="space-y-3 text-sm">
 							<li>
 								<Link
-									href="/#upload-zone"
+									href={{ pathname: "/", hash: "upload-zone" }}
 									className="hover:text-blue-400 transition-colors"
 								>
 									{t("uploadPhoto")}
@@ -36,7 +36,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href="/about#otherSolutions"
+									href={{ pathname: "/about", hash: "otherSolutions" }}
 									className="hover:text-blue-400 transition-colors"
 								>
 									{t("otherProducts")}
@@ -44,7 +44,7 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
-									href="/#pricing"
+									href={{ pathname: "/", hash: "pricing" }}
 									className="hover:text-blue-400 transition-colors"
 								>
 									Pricing

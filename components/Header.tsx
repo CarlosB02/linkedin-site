@@ -82,7 +82,7 @@ export default function Header() {
 				pricingElement.scrollIntoView({ behavior: "smooth" });
 			}
 		} else {
-			router.push("/#pricing");
+			router.push({ pathname: "/", hash: "pricing" } as any);
 		}
 	};
 
@@ -90,9 +90,9 @@ export default function Header() {
 		<>
 			<header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 border-b border-gray-100">
 				<div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-					<a href="/" className="flex items-center z-50 relative">
+					<Link href="/" className="flex items-center z-50 relative">
 						<NextImage src="/polly-logo.png" alt="Polly" width={120} height={40} className="h-8 w-auto" priority />
-					</a>
+					</Link>
 
 					{/* Desktop Navigation */}
 					<nav className="hidden md:flex items-center gap-8">
@@ -111,7 +111,7 @@ export default function Header() {
 
 						{/* Services Link */}
 						<Link
-							href="/about#outros-servicos"
+							href={{ pathname: "/about", hash: "outros-servicos" }}
 							className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
 						>
 							{t("services")}
@@ -248,9 +248,9 @@ export default function Header() {
 						<nav className="flex flex-col w-full h-full relative z-10">
 							{/* Internal Menu Header */}
 							<div className="flex items-center justify-between px-6 h-20">
-								<a href="/" className="flex items-center">
+								<Link href="/" className="flex items-center">
 									<NextImage src="/polly-logo.png" alt="Polly" width={120} height={40} className="h-8 w-auto" priority />
-								</a>
+								</Link>
 								<div className="flex items-center gap-4">
 									<button
 										className="flex flex-col items-center justify-center w-11 h-11 rounded-full bg-blue-50 text-blue-600 z-50 transition-transform active:scale-95"
@@ -296,7 +296,7 @@ export default function Header() {
 
 									{/* Mobile Services Link */}
 									<Link
-										href="/about#outros-servicos"
+										href={{ pathname: "/about", hash: "outros-servicos" }}
 										onClick={() => setIsMobileMenuOpen(false)}
 										className="text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
 									>
