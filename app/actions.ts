@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import Replicate from "replicate";
 import sharp from "sharp";
 import { createClient } from "@/lib/supabase/server";
-import { prisma } from "@/lib/prisma";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { stripe } from "@/lib/stripe";
 
 export async function enhanceImage(
@@ -19,30 +19,26 @@ export async function enhanceImage(
 
 	if (!authUser) throw new Error("Unauthorized");
 
-	let user = await prisma.user.findUnique({
-		where: { id: authUser.id },
-	});
+	let { data: user } = await supabase.from('user').select('*').eq('id', authUser.id).single();
 
 	if (!user) {
-		user = await prisma.user.create({
-			data: {
-				id: authUser.id,
-				email: authUser.email!,
-				name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
-				credits: 0,
-			},
-		});
+		const { data: newUser, error } = await supabase.from('user').insert({
+			id: authUser.id,
+			email: authUser.email!,
+			name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
+			credits: 0,
+		}).select().single();
+		if (error) throw error;
+		user = newUser;
 	}
 
 	if (user.credits < 10) {
 		throw new Error("Insufficient credits (10 required)");
 	}
 
-	const generation = await prisma.generation.findUnique({
-		where: { id: generationId },
-	});
+	const { data: generation, error: genError } = await supabase.from('Generation').select('*').eq('id', generationId).single();
 
-	if (!generation || !generation.originalImage) {
+	if (genError || !generation || !generation.originalImage) {
 		throw new Error("Generation not found");
 	}
 
@@ -92,13 +88,7 @@ export async function enhanceImage(
 		},
 	});
 
-	// Deduct credits immediately or after success?
-	// Usually improved UX to deduct on initiation but refund on failure.
-	// For simplicity, we deduct here.
-	await prisma.user.update({
-		where: { id: user.id },
-		data: { credits: { decrement: 10 } },
-	});
+	await supabase.from('user').update({ credits: user.credits - 10 }).eq('id', user.id);
 
 	return { predictionId: prediction.id };
 }
@@ -143,19 +133,18 @@ export async function finalizeEnhancement(
 		data: { user: authUser },
 	} = await supabase.auth.getUser();
 
-	const newGeneration = await prisma.generation.create({
-		data: {
-			userId: authUser?.id, // Assign to current user
-			prompt: `Enhanced: ${(prediction.input as any).prompt || "Enhanced Image"}`,
-			style: "enhanced",
-			originalImage: base64,
-			blurredImage: base64, // Unlocked by default as they paid 10 credits
-			status: "COMPLETED",
-			cost: 10,
-			unlocked: true,
-			createdAt: new Date(),
-		},
-	});
+	const { data: newGeneration, error } = await supabase.from('Generation').insert({
+		userId: authUser?.id, // Assign to current user
+		prompt: `Enhanced: ${(prediction.input as any).prompt || "Enhanced Image"}`,
+		style: "enhanced",
+		originalImage: base64,
+		blurredImage: base64, // Unlocked by default as they paid 10 credits
+		status: "COMPLETED",
+		cost: 10,
+		unlocked: true,
+	}).select().single();
+
+	if (error) throw error;
 
 	return { newImageUrl: base64, newGenerationId: newGeneration.id };
 }
@@ -163,13 +152,6 @@ export async function finalizeEnhancement(
 const replicate = new Replicate({
 	auth: process.env.REPLICATE_API_TOKEN,
 });
-
-interface Generation {
-	id: string;
-	originalImage: string | null;
-	blurredImage: string | null;
-	unlocked: boolean;
-}
 
 export async function generateImage(
 	formData: FormData,
@@ -183,19 +165,17 @@ export async function generateImage(
 
 	if (authUser) {
 		userId = authUser.id;
-		let user = await prisma.user.findUnique({
-			where: { id: userId },
-		});
+		let { data: user } = await supabase.from('user').select('*').eq('id', userId).single();
 
 		if (!user) {
-			user = await prisma.user.create({
-				data: {
-					id: authUser.id,
-					email: authUser.email!,
-					name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
-					credits: 0,
-				},
-			});
+			const { data: newUser, error } = await supabase.from('user').insert({
+				id: authUser.id,
+				email: authUser.email!,
+				name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
+				credits: 0,
+			}).select().single();
+			if (error) throw error;
+			user = newUser;
 		}
 
 		if (user.credits < 30) {
@@ -279,18 +259,18 @@ export async function finalizeGeneration(
 	const originalBase64 = `data:image/jpeg;base64,${originalBuffer.toString("base64")}`;
 	const blurredBase64 = `data:image/jpeg;base64,${blurredBuffer.toString("base64")}`;
 
-	const generation = await prisma.generation.create({
-		data: {
-			userId: userId,
-			prompt: "Generated via Replicate",
-			style: "unknown",
-			originalImage: originalBase64,
-			blurredImage: blurredBase64,
-			status: "COMPLETED",
-			cost: 30,
-			unlocked: false,
-		},
-	});
+	const { data: generation, error } = await supabase.from('Generation').insert({
+		userId: userId,
+		prompt: "Generated via Replicate",
+		style: "unknown",
+		originalImage: originalBase64,
+		blurredImage: blurredBase64,
+		status: "COMPLETED",
+		cost: 30,
+		unlocked: false,
+	}).select().single();
+
+	if (error) throw error;
 
 	return {
 		generationId: generation.id,
@@ -308,9 +288,7 @@ export async function unlockImage(
 
 	if (!authUser) throw new Error("Unauthorized");
 
-	const user = await prisma.user.findUnique({
-		where: { id: authUser.id },
-	});
+	const { data: user } = await supabase.from('user').select('*').eq('id', authUser.id).single();
 
 	if (!user) {
 		throw new Error(
@@ -322,11 +300,9 @@ export async function unlockImage(
 		throw new Error("Insufficient credits");
 	}
 
-	const generation = await prisma.generation.findUnique({
-		where: { id: generationId },
-	});
+	const { data: generation, error } = await supabase.from('Generation').select('*').eq('id', generationId).single();
 
-	if (!generation) {
+	if (error || !generation) {
 		throw new Error("Generation not found");
 	}
 
@@ -336,19 +312,11 @@ export async function unlockImage(
 		throw new Error("Generation not found");
 	}
 
-	await prisma.$transaction([
-		prisma.user.update({
-			where: { id: user.id },
-			data: { credits: { decrement: 30 } },
-		}),
-		prisma.generation.update({
-			where: { id: generationId },
-			data: {
-				unlocked: true,
-				userId: user.id, // Ensure it's assigned
-			},
-		}),
-	]);
+	await supabase.from('user').update({ credits: user.credits - 30 }).eq('id', user.id);
+	await supabase.from('Generation').update({
+		unlocked: true,
+		userId: user.id
+	}).eq('id', generation.id);
 
 	return { originalImage: generation.originalImage };
 }
@@ -361,10 +329,11 @@ export async function addCreditsFromPayment(data: {
 	currency: string;
 	credits: number;
 }): Promise<void> {
+	// Webhooks require an admin client to bypass RLS when searching/updating users
+	const supabaseAdmin = createAdminClient();
+
 	//find existing transaction by stripeSessionId
-	const existingTransaction = await prisma.transaction.findUnique({
-		where: { stripeSessionId: data.stripeSessionId },
-	});
+	const { data: existingTransaction } = await supabaseAdmin.from('Transaction').select('*').eq('stripeSessionId', data.stripeSessionId).single();
 
 	//idempotency check: if transaction already completed, skip processing
 	if (existingTransaction && existingTransaction.status === "COMPLETED") {
@@ -382,17 +351,12 @@ export async function addCreditsFromPayment(data: {
 		throw new Error("Transaction not found");
 	}
 
-	//update transaction status and add credits atomically
-	await prisma.$transaction([
-		prisma.transaction.update({
-			where: { id: existingTransaction.id },
-			data: { status: "COMPLETED" },
-		}),
-		prisma.user.update({
-			where: { id: data.userId },
-			data: { credits: { increment: data.credits } },
-		}),
-	]);
+	const { data: user } = await supabaseAdmin.from('user').select('credits').eq('id', data.userId).single();
+	if (!user) throw new Error("User not found");
+
+	//update transaction status and add credits
+	await supabaseAdmin.from('Transaction').update({ status: "COMPLETED" }).eq('id', existingTransaction.id);
+	await supabaseAdmin.from('user').update({ credits: user.credits + data.credits }).eq('id', data.userId);
 }
 
 export async function buyCredits(
@@ -435,15 +399,15 @@ export async function buyCredits(
 	const baseUrl = `${protocol}://${host}`;
 
 	//create transaction record immediately with PENDING status
-	const transaction = await prisma.transaction.create({
-		data: {
-			userId: authUser.id,
-			amount: amount,
-			currency: "eur",
-			status: "PENDING",
-			credits: credits,
-		},
-	});
+	const { data: transaction, error: tError } = await supabase.from('Transaction').insert({
+		userId: authUser.id,
+		amount: amount,
+		currency: "eur",
+		status: "PENDING",
+		credits: credits,
+	}).select().single();
+
+	if (tError) throw tError;
 
 	try {
 		// Construct line item dynamically based on whether it's a Price ID, Product ID, or neither
@@ -493,10 +457,7 @@ export async function buyCredits(
 		});
 
 		//update transaction with stripeSessionId
-		await prisma.transaction.update({
-			where: { id: transaction.id },
-			data: { stripeSessionId: checkoutSession.id },
-		});
+		await supabase.from('Transaction').update({ stripeSessionId: checkoutSession.id }).eq('id', transaction.id);
 
 		if (!checkoutSession.url) {
 			throw new Error("Failed to create checkout session");
@@ -521,13 +482,16 @@ export async function getUserGenerations(): Promise<
 
 	if (!authUser) return [];
 
-	const generations = await prisma.generation.findMany({
-		where: { userId: authUser.id, status: "COMPLETED" },
-		orderBy: { createdAt: "desc" },
-		take: 10,
-	});
+	const { data: generations } = await supabase.from('Generation')
+		.select('*')
+		.eq('userId', authUser.id)
+		.eq('status', 'COMPLETED')
+		.order('createdAt', { ascending: false })
+		.limit(10);
 
-	return generations.map((g: Generation) => ({
+	if (!generations) return [];
+
+	return generations.map((g: any) => ({
 		id: g.id,
 		image: g.unlocked ? g.originalImage : g.blurredImage,
 		unlocked: g.unlocked,
@@ -542,23 +506,20 @@ export async function getCredits(): Promise<number> {
 
 	if (!authUser) return 0;
 
-	let user = await prisma.user.findUnique({
-		where: { id: authUser.id },
-		select: { credits: true },
-	});
+	let { data: user } = await supabase.from('user').select('credits').eq('id', authUser.id).single();
 
-	// Auto-sync Supabase user to Prisma if they don't exist
+	// Auto-sync Supabase user to DB if they don't exist
 	if (!user) {
-		const createdUser = await prisma.user.create({
-			data: {
-				id: authUser.id,
-				email: authUser.email!,
-				name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
-				credits: 0,
-			},
-		});
-		return createdUser.credits;
+		const { data: newUser, error } = await supabase.from('user').insert({
+			id: authUser.id,
+			email: authUser.email!,
+			name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
+			credits: 0,
+		}).select().single();
+
+		if (error) return 0;
+		return newUser.credits;
 	}
 
-	return user?.credits || 0;
+	return user.credits || 0;
 }
