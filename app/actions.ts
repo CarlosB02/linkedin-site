@@ -161,26 +161,26 @@ export async function generateImage(
 		data: { user: authUser },
 	} = await supabase.auth.getUser();
 
-	let userId: string | null = null;
+	if (!authUser) {
+		throw new Error("You must be logged in to generate an image.");
+	}
 
-	if (authUser) {
-		userId = authUser.id;
-		let { data: user } = await supabase.from('user').select('*').eq('id', userId).single();
+	const userId = authUser.id;
+	let { data: user } = await supabase.from('user').select('*').eq('id', userId).single();
 
-		if (!user) {
-			const { data: newUser, error } = await supabase.from('user').insert({
-				id: authUser.id,
-				email: authUser.email!,
-				name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
-				credits: 0,
-			}).select().single();
-			if (error) throw error;
-			user = newUser;
-		}
+	if (!user) {
+		const { data: newUser, error } = await supabase.from('user').insert({
+			id: authUser.id,
+			email: authUser.email!,
+			name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
+			credits: 0,
+		}).select().single();
+		if (error) throw error;
+		user = newUser;
+	}
 
-		if (user.credits < 30) {
-			throw new Error("Insufficient credits");
-		}
+	if (user.credits < 30) {
+		throw new Error("Insufficient credits");
 	}
 
 	const file = formData.get("image") as File;
@@ -239,13 +239,22 @@ export async function checkGenerationStatus(
 export async function finalizeGeneration(
 	predictionId: string,
 	outputUrl: string,
-): Promise<{ generationId: string; blurredImage: string }> {
+): Promise<{ generationId: string; blurredImage: string; originalImage: string }> {
 	const supabase = await createClient();
 	const {
 		data: { user: authUser },
 	} = await supabase.auth.getUser();
 
-	const userId = authUser ? authUser.id : null;
+	if (!authUser) {
+		throw new Error("Unauthorized");
+	}
+
+	const userId = authUser.id;
+	let { data: user } = await supabase.from('user').select('*').eq('id', userId).single();
+
+	if (!user || user.credits < 30) {
+		throw new Error("Insufficient credits to finalize generation.");
+	}
 
 	const response = await fetch(outputUrl);
 	const arrayBuffer = await response.arrayBuffer();
@@ -259,6 +268,8 @@ export async function finalizeGeneration(
 	const originalBase64 = `data:image/jpeg;base64,${originalBuffer.toString("base64")}`;
 	const blurredBase64 = `data:image/jpeg;base64,${blurredBuffer.toString("base64")}`;
 
+	await supabase.from('user').update({ credits: user.credits - 30 }).eq('id', user.id);
+
 	const { data: generation, error } = await supabase.from('Generation').insert({
 		userId: userId,
 		prompt: "Generated via Replicate",
@@ -267,7 +278,7 @@ export async function finalizeGeneration(
 		blurredImage: blurredBase64,
 		status: "COMPLETED",
 		cost: 30,
-		unlocked: false,
+		unlocked: true,
 	}).select().single();
 
 	if (error) throw error;
@@ -275,6 +286,7 @@ export async function finalizeGeneration(
 	return {
 		generationId: generation.id,
 		blurredImage: blurredBase64,
+		originalImage: originalBase64,
 	};
 }
 
@@ -351,12 +363,27 @@ export async function addCreditsFromPayment(data: {
 		throw new Error("Transaction not found");
 	}
 
-	const { data: user } = await supabaseAdmin.from('user').select('credits').eq('id', data.userId).single();
-	if (!user) throw new Error("User not found");
+	let { data: user } = await supabaseAdmin.from('user').select('credits').eq('id', data.userId).single();
+	if (!user) {
+		const { data: userData } = await supabaseAdmin.auth.admin.getUserById(data.userId);
+		if (userData?.user) {
+			const authUser = userData.user;
+			const { data: newUser, error } = await supabaseAdmin.from('user').insert({
+				id: authUser.id,
+				email: authUser.email || `${authUser.id}@placeholder.com`,
+				name: authUser.user_metadata?.full_name || authUser.email?.split("@")[0] || "User",
+				credits: 0,
+			}).select().single();
+			if (error) throw error;
+			user = newUser;
+		} else {
+			throw new Error("User not found in Auth or DB");
+		}
+	}
 
 	//update transaction status and add credits
 	await supabaseAdmin.from('Transaction').update({ status: "COMPLETED" }).eq('id', existingTransaction.id);
-	await supabaseAdmin.from('user').update({ credits: user.credits + data.credits }).eq('id', data.userId);
+	await supabaseAdmin.from('user').update({ credits: user!.credits + data.credits }).eq('id', data.userId);
 }
 
 export async function buyCredits(

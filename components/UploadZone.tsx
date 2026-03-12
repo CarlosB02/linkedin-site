@@ -83,15 +83,17 @@ export default function UploadZone() {
 	};
 
 	const handleSubmit = async () => {
-		// If logged in, check credits
-		if (user) {
-			if (credits < 30) {
-				document
-					.getElementById("pricing")
-					?.scrollIntoView({ behavior: "smooth" });
-				setError(t("insufficientCredits"));
-				return;
-			}
+		if (!user) {
+			setIsLoginOpen(true);
+			return;
+		}
+
+		if (credits < 30) {
+			document
+				.getElementById("pricing")
+				?.scrollIntoView({ behavior: "smooth" });
+			setError(t("insufficientCredits"));
+			return;
 		}
 
 		if (!file) return;
@@ -114,18 +116,19 @@ export default function UploadZone() {
 					clearInterval(interval);
 					setProgress(90);
 
-					// Finalize (Blur & Save)
+					// Finalize & Save
 					const final = await finalizeGeneration(
 						predictionId,
 						status.output as string,
 					);
-					setResult({ id: final.generationId, image: final.blurredImage });
+					setResult({ id: final.generationId, image: final.originalImage });
 					// PERSISTENT STORAGE: immediately commit to gallery context
 					addGeneration({
 						id: final.generationId,
-						image: final.blurredImage,
-						unlocked: false,
+						image: final.originalImage,
+						unlocked: true,
 					});
+					setCredits(credits - 30);
 
 					setIsUploading(false);
 					setProgress(100);
@@ -150,6 +153,7 @@ export default function UploadZone() {
 				resultUrl={result.image}
 				originalImage={previewUrl!}
 				generationId={result.id}
+				initialUnlocked={true}
 				onReset={() => {
 					setResult(null);
 					clearFile();
@@ -246,7 +250,7 @@ export default function UploadZone() {
 										<input
 											type="file"
 											onChange={handleFileChange}
-											className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+											className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
 											accept="image/*"
 										/>
 										<style>
