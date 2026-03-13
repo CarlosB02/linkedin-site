@@ -238,7 +238,7 @@ export async function checkGenerationStatus(
 
 export async function finalizeGeneration(
 	predictionId: string,
-	outputUrl: string,
+	inputOutput: any,
 ): Promise<{ generationId: string; blurredImage: string; originalImage: string }> {
 	const supabase = await createClient();
 	const {
@@ -256,7 +256,24 @@ export async function finalizeGeneration(
 		throw new Error("Insufficient credits to finalize generation.");
 	}
 
+	// Handle Replicate output variations (string or array of strings)
+	let outputUrl: string;
+	if (typeof inputOutput === "string") {
+		outputUrl = inputOutput;
+	} else if (Array.isArray(inputOutput) && inputOutput.length > 0) {
+		outputUrl = inputOutput[0];
+	} else {
+		console.error(`[finalizeGeneration] Unexpected output format:`, inputOutput);
+		throw new Error("Unexpected output format from model");
+	}
+
+	console.log(`[finalizeGeneration] predictionId: ${predictionId}, outputUrl: ${outputUrl}`);
+
 	const response = await fetch(outputUrl);
+	if (!response.ok) {
+		console.error(`[finalizeGeneration] Fetch failed: ${response.status} ${response.statusText}`);
+		throw new Error(`Failed to fetch image from Replicate: ${response.status}`);
+	}
 	const arrayBuffer = await response.arrayBuffer();
 	const originalBuffer = Buffer.from(arrayBuffer);
 
@@ -415,6 +432,19 @@ export async function buyCredits(
 		stripeId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_NETWORKING || "";
 	} else {
 		throw new Error("Invalid package ID");
+	}
+
+	// Ensure user exists in our DB before creating transaction (prevents FK error)
+	let { data: user } = await supabase.from('user').select('*').eq('id', authUser.id).single();
+	if (!user) {
+		const { data: newUser, error: createError } = await supabase.from('user').insert({
+			id: authUser.id,
+			email: authUser.email!,
+			name: authUser.user_metadata?.full_name || authUser.email!.split("@")[0],
+			credits: 0,
+		}).select().single();
+		if (createError) throw createError;
+		user = newUser;
 	}
 
 	//get base URL from request headers

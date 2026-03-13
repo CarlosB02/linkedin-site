@@ -70,6 +70,15 @@ export default function UploadZone() {
 
 	const handleDrop = (e: React.DragEvent) => {
 		e.preventDefault();
+		if (!user) {
+			setIsLoginOpen(true);
+			return;
+		}
+		if (credits < 30) {
+			document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+			setError(t("insufficientCredits"));
+			return;
+		}
 		if (e.dataTransfer.files && e.dataTransfer.files[0]) {
 			const selectedFile = e.dataTransfer.files[0];
 			setFile(selectedFile);
@@ -111,33 +120,39 @@ export default function UploadZone() {
 
 			// Poll for status
 			const interval = setInterval(async () => {
-				const status = await checkGenerationStatus(predictionId);
-				if (status.status === "succeeded") {
-					clearInterval(interval);
-					setProgress(90);
+				try {
+					const status = await checkGenerationStatus(predictionId);
+					if (status.status === "succeeded") {
+						clearInterval(interval);
+						setProgress(90);
 
-					// Finalize & Save
-					const final = await finalizeGeneration(
-						predictionId,
-						status.output as string,
-					);
-					setResult({ id: final.generationId, image: final.originalImage });
-					// PERSISTENT STORAGE: immediately commit to gallery context
-					addGeneration({
-						id: final.generationId,
-						image: final.originalImage,
-						unlocked: true,
-					});
-					setCredits(credits - 30);
+						// Finalize & Save
+						const final = await finalizeGeneration(
+							predictionId,
+							status.output,
+						);
+						setResult({ id: final.generationId, image: final.originalImage });
+						// PERSISTENT STORAGE: immediately commit to gallery context
+						addGeneration({
+							id: final.generationId,
+							image: final.originalImage,
+							unlocked: true,
+						});
+						setCredits(credits - 30);
 
-					setIsUploading(false);
-					setProgress(100);
-				} else if (status.status === "failed") {
-					clearInterval(interval);
-					setError(t("generationFailed"));
-					setIsUploading(false);
-				} else {
-					setProgress((prev) => Math.min(prev + 10, 80));
+						setIsUploading(false);
+						setProgress(100);
+					} else if (status.status === "failed") {
+						clearInterval(interval);
+						setError(t("generationFailed"));
+						setIsUploading(false);
+					} else {
+						setProgress((prev) => Math.min(prev + 10, 80));
+					}
+				} catch (pollErr: any) {
+					console.error("Polling error:", pollErr);
+					// Don't clear interval on transient errors, but log them
+					// If it's a persistent error, you might want to stop
 				}
 			}, 2000);
 		} catch (e: any) {
@@ -249,6 +264,16 @@ export default function UploadZone() {
 									>
 										<input
 											type="file"
+											onClick={(e) => {
+												if (!user) {
+													e.preventDefault();
+													setIsLoginOpen(true);
+												} else if (credits < 30) {
+													e.preventDefault();
+													document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
+													setError(t("insufficientCredits"));
+												}
+											}}
 											onChange={handleFileChange}
 											className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
 											accept="image/*"
