@@ -8,6 +8,7 @@ import { useAuth } from "@/components/AuthProvider";
 import ResultView from "./ResultView";
 import { useTranslations } from "next-intl";
 import { useGenerations } from "@/lib/generationContext";
+import { downloadImage } from "@/lib/download";
 
 export default function Gallery() {
 	const t = useTranslations("Gallery");
@@ -77,15 +78,16 @@ export default function Gallery() {
 				</button>
 
 				{gen.unlocked && (
-					<a
-						href={gen.image}
-						download={`generated-${gen.id}.jpg`}
+					<button
+						onClick={(e) => {
+							e.stopPropagation();
+							downloadImage(gen.image, `generated-${gen.id}.jpg`);
+						}}
 						className="px-5 py-2.5 bg-gray-900/80 text-white rounded-xl font-bold text-sm hover:bg-black transition-all shadow-lg flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 duration-300 delay-75 border border-white/10"
-						onClick={(e) => e.stopPropagation()}
 					>
 						<Download className="w-4 h-4" />
 						{t("download")}
-					</a>
+					</button>
 				)}
 			</div>
 		</div>

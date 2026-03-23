@@ -26,6 +26,7 @@ import ComparisonSlider from "./ComparisonSlider";
 import LoginModal from "./LoginModal";
 import { useTranslations } from "next-intl";
 import { useGenerations } from "@/lib/generationContext";
+import { downloadImage } from "@/lib/download";
 
 interface ResultViewProps {
 	resultUrl: string;
@@ -367,14 +368,13 @@ export default function ResultView({
 						<h3 className="text-xl font-bold mb-4">{t("actions")}</h3>
 						<div className="flex flex-col gap-3">
 							{isUnlocked ? (
-								<a
-									href={currentImage}
-									download="linkedin-photo.jpg"
+								<button
+									onClick={() => downloadImage(currentImage, "linkedin-photo.jpg")}
 									className="w-full py-3 bg-green-600 text-white rounded-xl font-bold text-center hover:bg-green-700 flex items-center justify-center gap-2"
 								>
 									<Download className="w-5 h-5" />
 									{t("downloadHD")}
-								</a>
+								</button>
 							) : (
 								<button
 									disabled
