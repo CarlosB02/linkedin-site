@@ -2,14 +2,18 @@
 
 import { MoveHorizontal } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 
 export default function ComparisonSlider({
 	beforeImage,
 	afterImage,
+	isUnlocked = true,
 }: {
 	beforeImage: string;
 	afterImage: string;
+	isUnlocked?: boolean;
 }) {
+	const t = useTranslations("ComparisonSlider");
 	const [isResizing, setIsResizing] = useState(false);
 	const [position, setPosition] = useState(50);
 	const containerRef = useRef<HTMLDivElement>(null);
@@ -59,7 +63,7 @@ export default function ComparisonSlider({
 	return (
 		<div className="w-full max-w-md mx-auto mt-16 mb-0">
 			<h2 className="text-3xl font-bold text-center mb-8">
-				See the Difference
+				{t("title")}
 			</h2>
 			<div
 				ref={containerRef}
@@ -71,11 +75,11 @@ export default function ComparisonSlider({
 				<img
 					src={afterImage}
 					alt="After"
-					className="w-full h-auto block select-none pointer-events-none"
+					className={`w-full h-auto block select-none pointer-events-none ${!isUnlocked ? "blur-md opacity-80" : ""}`}
 					draggable={false}
 				/>
 				<div className="absolute top-4 right-4 bg-white/90 px-3 py-1 rounded-full text-sm font-bold text-blue-600 z-20">
-					AFTER
+					{t("after")}
 				</div>
 
 				{/* Before Image (Overlay) - Clipped */}
@@ -92,7 +96,7 @@ export default function ComparisonSlider({
 						draggable={false}
 					/>
 					<div className="absolute top-4 left-4 bg-black/50 px-3 py-1 rounded-full text-sm font-bold text-white">
-						BEFORE
+						{t("before")}
 					</div>
 				</div>
 

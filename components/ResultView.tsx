@@ -12,6 +12,7 @@ import {
 	Send,
 	Sparkles,
 	Wand2,
+	ArrowDown,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -71,6 +72,12 @@ export default function ResultView({
 
 	const [feedbackText, setFeedbackText] = useState("");
 	const [feedbackStatus, setFeedbackStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+	const [showComparisonPopup, setShowComparisonPopup] = useState(true);
+
+	const scrollToComparison = () => {
+		document.getElementById("comparison-slider")?.scrollIntoView({ behavior: "smooth" });
+		setShowComparisonPopup(false);
+	};
 
 	const loadingMessages = [
 		t("enhancing"),
@@ -444,13 +451,27 @@ export default function ResultView({
 				</div>
 			</div>
 
-			{/* Comparison Slider - Only show when unlocked and enabled */}
-			{isUnlocked && showComparison && (
-				<div className="mt-12">
+			{/* Comparison Slider - Always show when enabled, but pass isUnlocked */}
+			{showComparison && (
+				<div className="mt-12" id="comparison-slider">
 					<ComparisonSlider
 						beforeImage={originalImage}
 						afterImage={currentImage}
+						isUnlocked={isUnlocked}
 					/>
+				</div>
+			)}
+
+			{/* Floating Antes & Depois Popup */}
+			{showComparison && showComparisonPopup && (
+				<div className="fixed bottom-6 left-1/2 -translate-x-1/2 md:bottom-12 md:left-12 md:translate-x-0 z-50 animate-bounce">
+					<button
+						onClick={scrollToComparison}
+						className="bg-white text-gray-900 rounded-full px-5 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.12)] font-bold text-sm flex items-center gap-2 border border-blue-100 hover:bg-gray-50 transition-colors"
+					>
+						Antes e Depois
+						<ArrowDown className="w-5 h-5 text-blue-600" />
+					</button>
 				</div>
 			)}
 
