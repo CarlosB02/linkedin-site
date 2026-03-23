@@ -265,6 +265,9 @@ export default function UploadZone() {
 										<input
 											type="file"
 											onClick={(e) => {
+												// RESET do valor do input para permitir selecionar a mesma foto da galeria repetidamente
+												(e.target as HTMLInputElement).value = "";
+												
 												if (!user) {
 													e.preventDefault();
 													setIsLoginOpen(true);
