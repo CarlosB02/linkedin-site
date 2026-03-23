@@ -90,7 +90,14 @@ export default function Header() {
 		<>
 			<header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-40 border-b border-gray-100">
 				<div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-					<Link href="/" className="flex items-center z-50 relative">
+					<Link
+						href="/"
+						onClick={(e) => {
+							e.preventDefault();
+							window.location.href = e.currentTarget.href;
+						}}
+						className="flex items-center z-50 relative"
+					>
 						<NextImage src="/polly-logo.png" alt="Polly" width={120} height={40} className="h-8 w-auto" priority />
 					</Link>
 
@@ -98,6 +105,10 @@ export default function Header() {
 					<nav className="hidden md:flex items-center gap-8">
 						<Link
 							href="/"
+							onClick={(e) => {
+								e.preventDefault();
+								window.location.href = e.currentTarget.href;
+							}}
 							className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors"
 						>
 							{t("home")}
@@ -248,7 +259,15 @@ export default function Header() {
 						<nav className="flex flex-col w-full h-full relative z-10">
 							{/* Internal Menu Header */}
 							<div className="flex items-center justify-between px-6 h-20 shrink-0">
-								<Link href="/" className="flex items-center">
+								<Link
+									href="/"
+									onClick={(e) => {
+										e.preventDefault();
+										setIsMobileMenuOpen(false);
+										window.location.href = e.currentTarget.href;
+									}}
+									className="flex items-center"
+								>
 									<NextImage src="/polly-logo.png" alt="Polly" width={120} height={40} className="h-8 w-auto" priority />
 								</Link>
 								<div className="flex items-center gap-4">
@@ -278,7 +297,11 @@ export default function Header() {
 								<div className="flex flex-col items-center gap-6 w-full">
 									<Link
 										href="/"
-										onClick={() => setIsMobileMenuOpen(false)}
+										onClick={(e) => {
+											e.preventDefault();
+											setIsMobileMenuOpen(false);
+											window.location.href = e.currentTarget.href;
+										}}
 										className="text-2xl font-semibold text-gray-800 hover:text-blue-600 transition-colors"
 									>
 										{t("home")}

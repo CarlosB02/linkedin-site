@@ -137,7 +137,8 @@
         "smile": "Sorriso",
         "openEyes": "Apri Occhi",
         "fixLighting": "Correggi Luce",
-        "background": "Sfondo"
+        "background": "Sfondo",
+        "beforeAndAfterPopup": "Prima e Dopo"
     },
     "LoginModal": {
         "welcomeBack": "Bentornato",

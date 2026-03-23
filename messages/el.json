@@ -137,7 +137,8 @@
         "smile": "Χαμόγελο",
         "openEyes": "Άνοιγμα Ματιών",
         "fixLighting": "Διόρθωση Φωτισμού",
-        "background": "Φόντο"
+        "background": "Φόντο",
+        "beforeAndAfterPopup": "Πριν και Μετά"
     },
     "LoginModal": {
         "welcomeBack": "Καλώς ήρθατε ξανά",

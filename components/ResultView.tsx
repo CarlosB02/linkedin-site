@@ -469,7 +469,7 @@ export default function ResultView({
 						onClick={scrollToComparison}
 						className="bg-white text-gray-900 rounded-full px-5 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.12)] font-bold text-sm flex items-center gap-2 border border-blue-100 hover:bg-gray-50 transition-colors"
 					>
-						Antes e Depois
+						{t("beforeAndAfterPopup")}
 						<ArrowDown className="w-5 h-5 text-blue-600" />
 					</button>
 				</div>
